@@ -1,0 +1,115 @@
+<!-- <div class="commerce-insights-summary">
+    <p>Shipped orders are <summary-datapoint v-bind:change-value="stats.products.summary.shipmentsPercentChange" up-down></summary-datapoint> and sales are <summary-datapoint v-bind:change-value="stats.products.summary.shipmentsPercentChange" up-down></summary-datapoint>.</p>
+</div>
+
+<div class="-mx-3">
+    <div class="w-full" style="display: flex;">
+        <div class="w-1/3 p-3">
+            <pane title="Top Shipping Locations">
+                <table class="data fullwidth mini-table short-bottom">
+                    <tbody>
+                        <tr v-for="(item, index) in stats.orders.topLocations">
+                            <td>${index+1}.</td>
+                            <td>${item.country}</td>
+                            <td>${item.destination}</td>
+                            <td class="text-right text-gray-500">${item.total}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </pane>
+        </div>
+        <div class="w-2/3 p-3">
+            <div class="-m-3 mini-sparkline-grid">
+                <div class="w-1/3">
+                    <div class="p-3">
+                        <mini-sparkline-panel 
+                            title="Total Orders" 
+                            caption="All orders this period"
+                            v-bind:trend="Math.abs(stats.orders.totalOrders.percentChange) + '%'" 
+                            v-bind:positive-trend="stats.orders.totalOrders.percentChange >= 0"
+                            v-bind:value="stats.orders.totalOrders.total"
+                            v-bind:data="stats.orders.totalOrders.series"
+                        ></mini-sparkline-panel>
+                    </div>
+                </div>
+
+                <div class="w-1/3">
+                    <div class="p-3">
+                        <mini-sparkline-panel 
+                            title="Average Value" 
+                            caption="Average completed order value"
+                            v-bind:trend="Math.abs(stats.orders.averageValue.percentChange) + '%'" 
+                            v-bind:positive-trend="stats.orders.averageValue.percentChange >= 0"
+                            v-bind:value="stats.orders.averageValue.total"
+                            v-bind:data="stats.orders.averageValue.series"
+                        ></mini-sparkline-panel>
+                    </div>
+                </div>
+
+                <div class="w-1/3">
+                    <div class="p-3">
+                        <mini-sparkline-panel 
+                            title="Average Order Quantity" 
+                            caption="Average items per order"
+                            v-bind:trend="Math.abs(stats.orders.averageQuantity.percentChange) + '%'" 
+                            v-bind:positive-trend="stats.orders.averageQuantity.percentChange >= 0"
+                            v-bind:value="stats.orders.averageQuantity.total"
+                            v-bind:data="stats.orders.averageQuantity.series"
+                        ></mini-sparkline-panel>
+                    </div>
+                </div>
+
+                <div class="w-1/3">
+                    <div class="p-3">
+                        <mini-sparkline-panel 
+                            title="Total Customers" 
+                            caption="Customers with orders"
+                            v-bind:trend="Math.abs(stats.orders.totalCustomers.percentChange) + '%'" 
+                            v-bind:positive-trend="stats.orders.totalCustomers.percentChange >= 0"
+                            v-bind:value="stats.orders.totalCustomers.total"
+                            v-bind:data="stats.orders.totalCustomers.series"
+                        ></mini-sparkline-panel>
+                    </div>
+                </div>
+
+                <div class="w-1/3">
+                    <div class="p-3">
+                        <mini-sparkline-panel 
+                            title="New Customers" 
+                            caption="New customers with orders"
+                            v-bind:trend="Math.abs(stats.orders.newCustomers.percentChange) + '%'" 
+                            v-bind:positive-trend="stats.orders.newCustomers.percentChange >= 0"
+                            v-bind:value="stats.orders.newCustomers.total"
+                            v-bind:data="stats.orders.newCustomers.series"
+                        ></mini-sparkline-panel>
+                    </div>
+                </div>
+
+                <div class="w-1/3">
+                    <div class="p-3">
+                        <mini-sparkline-panel 
+                            title="Returning Customers" 
+                            caption="Returning customers with orders"
+                            v-bind:trend="Math.abs(stats.orders.returningCustomers.percentChange) + '%'" 
+                            v-bind:positive-trend="stats.orders.returningCustomers.percentChange >= 0"
+                            v-bind:value="stats.orders.returningCustomers.total"
+                            v-bind:data="stats.orders.returningCustomers.series"
+                        ></mini-sparkline-panel>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<div>
+    <combined-search 
+        element-type="Orders" 
+        v-bind:elements="orders"
+        v-bind:type-options='[
+            { "label": "Paid", "value": "Paid" },
+            { "label": "Shipped", "value": "Shipped" },
+            { "label": "Canceled", "value": "Canceled" }
+        ]'
+    />
+</div>

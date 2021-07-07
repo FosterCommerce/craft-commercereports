@@ -1,0 +1,17 @@
+<div class="-mx-3">
+    <div class="w-full" style="display: flex;">
+        <div class="w-5/5 p-3">
+            <bar-chart-panel 
+                title="Most Purchased Product Type"
+                v-bind:data="stats.products.mostPurchased.types"
+            ></bar-chart-panel>
+        </div>
+    </div>
+</div>
+
+<div class="px-3">
+    <combined-search 
+        element-type="Products" 
+        v-bind:elements="products"
+    />
+</div>

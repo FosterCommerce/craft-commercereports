@@ -1,0 +1,83 @@
+[
+    {
+        "id": 1,
+        "title": "Classic Cup",
+        "status": "live",
+        "sku": "classic-cup",
+        "type": { "title": "Coffee Mugs", "id": 1 },
+        "totalSold": 164,
+        "revenue": "$0"
+    },
+    {
+        "id": 2,
+        "title": "Theme Cup",
+        "status": "live",
+        "sku": "theme-cup",
+        "type": { "title": "Coffee Mugs", "id": 1 },
+        "totalSold": 134,
+        "revenue": "$0"
+    },
+    {
+        "id": 3,
+        "title": "The Traveler",
+        "status": "live",
+        "sku": "traveler-mug",
+        "type": { "title": "Coffee Mugs", "id": 1 },
+        "totalSold": 128,
+        "revenue": "$0"
+    },
+    {
+        "id": 4,
+        "title": "Chocoloate",
+        "status": "live",
+        "sku": "chocolate-muffin",
+        "type": { "title": "Muffins", "id": 2 },
+        "totalSold": 67,
+        "revenue": "$0"
+    },
+    {
+        "id": 5,
+        "title": "Blueberry",
+        "status": "live",
+        "sku": "blueberry-muffin",
+        "type": { "title": "Muffins", "id": 2 },
+        "totalSold": 65,
+        "revenue": "$0"
+    },
+    {
+        "id": 6,
+        "title": "Black",
+        "status": "live",
+        "sku": "black-cold-brew",
+        "type": { "title": "Cold Brew", "id": 3 },
+        "totalSold": 124,
+        "revenue": "$0"
+    },
+    {
+        "id": 7,
+        "title": "A Little Sweet",
+        "status": "live",
+        "sku": "sweetened-cold-brew",
+        "type": { "title": "Cold Brew", "id": 3 },
+        "totalSold": 24,
+        "revenue": "$0"
+    },
+    {
+        "id": 8,
+        "title": "Black Decaf",
+        "status": "live",
+        "sku": "black-decaf-cold-brew",
+        "type": { "title": "Cold Brew", "id": 3 },
+        "totalSold": 36,
+        "revenue": "$0"
+    },
+    {
+        "id": 9,
+        "title": "A Little Sweet Decaf",
+        "status": "live",
+        "sku": "sweetened-decaf-cold-brew",
+        "type": { "title": "Cold Brew", "id": 3 },
+        "totalSold": 3,
+        "revenue": "$0"
+    }
+]

@@ -1,0 +1,256 @@
+{
+    "revenue": {
+        "summary": {
+            "revenuePercentChange": 5,
+            "profitPercentChange": 8
+        },
+        "revenue": {
+            "percentChange": 5,
+            "currentPeriod": "$4,076.95",
+            "previousPeriod": "$3,587.72",
+            "currentSeries": [
+                { "x": "2019-07-01", "y": 280 },
+                { "x": "2019-07-02", "y": 210 },
+                { "x": "2019-07-03", "y": 150 },
+                { "x": "2019-07-04", "y": 50 },
+                { "x": "2019-07-05", "y": 280 },
+                { "x": "2019-07-06", "y": 400 },
+                { "x": "2019-07-07", "y": 220 },
+                { "x": "2019-07-08", "y": 360 },
+                { "x": "2019-07-09", "y": 370 },
+                { "x": "2019-07-10", "y": 430 },
+                { "x": "2019-07-11", "y": 220 },
+                { "x": "2019-07-12", "y": 210 },
+                { "x": "2019-07-13", "y": 75 },
+                { "x": "2019-07-14", "y": 310 },
+                { "x": "2019-07-15", "y": 420 }
+            ],
+            "previousSeries": [
+                { "x": "2019-06-16", "y": 200 },
+                { "x": "2019-06-17", "y": 150 },
+                { "x": "2019-06-18", "y": 205 },
+                { "x": "2019-06-19", "y": 140 },
+                { "x": "2019-06-20", "y": 210 },
+                { "x": "2019-06-21", "y": 195 },
+                { "x": "2019-06-22", "y": 230 },
+                { "x": "2019-06-23", "y": 240 },
+                { "x": "2019-06-24", "y": 210 },
+                { "x": "2019-06-25", "y": 140 },
+                { "x": "2019-06-26", "y": 160 },
+                { "x": "2019-06-27", "y": 170 },
+                { "x": "2019-06-28", "y": 150 },
+                { "x": "2019-06-29", "y": 120 },
+                { "x": "2019-06-30", "y": 160 }
+            ]
+        },
+        "netProfits": {
+            "percentChange": 8,
+            "currentPeriod": "$4,076.95",
+            "previousPeriod": "$3,587.72",
+            "currentSeries": [],
+            "previousSeries": []
+        },
+        "grossProfits": {
+            "percentChange": 10,
+            "currentPeriod": "$1,245.67",
+            "previousPeriod": "$8,910.11",
+            "currentSeries": [
+                { "x": "2019-07-01", "y": 60 },
+                { "x": "2019-07-02", "y": 40 },
+                { "x": "2019-07-03", "y": 120 },
+                { "x": "2019-07-04", "y": 50 },
+                { "x": "2019-07-05", "y": 80 },
+                { "x": "2019-07-06", "y": 90 },
+                { "x": "2019-07-07", "y": 110 },
+                { "x": "2019-07-08", "y": 68 },
+                { "x": "2019-07-09", "y": 90 },
+                { "x": "2019-07-10", "y": 120 },
+                { "x": "2019-07-11", "y": 100 },
+                { "x": "2019-07-12", "y": 80 },
+                { "x": "2019-07-13", "y": 90 },
+                { "x": "2019-07-14", "y": 110 },
+                { "x": "2019-07-15", "y": 90 }
+            ],
+            "previousSeries": [
+                { "x": "2018-07-01", "y": 30 },
+                { "x": "2018-07-02", "y": 20 },
+                { "x": "2018-07-03", "y": 80 },
+                { "x": "2018-07-04", "y": 90 },
+                { "x": "2018-07-05", "y": 110 },
+                { "x": "2018-07-06", "y": 87 },
+                { "x": "2018-07-07", "y": 100 },
+                { "x": "2018-07-08", "y": 88 },
+                { "x": "2018-07-09", "y": 110 },
+                { "x": "2018-07-10", "y": 60 },
+                { "x": "2018-07-11", "y": 50 },
+                { "x": "2018-07-12", "y": 55 },
+                { "x": "2018-07-13", "y": 30 },
+                { "x": "2018-07-14", "y": 45 },
+                { "x": "2018-07-15", "y": 64 }
+            ]
+        },
+        "averageOrder": {
+            "percentChange": -3,
+            "currentPeriod": "$8,888",
+            "previousPeriod": "$9,999",
+            "currentSeries": [
+                { "x": "2019-07-01", "y": 120 },
+                { "x": "2019-07-02", "y": 110 },
+                { "x": "2019-07-03", "y": 112 },
+                { "x": "2019-07-04", "y": 98 },
+                { "x": "2019-07-05", "y": 95 },
+                { "x": "2019-07-06", "y": 93 },
+                { "x": "2019-07-07", "y": 92 },
+                { "x": "2019-07-08", "y": 88 },
+                { "x": "2019-07-09", "y": 78 },
+                { "x": "2019-07-10", "y": 65 },
+                { "x": "2019-07-11", "y": 60 },
+                { "x": "2019-07-12", "y": 52 },
+                { "x": "2019-07-13", "y": 45 },
+                { "x": "2019-07-14", "y": 38 },
+                { "x": "2019-07-15", "y": 32 }
+            ],
+            "previousSeries": [
+                { "x": "2018-07-01", "y": 32 },
+                { "x": "2018-07-02", "y": 40 },
+                { "x": "2018-07-03", "y": 43 },
+                { "x": "2018-07-04", "y": 45 },
+                { "x": "2018-07-05", "y": 49 },
+                { "x": "2018-07-06", "y": 56 },
+                { "x": "2018-07-07", "y": 60 },
+                { "x": "2018-07-08", "y": 80 },
+                { "x": "2018-07-09", "y": 90 },
+                { "x": "2018-07-10", "y": 105 },
+                { "x": "2018-07-11", "y": 115 },
+                { "x": "2018-07-12", "y": 118 },
+                { "x": "2018-07-13", "y": 120 },
+                { "x": "2018-07-14", "y": 122 },
+                { "x": "2018-07-15", "y": 130 }
+            ]
+        },
+        "bestPerformers": [
+            { "title": "Classic Cup", "type": "Coffee Mugs", "quantity": 308, "sales": "$675" },
+            { "title": "Theme Cup", "type": "Coffee Mugs", "quantity": 213, "sales": "$590" },
+            { "title": "Chocolate", "type": "Muffins", "quantity": 112, "sales": "$434" },
+            { "title": "The Traveler", "type": "Coffee Mugs", "quantity": 23, "sales": "$422" },
+            { "title": "Black", "type": "Cold Brew", "quantity": 191, "sales": "$407" },
+            { "title": "Blueberry", "type": "Muffins", "quantity": 78, "sales": "$275" }
+        ],
+        "totalOrdersSummary": {
+            "percentChange": 10,
+            "total": "$312",
+            "series": [32, 55, 60, 30, 40, 80, 75, 50, 90, 105]
+        },
+        "averageOrderSummary": {
+            "percentChange": -3,
+            "total": "$32.25",
+            "series": [90, 80, 75, 60, 55, 40, 38, 35, 33, 30]
+        },
+        "netProfitsSummary": {
+            "percentChange": 8,
+            "total": "$3,075.48",
+            "series": [32, 40, 43, 45, 49, 56, 60, 80, 90, 105]
+        },
+        "profitableCategories": [
+            { "title": "Coffee Mugs", "values": [ "70%", "$2,854" ] },
+            { "title": "Muffins", "values": [ "20%", "$815" ] },
+            { "title": "Cold Brew", "values": [ "10%", "$407" ] }
+        ]
+    },
+    "orders": {
+        "summary": {
+            "shipmentsPercentChange": 10,
+            "ordersPercentChange": 10
+        },
+        "topLocations": [
+            {
+                "country": "US",
+                "destination": "New York, NY",
+                "total": 785
+            },
+            {
+                "country": "US",
+                "destination": "Columbus, OH",
+                "total": 512
+            },
+            {
+                "country": "US",
+                "destination": "Seattle, WA",
+                "total": 472
+            },
+            {
+                "country": "ES",
+                "destination": "Madrid",
+                "total": 405
+            },
+            {
+                "country": "US",
+                "destination": "San Francisco, CA",
+                "total": 322
+            },
+            {
+                "country": "US",
+                "destination": "Austin, TX",
+                "total": 284
+            },
+            {
+                "country": "US",
+                "destination": "New Orleans, LA",
+                "total": 142
+            }
+        ],
+        "totalOrders": {
+            "total": "312",
+            "percentChange": 8,
+            "series": [32, 40, 43, 45, 49, 56, 60, 80, 90, 105]
+        },
+        "averageValue": {
+            "total": "$98.76",
+            "percentChange": -3,
+            "series": [32, 40, 43, 45, 49, 56, 60, 80, 90, 105]
+        },
+        "averageQuantity": {
+            "total": "4",
+            "percentChange": 25,
+            "series": [32, 40, 43, 45, 49, 56, 60, 80, 90, 105]
+        },
+        "totalCustomers": {
+            "total": "479",
+            "percentChange": 8,
+            "series": [32, 40, 43, 45, 49, 56, 60, 80, 90, 105]
+        },
+        "newCustomers": {
+            "total": "80",
+            "percentChange": 8,
+            "series": [32, 40, 43, 45, 49, 56, 60, 80, 90, 105]
+        },
+        "returningCustomers": {
+            "total": "399",
+            "percentChange": 8,
+            "series": [32, 40, 43, 45, 49, 56, 60, 80, 90, 105]
+        }
+    },
+    "products": {
+        "summary": {
+            "shipmentsPercentChange": 10,
+            "ordersPercentChange": 10
+        },
+        "mostPurchased": {
+            "types": {
+                "Food": 810,
+                "Drinks": 605,
+                "Mugs": 360,
+                "Hot Dogs": 150
+            }
+        },
+        "mostProfitable": [
+            { "title": "Coffee Mugs", "values": ["70%", "$2,854"] }, 
+            { "title": "Muffins", "values": ["20%", "$815"] }, 
+            { "title": "Cold Brew", "values": ["10%", "$407"] },
+            { "title": "Bagels", "values": ["70%", "$2,854"] }, 
+            { "title": "Scones", "values": ["20%", "$815"] }, 
+            { "title": "Tea", "values": ["10%", "$407"] },
+            { "title": "Coffee Beans", "values": ["10%", "$407"] }
+        ]
+    }
+}

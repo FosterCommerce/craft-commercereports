@@ -1,0 +1,46 @@
+{# {% extends "_layouts/cp" %} #}
+{# {%- from "_includes/forms" import text -%} #}
+
+{% do view.registerAssetBundle("fostercommerce\\commerceinsightscomponents\\bundles\\WidgetBundle") %}
+
+{% set title = "Commerce Insights"|t('commerceinsightscomponents') %}
+{% set lastSegment = craft.app.request.segments | last %}
+
+{% if lastSegment == 'revenue' %}
+    {% set title = "Revenue"|t('commerceinsightscomponents') %}
+{% elseif lastSegment == 'orders' %}
+    {% set title = "Orders"|t('commerceinsightscomponents') %}
+{% elseif lastSegment == 'sales' %}
+    {% set title = "Items Sold"|t('commerceinsightscomponents') %}
+{# elseif lastSegment == 'products' %}
+    {% set title = "Product Insights"|t('commerceinsightscomponents') #}
+{% elseif lastSegment == 'customers' %}
+    {% set title = "Customers"|t('commerceinsightscomponents') %}
+{% endif %}
+
+{% set selectedSubnavItem = navItem %}
+
+{% extends "_layouts/cp" %}
+
+{% block header %}
+    {% block pageTitle %}
+        {% if title is defined and title|length %}
+            <h1>{{ title }}</h1>
+        {% endif %}
+    {% endblock %}
+    {% block contextMenu %}{% endblock %}
+    <div class="flex-grow"></div>
+    <date-range-picker 
+        v-on:change="handleDateChange"
+    ></date-range-picker>
+{% endblock %}
+
+{% block content %}
+    <div class="commerce-insights-wrapper">
+        {% if not id is defined %}
+            {% include "commerceinsightscomponents/vue/_" ~ lastSegment %}
+        {% else %}
+            {% include "commerceinsightscomponents/vue/_product" %}
+        {% endif %}
+    </div>
+{% endblock %}

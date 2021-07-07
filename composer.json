@@ -1,0 +1,40 @@
+{
+    "name": "fostercommerce/commerce-insights-components",
+    "description": "Sales and purchase insights for Craft Commerce.",
+    "type": "craft-plugin",
+    "version": "1.0.0",
+    "keywords": [
+        "craft",
+        "cms",
+        "craftcms",
+        "craft-plugin",
+        "commerce insights components"
+    ],
+    "support": {
+        "docs": "https://github.com/workingconcept/commerce-insights-components/blob/master/README.md",
+        "issues": "https://github.com/workingconcept/commerce-insights-components/issues"
+    },
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Foster Commerce",
+            "homepage": "https://fostercommerce.com"
+        }
+    ],
+    "require": {
+        "craftcms/cms": "^3.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+          "fostercommerce\\commerceinsightscomponents\\": "src/"
+        }
+    },
+    "extra": {
+        "name": "Commerce Insights Components",
+        "handle": "commerceinsightscomponents",
+        "hasCpSettings": false,
+        "hasCpSection": true,
+        "changelogUrl": "https://raw.githubusercontent.com/workingconcept/commerce-insights-components/master/CHANGELOG.md",
+        "class": "fostercommerce\\commerceinsightscomponents\\CommerceInsightsComponents"
+    }
+}
