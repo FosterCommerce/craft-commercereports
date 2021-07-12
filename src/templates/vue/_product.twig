@@ -1,9 +1,9 @@
 <div>
     <combined-search
             element-type="Orders"
-            v-bind:elements="orders"
-            v-bind:product-query="true"
-            v-bind:type-options='[
+            :elements="orders"
+            :product-query="true"
+            :type-options='[
                 { "label": "Paid", "value": "Paid" },
                 { "label": "Shipped", "value": "Shipped" },
                 { "label": "Canceled", "value": "Canceled" }

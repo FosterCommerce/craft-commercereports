@@ -1,21 +1,19 @@
 {# {% extends "_layouts/cp" %} #}
 {# {%- from "_includes/forms" import text -%} #}
 
-{% do view.registerAssetBundle("fostercommerce\\commerceinsightscomponents\\bundles\\WidgetBundle") %}
+{% do view.registerAssetBundle("fostercommerce\\commerceinsights\\bundles\\WidgetBundle") %}
 
-{% set title = "Commerce Insights"|t('commerceinsightscomponents') %}
+{% set title = "Commerce Insights"|t('commerceinsights') %}
 {% set lastSegment = craft.app.request.segments | last %}
 
-{% if lastSegment == 'revenue' %}
-    {% set title = "Revenue"|t('commerceinsightscomponents') %}
-{% elseif lastSegment == 'orders' %}
-    {% set title = "Orders"|t('commerceinsightscomponents') %}
+{% if lastSegment == 'orders' %}
+    {% set title = "Orders"|t('commerceinsights') %}
 {% elseif lastSegment == 'sales' %}
-    {% set title = "Items Sold"|t('commerceinsightscomponents') %}
-{# elseif lastSegment == 'products' %}
-    {% set title = "Product Insights"|t('commerceinsightscomponents') #}
+    {% set title = "Items Sold"|t('commerceinsights') %}
+{% elseif lastSegment == 'products' %}
+    {% set title = "Product Insights"|t('commerceinsights') %}
 {% elseif lastSegment == 'customers' %}
-    {% set title = "Customers"|t('commerceinsightscomponents') %}
+    {% set title = "Customers"|t('commerceinsights') %}
 {% endif %}
 
 {% set selectedSubnavItem = navItem %}
@@ -30,17 +28,15 @@
     {% endblock %}
     {% block contextMenu %}{% endblock %}
     <div class="flex-grow"></div>
-    <date-range-picker 
-        v-on:change="handleDateChange"
-    ></date-range-picker>
+    <date-range-picker @change="handleDateChange"></date-range-picker>
 {% endblock %}
 
 {% block content %}
     <div class="commerce-insights-wrapper">
         {% if not id is defined %}
-            {% include "commerceinsightscomponents/vue/_" ~ lastSegment %}
+            {% include "commerceinsights/vue/_" ~ lastSegment %}
         {% else %}
-            {% include "commerceinsightscomponents/vue/_product" %}
+            {% include "commerceinsights/vue/_product" %}
         {% endif %}
     </div>
 {% endblock %}
