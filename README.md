@@ -1,13 +1,12 @@
-# Commerce Insights Components plugin for Craft CMS 3.x
+# Commerce Insights plugin for Craft CMS 3.x
 
-Throwaway demo / integration project, based on [FosterCommerce/commerceinsights](https://github.com/FosterCommerce/commerceinsights) and used for adding frontend components. Intended for demonstration and pilfering.
+Better stats for Craft Commerce.
 
 ## Key Changes
 
 - A bunch of components for frontend reports in `src/resources/components/*.vue`.
 - Slightly expanded webpack config to include `vue-loader` and split out CSS with MiniCssExtractPlugin.
 - Single `src/resources/index.js` for initializing app (per CP view).
-- Fake JSON data to support views in `resources/mock-data/*.json`, and a very simple `VueController` for loading passing it on.
 - Very simple Twig templates in `src/templates` for initializing control panel layouts.
 - New `main.css` with styles common to included components. (See `src/resources/css/*.module.css`.)
 
@@ -27,9 +26,9 @@ Add a symbolic link to that path in `composer.json`:
 ]
 ```
 
-Require with `fostercommerce/commerce-insights-components`. 
+Require with `fostercommerce/commerce-insights`. 
 
-Install via command line with `./craft install/plugin commerceinsightscomponents` or from the Craft CMS control panel.
+Install via command line with `./craft install/plugin commerceinsights` or from the Craft CMS control panel.
 
 ## Component Overview
 

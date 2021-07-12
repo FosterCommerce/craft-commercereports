@@ -1,6 +1,6 @@
 <?php
 
-namespace fostercommerce\commerceinsightscomponents\controllers;
+namespace fostercommerce\commerceinsights\controllers;
 
 use craft\web\Controller;
 use craft\commerce\elements\Order;
@@ -10,7 +10,8 @@ use craft\commerce\helpers\Currency;
 use craft\elements\User;
 use kuriousagency\commerce\bundles\elements\Bundle;
 
-class VueController extends Controller {
+class VueController extends Controller
+{
     private $protocol;
     private $stats;
     private $orders;
@@ -20,7 +21,8 @@ class VueController extends Controller {
     protected $start_date;
     protected $end_date;
 
-    public function __construct($id, $module, $config = []) {
+    public function __construct($id, $module, $config = [])
+    {
         parent::__construct($id, $module, $config);
 
         $this->protocol   = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
@@ -28,38 +30,45 @@ class VueController extends Controller {
         $this->end_date   = $_POST['range_end'] ?? null;
     }
 
-    public function actionIndex($view) {
-        return $this->renderTemplate('commerceinsightscomponents/vue/index', [
+    public function actionIndex($view)
+    {
+        return $this->renderTemplate('commerceinsights/vue/index', [
             'navItem' => $view,
         ]);
     }
 
-    public function actionGetStats() {
+    public function actionGetStats()
+    {
         return $this->asJson(static::_getStats());
     }
-    
-    public function actionGetOrders() {
+
+    public function actionGetOrders()
+    {
         $this->orders = $this->fetchOrders();
         return $this->asJson($this->_getOrders());
     }
 
-    public function actionGetProducts() {
+    public function actionGetProducts()
+    {
         $this->orders   = $this->fetchOrders();
         $this->products = $this->fetchProducts();
         $this->variants = $this->fetchVariants();
         return $this->asJson($this->_getProducts());
     }
 
-    public function actionGetSales() {
+    public function actionGetSales()
+    {
         return $this->asJson(static::_getSales());
     }
 
-    public function actionGetCustomers() {
+    public function actionGetCustomers()
+    {
         $this->orders = $this->fetchOrders();
         return $this->asJson(static::_getCustomers());
     }
-    
-    public function actionGetPresets() {
+
+    public function actionGetPresets()
+    {
         //return $this->asJson(static::_getFakeData('presets.json'));
         return false;
     }
@@ -68,10 +77,11 @@ class VueController extends Controller {
      * Grab data from a static JSON file for quick testing.
      *
      * @param string $filename - Name of JSON file saved in our special path.
-     * 
+     *
      * @return array decoded data
      */
-    private static function _getFakeData(string $filename) : array {
+    private static function _getFakeData(string $filename) : array
+    {
         $mockJsonPath = CRAFT_VENDOR_PATH . '/fostercommerce/commerce-insights-components/resources/mock-data/';
         $data = \json_decode(\file_get_contents($mockJsonPath . $filename));
 
@@ -87,10 +97,11 @@ class VueController extends Controller {
      *
      * @return string
      */
-    protected static function convertCurrency(float $amount, string $currency, bool $convert = true) : string {
+    protected static function convertCurrency(float $amount, string $currency, bool $convert = true) : string
+    {
         $amt = Currency::formatAsCurrency($amount, $currency, $convert);
 
-        if(strpos($amt, '-')) {
+        if (strpos($amt, '-')) {
             $amt = str_replace('-', '', $amt);
             $amt = '-' . $amt;
         }
@@ -104,7 +115,8 @@ class VueController extends Controller {
      *
      * @return array - All orders in range, or an empty array
      */
-    private function fetchOrders($id = null) : array {
+    private function fetchOrders($id = null) : array
+    {
         $single = $_GET['purchasableId'] ?? $id;
         $start  = $this->start_date ?: '1970-01-01 00:00:00';
         $end    = $this->end_date ?: gmdate('Y-m-d 23:59:59');
@@ -114,12 +126,12 @@ class VueController extends Controller {
         /*$cache     = Craft::$app->getCache();
         $cache_key = sha1("orders_{$start}_{$end}");*/
 
-        if($single) {
+        if ($single) {
             $single = Variant::find()->id($single)->one();
             $orders->hasPurchasables([$single]);
         }
 
-        if($single || $path === 'sales') {
+        if ($single || $path === 'sales') {
             $orders->orderStatusId('< 4');
         }
 
@@ -133,7 +145,8 @@ class VueController extends Controller {
      *
      * @return array - All products, or an empty array
      */
-    private function fetchProducts() : array {
+    private function fetchProducts() : array
+    {
         return Product::find()->anyStatus()->all() ?: [];
     }
 
@@ -142,11 +155,13 @@ class VueController extends Controller {
      *
      * @return array - All variants, or an empty array
      */
-    private function fetchVariants() : array {
+    private function fetchVariants() : array
+    {
         return Variant::find()->anyStatus()->all() ?: [];
     }
 
-    private function _getStats() {
+    private function _getStats()
+    {
         $this->start_date = $_POST['range_start'] ?? null;
         $this->end_date   = $_POST['range_end']   ?? null;
 
@@ -200,7 +215,7 @@ class VueController extends Controller {
                 'totalOrders' => [
                     'total' => $num_orders,
                     'percentChange' => 8,
-                    'series' => [32, 40, 43, 45, 49, 56, 60, 80, 90, 105]
+                    'series' => [32, 40, 43, 45, 300, 56, 60, 80, 90, 105]
                 ],
                 'averageValue' => [
                     'total' => 98.76,
@@ -240,7 +255,7 @@ class VueController extends Controller {
             ]
         ];
 
-        foreach($products as $product) {
+        foreach ($products as $product) {
             if (!isset($result['products']['mostPurchased']['types'][$product['type']['name']])) {
                 $result['products']['mostPurchased']['types'][$product['type']['name']] = 0;
             }
@@ -259,7 +274,7 @@ class VueController extends Controller {
             foreach ($line_items as $item) {
                 $purchasable = $item->purchasable;
 
-                if($purchasable) {
+                if ($purchasable) {
                     $product = $purchasable->product;
                     $result['products']['mostPurchased']['types'][$product->type->name] += $item->qty;
 
@@ -286,7 +301,8 @@ class VueController extends Controller {
         return $result;
     }
 
-    protected function _getOrders($id = null) {
+    protected function _getOrders($id = null)
+    {
         $this->start_date = $_POST['range_start'] ?? $this->start_date;
         $this->end_date   = $_POST['range_end']   ?? $this->end_date;
 
@@ -328,7 +344,8 @@ class VueController extends Controller {
         return $result;
     }
 
-    private function _getSales() {
+    private function _getSales()
+    {
         $this->start_date = $_POST['range_start'] ?? null;
         $this->end_date   = $_POST['range_end']   ?? null;
 
@@ -352,7 +369,6 @@ class VueController extends Controller {
                     $bundleQtys = $purchasable->getQtys();
 
                     foreach ($bundleItems as $bundleItem) {
-
                         if (!$resultItem = $result[$bundleItem->sku]) {
                             continue;
                         }
@@ -365,7 +381,7 @@ class VueController extends Controller {
                         // Multiply the qty of the items in this bundle
                         // by the line item qty for cases where a user
                         // buys two sets of the same letters. E.g.: A custom
-                        // licence plate frame with the same letters for both. 
+                        // licence plate frame with the same letters for both.
                         $qty = $bundleQtys[$bundleItem->id] * $item->qty;
                         $resultItem['totalSold'] += $qty;
                         $resultItem['sales'] += $bundleItem->price * $qty;
@@ -385,12 +401,12 @@ class VueController extends Controller {
 
         foreach ($result as $sku => $item) {
             $result[$sku]['sales'] = static::convertCurrency($result[$sku]['sales'], $currency);
-            if($result[$sku]['totalSold'] == 0) {
+            if ($result[$sku]['totalSold'] == 0) {
                 unset($result[$sku]);
             }
         }
 
-        usort($result, function($a, $b) {
+        usort($result, function ($a, $b) {
             return $b['totalSold'] <=> $a['totalSold'];
         });
 
@@ -403,7 +419,7 @@ class VueController extends Controller {
 
         $variants = Variant::find()->anyStatus()->all();
 
-        foreach($variants as $variant) {
+        foreach ($variants as $variant) {
             $product = $variant->product;
             $result[$variant->sku] = [
                 'id'        => $variant->id,
@@ -423,11 +439,12 @@ class VueController extends Controller {
         return $result;
     }
 
-    private function _getProducts() {
+    private function _getProducts()
+    {
         $result   = [];
         $currency = 'USD';
 
-        foreach($this->products as $product) {
+        foreach ($this->products as $product) {
             $result[$product['defaultSku']] = [
                 'id'        => $product['id'],
                 'title'     => $product['title'],
@@ -469,14 +486,15 @@ class VueController extends Controller {
             $result[$sku]['sales'] = static::convertCurrency($result[$sku]['sales'], $currency);
         }
 
-        usort($result, function($a, $b) {
+        usort($result, function ($a, $b) {
             return $b['totalSold'] <=> $a['totalSold'];
         });
 
         return $result;
     }
 
-    private function _getCustomers() {
+    private function _getCustomers()
+    {
         $this->start_date = $_POST['range_start'] ?? null;
         $this->end_date   = $_POST['range_end']   ?? null;
         $orders           = $this->fetchOrders();
@@ -487,7 +505,7 @@ class VueController extends Controller {
             $line_items = $order->lineItems;
             $email      = $order->email;
 
-            if(!array_key_exists($email, $processed)) {
+            if (!array_key_exists($email, $processed)) {
                 $processed[$email] = [
                     'ordersCount'   => 1,
                     'itemsQty'      => 0,
@@ -505,11 +523,11 @@ class VueController extends Controller {
                 $processed[$email]['ordersCount'] += 1;
                 $processed[$email]['amountPaid']  += $order->totalPaid;
 
-                if($order->datePaid < $processed[$email]['lastPurchase']) {
+                if ($order->datePaid < $processed[$email]['lastPurchase']) {
                     $processed[$email]['lastPurchase'] = $order->datePaid->format('m/d/Y');
                 }
 
-                if($order->datePaid > $processed[$email]['firstPurchase']) {
+                if ($order->datePaid > $processed[$email]['firstPurchase']) {
                     $processed[$email]['firstPurchase'] = $order->datePaid->format('m/d/Y');
                 }
             }
@@ -519,7 +537,7 @@ class VueController extends Controller {
             }
         }
 
-        foreach ($processed as $email=> $data) {
+        foreach ($processed as $email => $data) {
             $results[] = [
                 'ordersCount'   => $processed[$email]['ordersCount'],
                 'itemsQty'      => $processed[$email]['itemsQty'],

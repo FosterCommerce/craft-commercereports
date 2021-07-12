@@ -1,22 +1,26 @@
 <?php
 
-namespace fostercommerce\commerceinsightscomponents\controllers;
+namespace fostercommerce\commerceinsights\controllers;
 
 use craft\commerce\web\twig\Extension;
 use craft\web\Controller;
 
-class OrderController extends VueController {
-    public function __construct($id, $module, $config = []) {
-        parent::__construct( $id, $module, $config );
+class OrderController extends VueController
+{
+    public function __construct($id, $module, $config = [])
+    {
+        parent::__construct($id, $module, $config);
     }
 
-    public function actionOrderIndex() {
-        return $this->renderTemplate('commerceinsightscomponents/vue/index', [
+    public function actionOrderIndex()
+    {
+        return $this->renderTemplate('commerceinsights/vue/index', [
             'navItem' => 'orders'
         ]);
     }
 
-    private function getOrders($id) {
+    private function getOrders($id)
+    {
         $todayObj    = new \DateTime();
         $grouped     = [];
         $data        = [];
@@ -25,17 +29,17 @@ class OrderController extends VueController {
         $color       = $_GET['color'] ?? null;
         $id          = isset($_POST['id']) ? $_POST['id'] : $id;
 
-        if(isset($_GET['startDate']) && !isset($_POST['range_start'])) {
-            $startObj = new \DateTime(urldecode( $_GET['startDate']));
-        } else if (isset($_POST['range_start'])) {
+        if (isset($_GET['startDate']) && !isset($_POST['range_start'])) {
+            $startObj = new \DateTime(urldecode($_GET['startDate']));
+        } elseif (isset($_POST['range_start'])) {
             $startObj = new \DateTime(urldecode($_POST['range_start']));
         } else {
             $startObj = new \DateTime(date('Y-m-d 00:00:00', strtotime('-1 month')));
         }
 
-        if(isset($_GET['endDate']) && !isset($_POST['range_end'])) {
-            $endObj = new \DateTime(urldecode( $_GET['endDate']));
-        } else if (isset($_POST['range_end'])) {
+        if (isset($_GET['endDate']) && !isset($_POST['range_end'])) {
+            $endObj = new \DateTime(urldecode($_GET['endDate']));
+        } elseif (isset($_POST['range_end'])) {
             $endObj = new \DateTime(urldecode($_POST['range_end']));
         } else {
             $endObj = $todayObj;
@@ -44,7 +48,7 @@ class OrderController extends VueController {
         $start = $startObj->format('Y-m-d 00:00:00');
         $end   = $endObj->format('Y-m-d 23:59:59');
 
-        if($variant || $variantType || $color) {
+        if ($variant || $variantType || $color) {
             $query   = new \yii\db\Query();
             $results = $query->select('orders.id as ID, orders.dateOrdered as dateOrdered, orders.reference, orders.email as email, statuses.name as status, statuses.color as color, lineitems.options, orders.currency as currency, orders.totalPrice as total, orders.totalPaid as amountPaid, shippingAddress.firstName as shippingFirstName, shippingAddress.lastName as shippingLastName, billingAddress.firstName as billingFirstName, billingAddress.lastName as billingLastName')
                              ->from('`craft_commerce_lineitems` `lineitems`')
@@ -83,7 +87,7 @@ class OrderController extends VueController {
                 if ($hasPlateColor) {
                     $plateKey = $options->{'plate-color'};
 
-                    if(trim(strtoupper($color)) === trim(strtoupper($plateKey)) || !$color) {
+                    if (trim(strtoupper($color)) === trim(strtoupper($plateKey)) || !$color) {
                         $grouped[$row['ID']] = [
                             'id'           => $row['ID'],
                             'reference'    => $row['reference'],
@@ -113,12 +117,12 @@ class OrderController extends VueController {
                     $letters = str_split(str_replace(' ', '', $options->letters));
 
                     foreach ($letters as $letter) {
-                        if($hasLetters && !$hasPlateColor) {
+                        if ($hasLetters && !$hasPlateColor) {
                             $letter  = strtoupper($letter);
                             $variant = strtoupper($variant);
                         }
 
-                        if(($letter === $variant && $letterColor === $color) || (!$variant && !$color)) {
+                        if (($letter === $variant && $letterColor === $color) || (!$variant && !$color)) {
                             $grouped[$row['ID']] = [
                                 'id'          => $row['ID'],
                                 'reference'   => $row['reference'],
@@ -195,11 +199,12 @@ class OrderController extends VueController {
         return $data;
     }
 
-    public function actionProduct($id) {
+    public function actionProduct($id)
+    {
         $render = $_POST['render'] ?? true;
 
-        if($render !== 'false') {
-            return $this->renderTemplate('commerceinsightscomponents/vue/index', [
+        if ($render !== 'false') {
+            return $this->renderTemplate('commerceinsights/vue/index', [
                 'id' => $id,
                 'navItem' => 'orders'
             ]);

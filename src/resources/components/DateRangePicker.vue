@@ -209,7 +209,7 @@
 
 				// TODO: really save
 
-				axios.post('/actions/commerceinsightscomponents/vue/save-preset').then(function(response) {
+				axios.post('/actions/commerceinsights/vue/save-preset').then(function(response) {
 
 				}).catch(function(error) {
 					console.log(error);
@@ -228,7 +228,7 @@
 			fetchSavedPresets() {
 				const self = this;
 
-				axios.get('/actions/commerceinsightscomponents/vue/get-presets').then(function(response) {
+				axios.get('/actions/commerceinsights/vue/get-presets').then(function(response) {
 					self.savedPresets = response.data;
 				}).catch(function(error) {
 					console.log(error);

@@ -133,7 +133,7 @@ const app = new Vue({
 
             data[Craft.csrfTokenName] = Craft.csrfTokenValue;
 
-            axios.post('/actions/commerceinsightscomponents/vue/get-stats', qs.stringify(data))
+            axios.post('/actions/commerceinsights/vue/get-stats', qs.stringify(data))
             .then(response => {
                 self.stats = response.data;
             })
@@ -147,7 +147,7 @@ const app = new Vue({
                 range_start: self.dateRange.start,
                 range_end: self.dateRange.end
             };
-            let url = '/actions/commerceinsightscomponents/vue/get-orders';
+            let url = '/actions/commerceinsights/vue/get-orders';
 
             data[Craft.csrfTokenName] = Craft.csrfTokenValue;
 
@@ -170,7 +170,7 @@ const app = new Vue({
                 range_start: self.dateRange.start,
                 range_end: self.dateRange.end
             };
-            let url = '/admin/commerceinsightscomponents/orders/product/' + item;
+            let url = '/admin/commerceinsights/orders/product/' + item;
 
             if(variant || variant_type || color || start || end) url += '?';
 
@@ -216,7 +216,7 @@ const app = new Vue({
 
             data[Craft.csrfTokenName] = Craft.csrfTokenValue;
 
-            axios.post('/actions/commerceinsightscomponents/vue/get-products', qs.stringify(data))
+            axios.post('/actions/commerceinsights/vue/get-products', qs.stringify(data))
             .then(response => {
                 self.products = response.data;
             })
@@ -233,7 +233,7 @@ const app = new Vue({
 
             data[Craft.csrfTokenName] = Craft.csrfTokenValue;
 
-            axios.post('/actions/commerceinsightscomponents/vue/get-sales', qs.stringify(data))
+            axios.post('/actions/commerceinsights/vue/get-sales', qs.stringify(data))
             .then(response => {
                 self.sales = response.data;
             })
@@ -250,7 +250,7 @@ const app = new Vue({
 
             data[Craft.csrfTokenName] = Craft.csrfTokenValue;
 
-            axios.post('/actions/commerceinsightscomponents/vue/get-customers', qs.stringify(data))
+            axios.post('/actions/commerceinsights/vue/get-customers', qs.stringify(data))
             .then(response => {
                 self.customers = response.data;
             })

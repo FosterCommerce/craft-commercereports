@@ -117,7 +117,6 @@
 				if ((this.current_page * this.page_size) < this.elements.length) this.current_page++;
 			},
 			resetPage: function() {
-				console.log('hi');
 				this.current_page = 1;
 			},
 			showLoader: function() {
@@ -359,7 +358,7 @@
 		<div>
 			<div class="commerce-insights-combined-search-bar toolbar layout-flex">
 				<div class="flex w-1/2">
-					<!--<div class="">
+					<div class="">
 						<div class="btn menubtn">{{ getSelectedLabel() }}</div>
 						<div class="menu">
 							<ul class="padded">
@@ -381,7 +380,7 @@
 								</li>
 							</ul>
 						</div>
-					</div>-->
+					</div>
 					<div class="flex-grow texticon search icon clearable">
 						<input
 							class="text fullwidth"
@@ -480,6 +479,9 @@
 								>
 									Total Items Sold
 								</th>
+                <th>
+                  Payment Status
+                </th>
 							</tr>
 
 							<tr v-if="elementType === 'Sales'">
@@ -654,7 +656,7 @@
 							<td>{{ element.type }}</td>
 							<td>
 								{{ element.totalSold }} sold in
-								<a :href="'/admin/commerceinsightscomponents/orders/product/' + element.id">
+								<a :href="'/admin/commerceinsights/orders/product/' + element.id">
 									{{ element.numOrders }} orders
 								</a>
 							</td>
