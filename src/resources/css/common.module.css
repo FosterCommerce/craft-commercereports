@@ -5,17 +5,19 @@
 .commerce-insights-trend { position: relative; }
 
 .commerce-insights-summary {
-    font-size: 1.25rem; 
-    margin-bottom: 1.5rem; 
-    font-weight: 400; 
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+    font-weight: 400;
     width: 100%;
     padding-top: 0.5rem;
 }
 
 .commerce-insights-up { color: #27ae60; }
 .commerce-insights-down { color: #da5a47; }
+.commerce-insights-unchanged { color: #888; }
 .commerce-insights-trend.up { color: #27ae60; }
 .commerce-insights-trend.down { color: #da5a47; }
+.commerce-insights-trend.unchanged { color: #888; }
 
 .commerce-insights-trend::before {
     box-sizing: inherit;
@@ -48,24 +50,24 @@
     border-right-color: transparent;
 }
 
-.mini-table thead, 
+.mini-table thead,
 .mini-table tbody {
     font-size: 0.75rem;
 }
 
-.mini-table th, 
-.mini-table td { 
+.mini-table th,
+.mini-table td {
     padding-left: 0.5rem;
     padding-right: 0.5rem;
 }
 
 
-.mini-table th:first-child, 
+.mini-table th:first-child,
 .mini-table td:first-child {
     padding-left: 0;
 }
 
-.mini-table th:last-child, 
+.mini-table th:last-child,
 .mini-table td:last-child {
     padding-right: 0;
 }
@@ -133,13 +135,13 @@
 .items-center { align-items: center; }
 
 /* margin + padding */
-.-mx-3 { 
-    margin-left: -0.75rem; 
-    margin-right: -0.75rem; 
+.-mx-3 {
+    margin-left: -0.75rem;
+    margin-right: -0.75rem;
 }
 
-.-m-3 { 
-    margin: -0.75rem; 
+.-m-3 {
+    margin: -0.75rem;
 }
 
 .py-1 {
