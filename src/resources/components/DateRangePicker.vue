@@ -382,7 +382,7 @@
 					</a>
 				</div>
 			</div>-->
-			<div v-on:click="toggleMenu" class="toggle-menu">
+			<div @click="toggleMenu" class="toggle-menu">
 				<div class="toggle-arrow">
 					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
 						<path d="M7.41 7.84L12 12.42l4.59-4.58L18 9.25l-6 6-6-6z"/>
@@ -395,14 +395,14 @@
 							:key="key"
 							class="commerce-insights-preset"
 						>
-							<a v-on:click="selectPreset(key)">{{ settings.label }}</a>
+							<a @click="selectPreset(key)">{{ settings.label }}</a>
 						</li>
 						<li v-if="savedPresetCount" class="mb-1">
 							<hr>
 							<h6>saved</h6>
 						</li>
 						<li v-for="preset in savedPresets" :key="preset.label" class="commerce-insights-preset">
-							<a v-on:click="selectSavedPreset(preset)">{{ preset.label }}</a>
+							<a @click="selectSavedPreset(preset)">{{ preset.label }}</a>
 						</li>
 					</ul>
 				</div>

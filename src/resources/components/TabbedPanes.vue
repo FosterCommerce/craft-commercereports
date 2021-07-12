@@ -71,7 +71,7 @@
 					:key="tab.title"
 					class="commerce-insights-tab"
 					:class="{ 'bg-white active': tab.active, 'bg-soft-white': ! tab.active }"
-					v-on:click="selectTabAtIndex(index)"
+					@click="selectTabAtIndex(index)"
 				>
 					<h3 class="m-0 p-0">{{ tab.title }}</h3>
 					<div

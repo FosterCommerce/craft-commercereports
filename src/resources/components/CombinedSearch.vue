@@ -365,7 +365,7 @@
 								<li>
 									<a
 										:class='{ "sel": Object.keys(selectedTypeOption).length === 0 }'
-										v-on:click="selectAllTypes()"
+										@click="selectAllTypes()"
 									>
 										{{ allTypesLabel }}
 									</a>
@@ -373,7 +373,7 @@
 								<li v-for="option in typeOptions" :key="option.value">
 									<a
 										:class='{ "sel": selectedTypeOption.value == option.value }'
-										v-on:click="selectTypeOption(option)"
+										@click="selectTypeOption(option)"
 									>
 										{{ option.label }}
 									</a>
