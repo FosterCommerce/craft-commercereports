@@ -88,8 +88,8 @@
 		<div class="relative w-full h-64 pt-4">
 			<chart
 				type="line"
-				v-bind:chartData="chartData"
-				v-bind:fallbackHeight="120"
+				:chartData="chartData"
+				:fallbackHeight="120"
 				is-date-series-overlay
 			/>
 		</div>

@@ -68,7 +68,7 @@
 			<div class="tabs layout-flex w-full">
 				<div
 					v-for="(tab, index) in this.tabComponents"
-					v-bind:key="tab.title"
+					:key="tab.title"
 					class="commerce-insights-tab"
 					:class="{ 'bg-white active': tab.active, 'bg-soft-white': ! tab.active }"
 					v-on:click="selectTabAtIndex(index)"

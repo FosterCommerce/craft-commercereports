@@ -44,10 +44,10 @@
 
 <template>
 	<pane
-			v-bind:title="title"
-			v-bind:trend="trend"
-			v-bind:positive-trend="positiveTrend"
-			v-bind:pad-title="false"
+			:title="title"
+			:trend="trend"
+			:positive-trend="positiveTrend"
+			:pad-title="false"
 			flex
 			class="h-34"
 	>
@@ -57,7 +57,7 @@
 				<p class="commerce-insights-mini-sparkline-pane-caption self-end">{{ caption }}</p>
 			</div>
 			<div class="chart-pane-fill-container">
-				<chart type="muted-sparkline" v-bind:chartData="chartData" class="w-full h-full"/>
+				<chart type="muted-sparkline" :chartData="chartData" class="w-full h-full"/>
 			</div>
 		</div>
 	</pane>

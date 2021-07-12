@@ -60,13 +60,13 @@
 </script>
 
 <template>
-	<pane v-bind:title="title">
+	<pane :title="title">
 		<div class="bar-chart-wrapper">
 			<div class="bar-chart-legend w-1/3 items-center">
 				<ul class="text-xs">
 					<li class="my-1" v-for="(label, index) in getLabels()" :key="label">
 						<span
-							v-bind:style="{ 'background': getCssGradient(index) }"
+							:style="{ 'background': getCssGradient(index) }"
 							class="bar-chart-key"
 						></span>
 						{{ label }}
@@ -75,7 +75,7 @@
 			</div>
 			<div class="h-full w-2/3">
 				<div class="h-full w-full relative">
-					<chart v-if="Object.keys(data).length" type="bar" v-bind:chartData="chartData"/>
+					<chart v-if="Object.keys(data).length" type="bar" :chartData="chartData"/>
 				</div>
 			</div>
 		</div>

@@ -339,7 +339,7 @@
 			</div>
 			<div
 				class="inline-block leading-none ml-4 cursor-pointer"
-				v-bind:class="{ 'text-gray-500': rangeIsCustom }"
+				:class="{ 'text-gray-500': rangeIsCustom }"
 			>
 				{{ selectedLabel }}
 			</div>
