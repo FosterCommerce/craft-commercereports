@@ -82,7 +82,7 @@ class VueController extends Controller
      */
     private static function _getFakeData(string $filename) : array
     {
-        $mockJsonPath = CRAFT_VENDOR_PATH . '/fostercommerce/commerce-insights-components/resources/mock-data/';
+        $mockJsonPath = CRAFT_VENDOR_PATH . '/fostercommerce/commerce-insights/resources/mock-data/';
         $data = \json_decode(\file_get_contents($mockJsonPath . $filename));
 
         return $data;
