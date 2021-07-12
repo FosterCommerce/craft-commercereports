@@ -36,7 +36,6 @@ module.exports = {
       ]
     },
     output: {
-      path: path.resolve(__dirname, 'dist'),
       filename: isProduction ? 'bundle.min.js' : 'bundle.js'
     },
     mode: isProduction ? 'production' : 'development',
