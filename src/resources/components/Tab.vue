@@ -1,5 +1,5 @@
 <script>
-	import styles from '../css/common.module.css';
+	import styles from '../css/common.css';
 
 	export default {
 		name: 'tab',

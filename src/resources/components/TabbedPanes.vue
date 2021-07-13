@@ -3,7 +3,7 @@
 	import Pane from './Pane.vue';
 	import LineChartPanel from './LineChartPanel.vue';
 
-	import styles from '../css/common.module.css';
+	import styles from '../css/common.css';
 
 	export default {
 		name: 'tabbed-panes',
@@ -68,10 +68,10 @@
 			<div class="tabs layout-flex w-full">
 				<div
 					v-for="(tab, index) in this.tabComponents"
-					v-bind:key="tab.title"
+					:key="tab.title"
 					class="commerce-insights-tab"
 					:class="{ 'bg-white active': tab.active, 'bg-soft-white': ! tab.active }"
-					v-on:click="selectTabAtIndex(index)"
+					@click="selectTabAtIndex(index)"
 				>
 					<h3 class="m-0 p-0">{{ tab.title }}</h3>
 					<div
@@ -87,7 +87,7 @@
 	</div>
 </template>
 
-<style module>
+<style>
 	.commerce-insights-tab {
 		flex: 1 1 0%;
 		cursor: pointer;

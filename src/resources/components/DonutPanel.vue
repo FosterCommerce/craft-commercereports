@@ -1,7 +1,7 @@
 <script>
 	import Pane from './Pane.vue';
 	import Chart from './Chart.vue';
-	import styles from '../css/common.module.css';
+	import styles from '../css/common.css';
 
 	export default {
 		name: 'donut-panel',
@@ -68,7 +68,7 @@
 </script>
 
 <template>
-	<pane v-bind:title="title">
+	<pane :title="title">
 		<div
 			class="commerce-insights-donut-pane"
 			:style="{ 'min-width: 240px;': isVertical, 'min-width: 320px;': ! isVertical }"
@@ -79,20 +79,20 @@
 					class="commerce-insights-donut-chart-wrapper w-64 max-h-64 max-w-full"
 				>
 					<chart type="donut"
-						v-bind:chartData="chartData"
-						v-bind:padding="25"
+						:chartData="chartData"
+						:padding="25"
 						aspectRatio="square"
 					/>
 				</div>
 
 				<table class="data fullwidth mini-table">
 					<tbody>
-					<tr v-for="(item, index) in data" v-bind:key="item.title">
+					<tr v-for="(item, index) in data" :key="item.title">
 						<td>
-							<div class="color-key" v-bind:style="{ 'background': backgroundColors[index] }"></div>
+							<div class="color-key" :style="{ 'background': backgroundColors[index] }"></div>
 						</td>
 						<td>{{ item.title }}</td>
-						<td v-for="value in item.values" v-bind:key="value">{{ value }}</td>
+						<td v-for="value in item.values" :key="value">{{ value }}</td>
 					</tr>
 					</tbody>
 				</table>
@@ -102,15 +102,15 @@
 					<div class="py-3 pr-3">
 						<table class="data fullwidth mini-table">
 							<tbody>
-								<tr v-for="(item, index) in data" v-bind:key="item.title">
+								<tr v-for="(item, index) in data" :key="item.title">
 									<td>
 										<div
 											class="color-key"
-											v-bind:style="{ 'background': backgroundColors[index] }"
+											:style="{ 'background': backgroundColors[index] }"
 										></div>
 									</td>
 									<td>{{ item.title }}</td>
-									<td v-for="value in item.values" v-bind:key="value">{{ value }}</td>
+									<td v-for="value in item.values" :key="value">{{ value }}</td>
 								</tr>
 							</tbody>
 						</table>
@@ -120,8 +120,8 @@
 					<div ref="chartWrapper" class="mx-auto w-full h-full relative">
 						<chart
 							type="donut"
-							v-bind:chartData="chartData"
-							v-bind:padding="10"
+							:chartData="chartData"
+							:padding="10"
 							aspectRatio="square"
 						/>
 					</div>
@@ -131,7 +131,7 @@
 	</pane>
 </template>
 
-<style module>
+<style>
 	.commerce-insights-donut-pane {
 		width: 100%;
 	}

@@ -1,6 +1,6 @@
 <script>
 	import Vue from 'vue';
-	import styles from '../css/common.module.css';
+	import styles from '../css/common.css';
 	import moment from 'moment';
 	import JsonCSV from 'vue-json-csv';
 
@@ -365,15 +365,15 @@
 								<li>
 									<a
 										:class='{ "sel": Object.keys(selectedTypeOption).length === 0 }'
-										v-on:click="selectAllTypes()"
+										@click="selectAllTypes()"
 									>
 										{{ allTypesLabel }}
 									</a>
 								</li>
-								<li v-for="option in typeOptions" v-bind:key="option.value">
+								<li v-for="option in typeOptions" :key="option.value">
 									<a
 										:class='{ "sel": selectedTypeOption.value == option.value }'
-										v-on:click="selectTypeOption(option)"
+										@click="selectTypeOption(option)"
 									>
 										{{ option.label }}
 									</a>
@@ -586,7 +586,7 @@
 									<div class="spinner loadingmore"></div>
 								</td>
 							</tr>
-							<tr v-for="element in filteredElements" v-bind:key="element.id">
+							<tr v-for="element in filteredElements" :key="element.id">
 								<td data-title="Order" data-titlecell="">
 									<div
 										class="element small"
@@ -638,7 +638,7 @@
 								<div class="spinner loadingmore"></div>
 							</td>
 						</tr>
-						<tr v-for="element in filteredElements" v-bind:key="element.id">
+						<tr v-for="element in filteredElements" :key="element.id">
 							<td>
 								<div
 									class="element small"
@@ -670,7 +670,7 @@
 									<div class="spinner loadingmore"></div>
 								</td>
 							</tr>
-							<tr v-for="element in filteredElements" v-bind:key="element.id"></tr>
+							<tr v-for="element in filteredElements" :key="element.id"></tr>
 						</tbody>
 
 						<tbody v-if="elementType === 'Customers'">
@@ -679,7 +679,7 @@
 									<div class="spinner loadingmore"></div>
 								</td>
 							</tr>
-							<tr v-for="element in filteredElements" v-bind:key="element.email">
+							<tr v-for="element in filteredElements" :key="element.email">
 								<td v-if="element.customer">
 									<a
 											:href="'/admin/users/' + element.customer.id"
@@ -710,7 +710,7 @@
 	</div>
 </template>
 
-<style module>
+<style>
 	.commerce-insights-combined-search-bar {
 		background-color: #f1f5f8;
 		border-radius: 5px;

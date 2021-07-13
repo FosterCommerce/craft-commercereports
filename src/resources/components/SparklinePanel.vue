@@ -2,7 +2,7 @@
 	import Pane from './Pane.vue';
 	import Chart from './Chart.vue';
 
-	import styles from '../css/common.module.css';
+	import styles from '../css/common.css';
 
 	export default {
 		name: 'sparkline-panel',
@@ -45,10 +45,10 @@
 
 <template>
 	<pane
-		v-bind:title="title"
-		v-bind:trend="trend"
-		v-bind:positive-trend="positiveTrend"
-		v-bind:pad-title="false"
+		:title="title"
+		:trend="trend"
+		:positive-trend="positiveTrend"
+		:pad-title="false"
 	>
 		<div class="commerce-insights-sparkline-pane">
 			<div class="sparkline-pane-left flex-grow flex-col justify-end">
@@ -57,14 +57,14 @@
 			</div>
 			<div class="sparkline-pane-right">
 				<div class="w-full h-16 relative">
-					<chart type="sparkline" v-bind:chartData="chartData"/>
+					<chart type="sparkline" :chartData="chartData"/>
 				</div>
 			</div>
 		</div>
 	</pane>
 </template>
 
-<style module>
+<style>
 	.commerce-insights-sparkline-pane {
 		display: flex;
 		width: 100%;

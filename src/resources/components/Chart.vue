@@ -1,7 +1,7 @@
 <script>
-	import Chart from 'chart.js';
+	import Chart from 'chart.js/auto';
 	import moment from 'moment';
-	import styles from '../css/common.module.css';
+	import styles from '../css/common.css';
 
 	export default {
 		name: 'chart',
@@ -486,12 +486,13 @@
 						},
 						tooltips: {enabled: false},
 						scales: {
-							yAxes: [
-								{
+							y: {
+                  beginAtZero: true,
 									display: false,
-									ticks: {beginAtZero: true},
-								}],
-							xAxes: [{display: false}],
+              },
+							x: {
+							  display: false
+							},
 						},
 					};
 				}
