@@ -1,7 +1,7 @@
 <script>
 	import DatePicker from './DatePicker.vue';
 	import ClickOutside from 'vue-click-outside';
-	import styles from '../css/common.module.css';
+	import styles from '../css/common.css';
 
 	import moment from 'moment';
 	import axios from 'axios';
@@ -422,7 +422,7 @@
 	</div>
 </template>
 
-<style module>
+<style>
 	.commerce-insights-date-range-picker {
 		padding: 0.5rem 0.5rem 0.5rem 1rem;
 		background: #fff;

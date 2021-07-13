@@ -1,6 +1,6 @@
 <script>
 	import Vue from 'vue';
-	import styles from '../css/common.module.css';
+	import styles from '../css/common.css';
 	import moment from 'moment';
 	import JsonCSV from 'vue-json-csv';
 
@@ -710,7 +710,7 @@
 	</div>
 </template>
 
-<style module>
+<style>
 	.commerce-insights-combined-search-bar {
 		background-color: #f1f5f8;
 		border-radius: 5px;

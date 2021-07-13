@@ -1,7 +1,7 @@
 <script>
 	import $ from 'jquery';
 	import 'daterangepicker/daterangepicker.js';
-	import styles from '../css/daterangepicker.module.css';
+	import styles from '../css/daterangepicker.css';
 	import moment from 'moment';
 
 	export default {

@@ -1,7 +1,7 @@
 <script>
 	import Pane from './Pane.vue';
 	import Chart from './Chart.vue';
-	import styles from '../css/common.module.css';
+	import styles from '../css/common.css';
 
 	export default {
 		name: 'donut-panel',
@@ -131,7 +131,7 @@
 	</pane>
 </template>
 
-<style module>
+<style>
 	.commerce-insights-donut-pane {
 		width: 100%;
 	}

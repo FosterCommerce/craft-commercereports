@@ -1,10 +1,13 @@
+/*!********************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./src/resources/css/common.css ***!
+  \********************************************************************************/
 [v-cloak] { display: none; }
 
-._2rmHD1tN-T1gCw0avKMtKS { min-width: 760px; }
+.commerce-insights-wrapper { min-width: 760px; }
 
-._3b4JSblXEU_7odiZuSBYZ { position: relative; }
+.commerce-insights-trend { position: relative; }
 
-._1tQqW37-kNIE-EhJPwuwGm {
+.commerce-insights-summary {
     font-size: 1.25rem;
     margin-bottom: 1.5rem;
     font-weight: 400;
@@ -12,14 +15,14 @@
     padding-top: 0.5rem;
 }
 
-._2gGklQYVF2JGI3pjlpMKxV { color: #27ae60; }
-._30C9DNpPBKEmFaoCSrgU8Y { color: #da5a47; }
-._2Q5ESQl0ooNW9v9U-pkkxq { color: #888; }
-._3b4JSblXEU_7odiZuSBYZ._3JLXkq74CTrg7WQAY3IqI9 { color: #27ae60; }
-._3b4JSblXEU_7odiZuSBYZ._2WRdu6iH-4uN0nJsRPDdhd { color: #da5a47; }
-._3b4JSblXEU_7odiZuSBYZ._3wUWFQrYFxJrAbm2q4p2FK { color: #888; }
+.commerce-insights-up { color: #27ae60; }
+.commerce-insights-down { color: #da5a47; }
+.commerce-insights-unchanged { color: #888; }
+.commerce-insights-trend.up { color: #27ae60; }
+.commerce-insights-trend.down { color: #da5a47; }
+.commerce-insights-trend.unchanged { color: #888; }
 
-._3b4JSblXEU_7odiZuSBYZ::before {
+.commerce-insights-trend::before {
     box-sizing: inherit;
     border-style: solid;
     position: relative;
@@ -33,7 +36,7 @@
     top: 3px;
 }
 
-._3b4JSblXEU_7odiZuSBYZ._3JLXkq74CTrg7WQAY3IqI9::before {
+.commerce-insights-trend.up::before {
     top: 0;
     border-color: #27ae60;
     border-bottom-width: 10px;
@@ -42,7 +45,7 @@
     border-right-color: transparent;
 }
 
-._3b4JSblXEU_7odiZuSBYZ._2WRdu6iH-4uN0nJsRPDdhd::before {
+.commerce-insights-trend.down::before {
     border-color: #da5a47;
     border-top-width: 10px;
     border-bottom-color: transparent;
@@ -50,34 +53,34 @@
     border-right-color: transparent;
 }
 
-._2wIsLZdu7G_0sysor3ROjm thead,
-._2wIsLZdu7G_0sysor3ROjm tbody {
+.mini-table thead,
+.mini-table tbody {
     font-size: 0.75rem;
 }
 
-._2wIsLZdu7G_0sysor3ROjm th,
-._2wIsLZdu7G_0sysor3ROjm td {
+.mini-table th,
+.mini-table td {
     padding-left: 0.5rem;
     padding-right: 0.5rem;
 }
 
 
-._2wIsLZdu7G_0sysor3ROjm th:first-child,
-._2wIsLZdu7G_0sysor3ROjm td:first-child {
+.mini-table th:first-child,
+.mini-table td:first-child {
     padding-left: 0;
 }
 
-._2wIsLZdu7G_0sysor3ROjm th:last-child,
-._2wIsLZdu7G_0sysor3ROjm td:last-child {
+.mini-table th:last-child,
+.mini-table td:last-child {
     padding-right: 0;
 }
 
-._2wIsLZdu7G_0sysor3ROjm._1eMUDLVh1uY1PCVq2GzUs5 tr:last-child td {
+.mini-table.short-bottom tr:last-child td {
     border-bottom: 0;
     padding-bottom: 0;
 }
 
-._2Hp77JR1ocdJcheniolQej {
+.mini-sparkline-grid {
     display: flex;
     flex-wrap: wrap;
     margin-left: -0.75rem;
@@ -88,171 +91,183 @@
 /* utility classes */
 
 /* bg */
-._3q3WX-nsEvUVJu8tsB9NMW { background: #fff; }
-._148OX4j1amNzm0z0xu9iPI { background-color: #f8f8f8; }
+.bg-white { background: #fff; }
+.bg-soft-white { background-color: #f8f8f8; }
 
 /* type */
-._3BNHDHEXrZD3a9e6L9pNEG { font-weight: bold; }
-.jroDnhAtcutSL2n1P6Ebs { font-weight: 400; }
-._2B0P-t0aNzkw5DuLXNJIkr { font-weight: 300; }
-._2zF0E7ZPeGlBQpeyIa7BMC { color: #d3a87a; }
-._3R6OwwdfFovuHKUJLFGDEQ { color: #a0aec0; }
-.lNc9vNy6V2QjMB_2vT8BT { color: #718096; }
-._25bm5japeOX0r9cg79dmdH { font-size: 0.75rem; }
-._2c0mUsogF58I33IsYmYgWZ { font-size: 1.5rem; }
-.hCKq3DKnWzWlJdRRjKiQe { line-height: 1; }
-._20zqEHMJ64Y_hXtZvDDIEM { cursor: pointer; }
+.font-bold { font-weight: bold; }
+.font-normal { font-weight: 400; }
+.font-light { font-weight: 300; }
+.text-tan { color: #d3a87a; }
+.text-gray-500 { color: #a0aec0; }
+.text-gray-600 { color: #718096; }
+.text-xs { font-size: 0.75rem; }
+.text-2xl { font-size: 1.5rem; }
+.leading-none { line-height: 1; }
+.cursor-pointer { cursor: pointer; }
 
 /* box + flex + layout */
-._2_EzdsTHD4YVxOXX6-p7A4 { width: 100%; }
-.MTXDXRJ1sTg6p9SKEP3G6 { width: 33.333333%; }
-._2wIWJzOtChyb8VjUdonqdX { width: 66.666667%; }
-._4eLal_SW-2H-azKEizs_D { width: 50%; }
-.xwY-k7Rp1DDeWIoAK7s-4 { width: 40%; }
-._1qAsK87-tbBa6kkS9K-Ko_ { width: 60%; }
-._18eePCGfVJOkopc5TpwCl1 { width: 1rem; }
-._37jOfU87nLYP0CtKP9Plik { width: 16rem; }
-._10g2PTkuwCIk3u63qMcPXn { height: 1rem; }
-._1VSDiB3nBsExQoMCS3PPpf { height: 4rem; }
-._2sqSV9AI62kj-T-XL8uJQI { height: 5rem; }
-._1Qas1aF0Y0ad6AM1FTIrat { height: 6rem; }
-._2POUBG988kuFbCXlYgNse2 { height: 8rem; }
-.Fen1x5DJ2q3seNPlCQqcb { height: 8.5rem; }
-.eGU5Pqnwow3_ckhBJtOFm { height: auto; }
-._2pK0mKoFj4Iobn25Kybdcv { height: 100%; }
-._3ZeePl-AbaDE5BA7PK_6sr { height: 14rem; }
-._6iHsz-oZZqQGcvMoqdWv4 { height: 16rem; }
-.de5f2jnBKQDvJinz4FyaV { max-height: 64rem; }
-._3AagRwRnXHkVrhomKqUala { max-width: 100%; }
+.w-full { width: 100%; }
+.w-1\/3 { width: 33.333333%; }
+.w-2\/3 { width: 66.666667%; }
+.w-1\/2 { width: 50%; }
+.w-2\/5 { width: 40%; }
+.w-3\/5 { width: 60%; }
+.w-4 { width: 1rem; }
+.w-64 { width: 16rem; }
+.h-4 { height: 1rem; }
+.h-16 { height: 4rem; }
+.h-20 { height: 5rem; }
+.h-24 { height: 6rem; }
+.h-32 { height: 8rem; }
+.h-34 { height: 8.5rem; }
+.h-auto { height: auto; }
+.h-full { height: 100%; }
+.h-56 { height: 14rem; }
+.h-64 { height: 16rem; }
+.max-h-64 { max-height: 64rem; }
+.max-w-full { max-width: 100%; }
 
-._3d8heoN9I-sFcMVzy1dM8w { display: block; }
-._1FvHwrzjmOUa7B53zJSfUr { display: inline-block; }
-._16Dg4y9mmuWEN6zlGTzBem { position: relative; }
-._7DWS9IA49DbQQvqgca0fQ { display: flex; }
+.block { display: block; }
+.inline-block { display: inline-block; }
+.relative { position: relative; }
+.layout-flex { display: flex; }
 
-._2GT5IcpJHyoj8lBC0b5Nx4 { flex-direction: column; }
-._2h5m-4ME2touh7Gon3saB7 { justify-content: flex-end; }
-._34ppZRMdVAJos5tPPP9fXT { align-items: center; }
+.flex-col { flex-direction: column; }
+.justify-end { justify-content: flex-end; }
+.items-center { align-items: center; }
 
 /* margin + padding */
-._b7GbdUi6QTUdkACnWAfZ {
+.-mx-3 {
     margin-left: -0.75rem;
     margin-right: -0.75rem;
 }
 
-._3C_w_mt3S98qIPCT1La1x3 {
+.-m-3 {
     margin: -0.75rem;
 }
 
-._1FtY-jM6WTKgwCJVEXC7ZJ {
+.py-1 {
     padding-top: 0.25rem;
     padding-bottom: 0.25rem;
 }
 
-._22XCqmi4ng8t47f0XASCZj {
+.py-2 {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
 }
 
-._2K-aoByg0YYhCuAbswjhQ6 {
+.px-2 {
     padding-left: 0.5rem;
     padding-right: 0.5rem;
 }
 
-._1QsnbKXlB6NSl7IFRr2FK8 {
+.px-3 {
     padding-left: 0.75rem;
     padding-right: 0.75rem;
 }
 
-.jIaFepN74kDR4j3gyvcfl { padding-top: 0.5rem; }
-._3zgjZV8F0qEdl_Sn55Q-h9 { padding-top: 1rem; }
-._30qN01wwk9uRHDXF6UpCPd { padding-bottom: 0.25rem; }
-._2udw40zh7HlhfVCw1B6KPm { padding-bottom: 1rem; }
-._2YOMoEIjjdA3XJoqQhW6k3 { padding-right: 0.75rem; }
-.qvHrwsE1_Kb34_NFImGQp { margin-left: 0.5rem; }
-.ihb3ybYV3clHND3zLqEZq { margin-left: 1rem; }
-._1ElmQsOg3vY6EBg46Seq1K { margin-bottom: 0.5rem; }
-._3D1v3-d1QQFdyu6F1ZzVGB { margin-bottom: 0.75rem; }
-._3EOrAcV1MGJNQABHPkJaCW { margin-top: 0.75rem; }
-._7cHlHln5N6C_qnqfGWxEJ { margin-bottom: 1.5rem; }
-._2FUqZpjjSEbH6gXbEnZkLf { margin-top: 1.5rem; }
-._34x5ow4VHKYlIyZUzfsyv6 { margin: 0; }
-._3LwAE9ymzNcF-_exa39qsf { margin: 0.75rem; }
-._17RuEWA6UZZYsMpTtVvEzt { padding: 0; }
-._122li3l2Fx9VGZfEvXulBE { padding: 0.75rem; }
+.pt-2 { padding-top: 0.5rem; }
+.pt-4 { padding-top: 1rem; }
+.pb-1 { padding-bottom: 0.25rem; }
+.pb-4 { padding-bottom: 1rem; }
+.pr-3 { padding-right: 0.75rem; }
+.ml-2 { margin-left: 0.5rem; }
+.ml-4 { margin-left: 1rem; }
+.mb-2 { margin-bottom: 0.5rem; }
+.mb-3 { margin-bottom: 0.75rem; }
+.mt-3 { margin-top: 0.75rem; }
+.mb-6 { margin-bottom: 1.5rem; }
+.mt-6 { margin-top: 1.5rem; }
+.m-0 { margin: 0; }
+.m-3 { margin: 0.75rem; }
+.p-0 { padding: 0; }
+.p-3 { padding: 0.75rem; }
 
 
+/*!******************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/resources/components/Pane.vue?vue&type=style&index=0&lang=css& ***!
+  \******************************************************************************************************************************************************************************************************************************************/
 
 .commerce-insights-pane {
-		position: relative;
-		background: white;
-		box-shadow: 0 0 0 1px #e3e5e8;
-		overflow: hidden;
-		padding: 16px;
-		border-radius: 5px;
-		word-wrap: break-word;
-		box-sizing: border-box;
+	position: relative;
+	background: white;
+	box-shadow: 0 0 0 1px #e3e5e8;
+	overflow: hidden;
+	padding: 16px;
+	border-radius: 5px;
+	word-wrap: break-word;
+	box-sizing: border-box;
 }
 .commerce-insights-pane.is-flex {
-		display: flex;
-		flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
 .commerce-insights-pane.vertical-center {
-		display: flex;
-		align-items: center;
+	display: flex;
+	align-items: center;
 }
 .commerce-insights-pane-title {
-		display: flex;
+	display: flex;
 }
 
-	/* switch from a box-shadow "border" to a real one and remove it only on top */
+/* switch from a box-shadow "border" to a real one and remove it only on top */
 .commerce-insights-pane.flush-top {
-		border-top-left-radius: 0;
-		border-top-right-radius: 0;
-		margin-top: 0;
-		box-shadow: none;
-		border: 1px solid #e3e5e8;
-		border-top: 0;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+	margin-top: 0;
+	box-shadow: none;
+	border: 1px solid #e3e5e8;
+	border-top: 0;
 }
 
+/*!***************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/resources/components/BarChartPanel.vue?vue&type=style&index=0&lang=css& ***!
+  \***************************************************************************************************************************************************************************************************************************************************/
 
 .bar-chart-wrapper {
-		display: flex;
-		width: 350px;
-		height: 250px;
+	display: flex;
+	width: 350px;
+	height: 250px;
 }
 .bar-chart-key {
-		width: 10px;
-		height: 10px;
-		top: 1px;
-		display: inline-block;
-		position: relative;
-		margin-right: 0.25rem;
-		border-radius: 9999px;
+	width: 10px;
+	height: 10px;
+	top: 1px;
+	display: inline-block;
+	position: relative;
+	margin-right: 0.25rem;
+	border-radius: 9999px;
 }
 .bar-chart-legend {
-		display: flex;
+	display: flex;
 }
 
+/*!****************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/resources/components/CombinedSearch.vue?vue&type=style&index=0&lang=css& ***!
+  \****************************************************************************************************************************************************************************************************************************************************/
 
 .commerce-insights-combined-search-bar {
-		background-color: #f1f5f8;
-		border-radius: 5px;
-		padding: 0.75rem 0.75rem 0.4rem 0.75rem;
+	background-color: #f1f5f8;
+	border-radius: 5px;
+	padding: 0.75rem 0.75rem 0.4rem 0.75rem;
 }
 .sr-only {
-		position: absolute;
-		width: 1px;
-		height: 1px;
-		padding: 0;
-		margin: -1px;
-		overflow: hidden;
-		clip: rect(0, 0, 0, 0);
-		border: 0;
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	border: 0;
 }
 
+/*!*****************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./src/resources/css/daterangepicker.css ***!
+  \*****************************************************************************************/
 /* modified from daterangepicker.css in daterangepicker package */
-._3Ek6B6Pn08EUnn7j6HYfzF {
+.daterangepicker {
     position: absolute;
     background: #fff;
     transition: all 0.5s linear;
@@ -272,37 +287,37 @@
     box-shadow: 0 0 0 1px rgba(0, 0, 20, 0.1), 0 5px 20px rgba(0, 0, 0, 0.25);
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF:before,
-._3Ek6B6Pn08EUnn7j6HYfzF:after {
+.daterangepicker:before,
+.daterangepicker:after {
     position: absolute;
     display: inline-block;
     border-bottom-color: rgba(0, 0, 0, 0.2);
     content: "";
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF:before {
+.daterangepicker:before {
     top: -7px;
     border-right: 7px solid transparent;
     border-left: 7px solid transparent;
     border-bottom: 7px solid #ccc;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF:after {
+.daterangepicker:after {
     top: -6px;
     border-right: 6px solid transparent;
     border-bottom: 6px solid #fff;
     border-left: 6px solid transparent;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF._19cUhaZtAcAXc0KWl0KL0n:before {
+.daterangepicker.opensleft:before {
     right: 9px;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF._19cUhaZtAcAXc0KWl0KL0n:after {
+.daterangepicker.opensleft:after {
     right: 10px;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF._37SRqgx8MGA_3F9cYc7gri:before {
+.daterangepicker.openscenter:before {
     left: 0;
     right: 0;
     width: 0;
@@ -310,7 +325,7 @@
     margin-right: auto;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF._37SRqgx8MGA_3F9cYc7gri:after {
+.daterangepicker.openscenter:after {
     left: 0;
     right: 0;
     width: 0;
@@ -318,72 +333,72 @@
     margin-right: auto;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF._2igwFXlvo5rBsS0Gfjrhm9:before {
+.daterangepicker.opensright:before {
     left: 9px;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF._2igwFXlvo5rBsS0Gfjrhm9:after {
+.daterangepicker.opensright:after {
     left: 10px;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF._75bu3_77bw3OixwtqUvjU {
+.daterangepicker.drop-up {
     margin-top: -7px;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF._75bu3_77bw3OixwtqUvjU:before {
+.daterangepicker.drop-up:before {
     top: initial;
     bottom: -7px;
     border-bottom: initial;
     border-top: 7px solid #ccc;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF._75bu3_77bw3OixwtqUvjU:after {
+.daterangepicker.drop-up:after {
     top: initial;
     bottom: -6px;
     border-bottom: initial;
     border-top: 6px solid #fff;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF._19Jewpb5YouFH3rZBVV4xL ._3Ek6B6Pn08EUnn7j6HYfzF ._2luQqPMBqNJW5iELsCL6mi,
-._3Ek6B6Pn08EUnn7j6HYfzF._19Jewpb5YouFH3rZBVV4xL ._1_VxFWBNR2Z6Svewzyywwg {
+.daterangepicker.single .daterangepicker .ranges,
+.daterangepicker.single .drp-calendar {
     float: none;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF._19Jewpb5YouFH3rZBVV4xL ._9N5KVuiI6_7xcltdhh59S {
+.daterangepicker.single .drp-selected {
     display: none;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF._3Ix3AlskIFReeIDIAyQTm6 ._1_VxFWBNR2Z6Svewzyywwg {
+.daterangepicker.show-calendar .drp-calendar {
     display: block;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF._3Ix3AlskIFReeIDIAyQTm6 ._2rEkccTVyyIBP0wKA1rKLF {
+.daterangepicker.show-calendar .drp-buttons {
     display: block;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF._2PoCmAQlQQj92sfzGoMYUK ._2rEkccTVyyIBP0wKA1rKLF {
+.daterangepicker.auto-apply .drp-buttons {
     display: none;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF ._1_VxFWBNR2Z6Svewzyywwg {
+.daterangepicker .drp-calendar {
     display: none;
     max-width: 270px;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF ._1_VxFWBNR2Z6Svewzyywwg._3orBBtWWnJW5iSXOXuQgsA {
+.daterangepicker .drp-calendar.left {
     padding: 8px 0 8px 8px;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF ._1_VxFWBNR2Z6Svewzyywwg._1pT9dvO2BK1AsKC145aj8a {
+.daterangepicker .drp-calendar.right {
     padding: 8px;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF ._1_VxFWBNR2Z6Svewzyywwg._19Jewpb5YouFH3rZBVV4xL ._1PywV4-rPnPyPzkxgZ_r8m {
+.daterangepicker .drp-calendar.single .calendar-table {
     border: none;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF ._1PywV4-rPnPyPzkxgZ_r8m ._3j2QfKssXaft1MAwnnRK3G span,
-._3Ek6B6Pn08EUnn7j6HYfzF ._1PywV4-rPnPyPzkxgZ_r8m ._1oxKqcfNWhdxtudqhkZDsE span {
+.daterangepicker .calendar-table .next span,
+.daterangepicker .calendar-table .prev span {
     color: #fff;
     border: solid black;
     border-width: 0 2px 2px 0;
@@ -392,18 +407,18 @@
     padding: 3px;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF ._1PywV4-rPnPyPzkxgZ_r8m ._3j2QfKssXaft1MAwnnRK3G span {
+.daterangepicker .calendar-table .next span {
     transform: rotate(-45deg);
     -webkit-transform: rotate(-45deg);
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF ._1PywV4-rPnPyPzkxgZ_r8m ._1oxKqcfNWhdxtudqhkZDsE span {
+.daterangepicker .calendar-table .prev span {
     transform: rotate(135deg);
     -webkit-transform: rotate(135deg);
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF ._1PywV4-rPnPyPzkxgZ_r8m th,
-._3Ek6B6Pn08EUnn7j6HYfzF ._1PywV4-rPnPyPzkxgZ_r8m td {
+.daterangepicker .calendar-table th,
+.daterangepicker .calendar-table td {
     white-space: nowrap;
     text-align: center;
     vertical-align: middle;
@@ -418,80 +433,80 @@
     cursor: pointer;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF ._1PywV4-rPnPyPzkxgZ_r8m {
+.daterangepicker .calendar-table {
     border: 1px solid #fff;
     border-radius: 4px;
     background-color: #fff;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF ._1PywV4-rPnPyPzkxgZ_r8m table {
+.daterangepicker .calendar-table table {
     width: 100%;
     margin: 0;
     border-spacing: 0;
     border-collapse: collapse;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF td._3GVynaoiPdbB-fQXds3ymi:hover,
-._3Ek6B6Pn08EUnn7j6HYfzF th._3GVynaoiPdbB-fQXds3ymi:hover {
+.daterangepicker td.available:hover,
+.daterangepicker th.available:hover {
     background-color: #eee;
     border-color: transparent;
     color: inherit;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF td._3VAvOQ-uuHcENPWmYODLCx,
-._3Ek6B6Pn08EUnn7j6HYfzF th._3VAvOQ-uuHcENPWmYODLCx {
+.daterangepicker td.week,
+.daterangepicker th.week {
     font-size: 80%;
     color: #ccc;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF td._1Qwc3F9krP0vN-Ve5QqYZa,
-._3Ek6B6Pn08EUnn7j6HYfzF td._1Qwc3F9krP0vN-Ve5QqYZa._131ltrg1sU_OgBGJb9eAKY,
-._3Ek6B6Pn08EUnn7j6HYfzF td._1Qwc3F9krP0vN-Ve5QqYZa._2CchhjGhB4g9D425Tm78ZN,
-._3Ek6B6Pn08EUnn7j6HYfzF td._1Qwc3F9krP0vN-Ve5QqYZa._1ADIe9gNcAirelyL-YeAj0 {
+.daterangepicker td.off,
+.daterangepicker td.off.in-range,
+.daterangepicker td.off.start-date,
+.daterangepicker td.off.end-date {
     background-color: #fff;
     border-color: transparent;
     color: #999;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF td._131ltrg1sU_OgBGJb9eAKY {
+.daterangepicker td.in-range {
     background-color: #ebf4f8;
     border-color: transparent;
     color: #000;
     border-radius: 0;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF td._2CchhjGhB4g9D425Tm78ZN {
+.daterangepicker td.start-date {
     border-radius: 4px 0 0 4px;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF td._1ADIe9gNcAirelyL-YeAj0 {
+.daterangepicker td.end-date {
     border-radius: 0 4px 4px 0;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF td._2CchhjGhB4g9D425Tm78ZN._1ADIe9gNcAirelyL-YeAj0 {
+.daterangepicker td.start-date.end-date {
     border-radius: 4px;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF td._35iBFo9Hxv2A4PD6FpsD3f,
-._3Ek6B6Pn08EUnn7j6HYfzF td._35iBFo9Hxv2A4PD6FpsD3f:hover {
+.daterangepicker td.active,
+.daterangepicker td.active:hover {
     background-color: #357ebd;
     border-color: transparent;
     color: #fff;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF th._2-_YIPTa3h56vdVgEPeEHJ {
+.daterangepicker th.month {
     width: auto;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF td._3LRnOWAKXYzAOnfVxtt8E,
-._3Ek6B6Pn08EUnn7j6HYfzF option._3LRnOWAKXYzAOnfVxtt8E {
+.daterangepicker td.disabled,
+.daterangepicker option.disabled {
     color: #999;
     cursor: not-allowed;
     text-decoration: line-through;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF select._2_dKIBBijop3olbi6tgomL,
-._3Ek6B6Pn08EUnn7j6HYfzF select._1kgGlhJ4SCIjYgCBn-8edh {
+.daterangepicker select.monthselect,
+.daterangepicker select.yearselect {
     font-size: 12px;
     padding: 1px;
     height: auto;
@@ -499,19 +514,19 @@
     cursor: default;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF select._2_dKIBBijop3olbi6tgomL {
+.daterangepicker select.monthselect {
     margin-right: 2%;
     width: 56%;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF select._1kgGlhJ4SCIjYgCBn-8edh {
+.daterangepicker select.yearselect {
     width: 40%;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF select._2NmJ15I41dAdSjrdiaqKg3,
-._3Ek6B6Pn08EUnn7j6HYfzF select._1sCr-styVc0dqAJuo9NB0e,
-._3Ek6B6Pn08EUnn7j6HYfzF select._2lfk3juhQcOFblqQutwkAf,
-._3Ek6B6Pn08EUnn7j6HYfzF select._3CcD7BLwlCUj1-c23v7Ycj {
+.daterangepicker select.hourselect,
+.daterangepicker select.minuteselect,
+.daterangepicker select.secondselect,
+.daterangepicker select.ampmselect {
     width: 50px;
     margin: 0 auto;
     background: #eee;
@@ -521,19 +536,19 @@
     font-size: 12px;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF ._1i61rdZsLvNycT7JFjPpaU {
+.daterangepicker .calendar-time {
     text-align: center;
     margin: 4px auto 0 auto;
     line-height: 30px;
     position: relative;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF ._1i61rdZsLvNycT7JFjPpaU select._3LRnOWAKXYzAOnfVxtt8E {
+.daterangepicker .calendar-time select.disabled {
     color: #ccc;
     cursor: not-allowed;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF ._2rEkccTVyyIBP0wKA1rKLF {
+.daterangepicker .drp-buttons {
     clear: both;
     text-align: right;
     padding: 8px;
@@ -543,327 +558,348 @@
     vertical-align: middle;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF ._9N5KVuiI6_7xcltdhh59S {
+.daterangepicker .drp-selected {
     display: inline-block;
     font-size: 12px;
     padding-right: 8px;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF ._2rEkccTVyyIBP0wKA1rKLF ._6dPxvvY3ewE_haxkoowHO {
+.daterangepicker .drp-buttons .btn {
     margin-left: 8px;
     font-size: 12px;
     font-weight: bold;
     padding: 4px 8px;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF._2UypbN-0KIm2BsF0boJrb8._19Jewpb5YouFH3rZBVV4xL._1Y35Bv4O8zNVautjwTCIKs ._1_VxFWBNR2Z6Svewzyywwg._3orBBtWWnJW5iSXOXuQgsA {
+.daterangepicker.show-ranges.single.rtl .drp-calendar.left {
     border-right: 1px solid #ddd;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF._2UypbN-0KIm2BsF0boJrb8._19Jewpb5YouFH3rZBVV4xL._2On3F8GUXgZ8Ko9A_DYNKi ._1_VxFWBNR2Z6Svewzyywwg._3orBBtWWnJW5iSXOXuQgsA {
+.daterangepicker.show-ranges.single.ltr .drp-calendar.left {
     border-left: 1px solid #ddd;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF._2UypbN-0KIm2BsF0boJrb8._1Y35Bv4O8zNVautjwTCIKs ._1_VxFWBNR2Z6Svewzyywwg._1pT9dvO2BK1AsKC145aj8a {
+.daterangepicker.show-ranges.rtl .drp-calendar.right {
     border-right: 1px solid #ddd;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF._2UypbN-0KIm2BsF0boJrb8._2On3F8GUXgZ8Ko9A_DYNKi ._1_VxFWBNR2Z6Svewzyywwg._3orBBtWWnJW5iSXOXuQgsA {
+.daterangepicker.show-ranges.ltr .drp-calendar.left {
     border-left: 1px solid #ddd;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF ._2luQqPMBqNJW5iELsCL6mi {
+.daterangepicker .ranges {
     float: none;
     text-align: left;
     margin: 0;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF._3Ix3AlskIFReeIDIAyQTm6 ._2luQqPMBqNJW5iELsCL6mi {
+.daterangepicker.show-calendar .ranges {
     margin-top: 8px;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF ._2luQqPMBqNJW5iELsCL6mi ul {
+.daterangepicker .ranges ul {
     list-style: none;
     margin: 0 auto;
     padding: 0;
     width: 100%;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF ._2luQqPMBqNJW5iELsCL6mi li {
+.daterangepicker .ranges li {
     font-size: 12px;
     padding: 8px 12px;
     cursor: pointer;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF ._2luQqPMBqNJW5iELsCL6mi li:hover {
+.daterangepicker .ranges li:hover {
     background-color: #eee;
 }
 
-._3Ek6B6Pn08EUnn7j6HYfzF ._2luQqPMBqNJW5iELsCL6mi li._35iBFo9Hxv2A4PD6FpsD3f {
+.daterangepicker .ranges li.active {
     background-color: #08c;
     color: #fff;
 }
 
 /*  Larger Screen Styling */
 @media (min-width: 564px) {
-    ._3Ek6B6Pn08EUnn7j6HYfzF {
+    .daterangepicker {
         width: auto;
     }
 
-    ._3Ek6B6Pn08EUnn7j6HYfzF ._2luQqPMBqNJW5iELsCL6mi ul {
+    .daterangepicker .ranges ul {
         width: 140px;
     }
 
-    ._3Ek6B6Pn08EUnn7j6HYfzF._19Jewpb5YouFH3rZBVV4xL ._2luQqPMBqNJW5iELsCL6mi ul {
+    .daterangepicker.single .ranges ul {
         width: 100%;
     }
 
-    ._3Ek6B6Pn08EUnn7j6HYfzF._19Jewpb5YouFH3rZBVV4xL ._1_VxFWBNR2Z6Svewzyywwg._3orBBtWWnJW5iSXOXuQgsA {
+    .daterangepicker.single .drp-calendar.left {
         clear: none;
     }
 
-    ._3Ek6B6Pn08EUnn7j6HYfzF._19Jewpb5YouFH3rZBVV4xL ._2luQqPMBqNJW5iELsCL6mi,
-    ._3Ek6B6Pn08EUnn7j6HYfzF._19Jewpb5YouFH3rZBVV4xL ._1_VxFWBNR2Z6Svewzyywwg {
+    .daterangepicker.single .ranges,
+    .daterangepicker.single .drp-calendar {
         float: left;
     }
 
-    ._3Ek6B6Pn08EUnn7j6HYfzF {
+    .daterangepicker {
         direction: ltr;
         text-align: left;
     }
 
-    ._3Ek6B6Pn08EUnn7j6HYfzF ._1_VxFWBNR2Z6Svewzyywwg._3orBBtWWnJW5iSXOXuQgsA {
+    .daterangepicker .drp-calendar.left {
         clear: left;
         margin-right: 0;
     }
 
-    ._3Ek6B6Pn08EUnn7j6HYfzF ._1_VxFWBNR2Z6Svewzyywwg._3orBBtWWnJW5iSXOXuQgsA ._1PywV4-rPnPyPzkxgZ_r8m {
+    .daterangepicker .drp-calendar.left .calendar-table {
         border-right: none;
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
     }
 
-    ._3Ek6B6Pn08EUnn7j6HYfzF ._1_VxFWBNR2Z6Svewzyywwg._1pT9dvO2BK1AsKC145aj8a {
+    .daterangepicker .drp-calendar.right {
         margin-left: 0;
     }
 
-    ._3Ek6B6Pn08EUnn7j6HYfzF ._1_VxFWBNR2Z6Svewzyywwg._1pT9dvO2BK1AsKC145aj8a ._1PywV4-rPnPyPzkxgZ_r8m {
+    .daterangepicker .drp-calendar.right .calendar-table {
         border-left: none;
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
     }
 
-    ._3Ek6B6Pn08EUnn7j6HYfzF ._1_VxFWBNR2Z6Svewzyywwg._3orBBtWWnJW5iSXOXuQgsA ._1PywV4-rPnPyPzkxgZ_r8m {
+    .daterangepicker .drp-calendar.left .calendar-table {
         padding-right: 8px;
     }
 
-    ._3Ek6B6Pn08EUnn7j6HYfzF ._2luQqPMBqNJW5iELsCL6mi,
-    ._3Ek6B6Pn08EUnn7j6HYfzF ._1_VxFWBNR2Z6Svewzyywwg {
+    .daterangepicker .ranges,
+    .daterangepicker .drp-calendar {
         float: left;
     }
 }
 
 @media (min-width: 730px) {
-    ._3Ek6B6Pn08EUnn7j6HYfzF ._2luQqPMBqNJW5iELsCL6mi {
+    .daterangepicker .ranges {
         width: auto;
     }
 
-    ._3Ek6B6Pn08EUnn7j6HYfzF ._2luQqPMBqNJW5iELsCL6mi {
+    .daterangepicker .ranges {
         float: left;
     }
 
-    ._3Ek6B6Pn08EUnn7j6HYfzF._1Y35Bv4O8zNVautjwTCIKs ._2luQqPMBqNJW5iELsCL6mi {
+    .daterangepicker.rtl .ranges {
         float: right;
     }
 
-    ._3Ek6B6Pn08EUnn7j6HYfzF ._1_VxFWBNR2Z6Svewzyywwg._3orBBtWWnJW5iSXOXuQgsA {
+    .daterangepicker .drp-calendar.left {
         clear: none !important;
     }
 }
 
+/*!*****************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/resources/components/DateRangePicker.vue?vue&type=style&index=0&lang=css& ***!
+  \*****************************************************************************************************************************************************************************************************************************************************/
 
 .commerce-insights-date-range-picker {
-		padding: 0.5rem 0.5rem 0.5rem 1rem;
-		background: #fff;
-		width: 500px;
-		position: relative;
-		border-radius: 0.125rem;
-		align-items: center;
-		display: flex;
+	padding: 0.5rem 0.5rem 0.5rem 1rem;
+	background: #fff;
+	width: 500px;
+	position: relative;
+	border-radius: 0.125rem;
+	align-items: center;
+	display: flex;
 }
 .commerce-insights-menu {
-		align-items: center;
-		width: 100%;
-		display: flex;
+	align-items: center;
+	width: 100%;
+	display: flex;
 }
 .commerce-insights-dates {
-		align-items: center;
-		display: flex;
+	align-items: center;
+	display: flex;
 }
 .commerce-insights-save-modal {
-		position: absolute;
-		display: block;
-		z-index: 30;
-		overflow: visible;
-		min-height: 0;
-		height: auto;
-		width: auto;
-		min-width: 300px;
+	position: absolute;
+	display: block;
+	z-index: 30;
+	overflow: visible;
+	min-height: 0;
+	height: auto;
+	width: auto;
+	min-width: 300px;
 }
 .commerce-insights-save-modal-content {
-		padding: 0.75rem;
+	padding: 0.75rem;
 }
 .commerce-insights-save-modal-footer {
-		padding: 0.5rem;
-		display: block;
-		text-align: right;
-		border-radius: 0 0 5px 5px;
-		background-image: -webkit-gradient(linear, left top, left bottom, from(#ecedef), to(#e9eaec));
-		background-image: linear-gradient(#ecedef, #e9eaec);
-		-webkit-box-shadow: inset 0 2px 1px -2px rgba(0, 0, 0, 0.2);
-		box-shadow: inset 0 2px 1px -2px rgba(0, 0, 0, 0.2);
+	padding: 0.5rem;
+	display: block;
+	text-align: right;
+	border-radius: 0 0 5px 5px;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#ecedef), to(#e9eaec));
+	background-image: linear-gradient(#ecedef, #e9eaec);
+	-webkit-box-shadow: inset 0 2px 1px -2px rgba(0, 0, 0, 0.2);
+	box-shadow: inset 0 2px 1px -2px rgba(0, 0, 0, 0.2);
 }
 .commerce-insights-date-range-field {
-		width: 165px;
-		border: 0;
-		display: inline-block;
-		text-align: center;
-		z-index: 0;
-		padding: 0.5rem;
-		background: #edf2f7;
-		color: #718096;
-		font-size: 0.875rem;
-		border-radius: 0.125rem;
+	width: 165px;
+	border: 0;
+	display: inline-block;
+	text-align: center;
+	z-index: 0;
+	padding: 0.5rem;
+	background: #edf2f7;
+	color: #718096;
+	font-size: 0.875rem;
+	border-radius: 0.125rem;
 }
 .toggle-menu {
-		margin-left: 0.5rem;
-		display: inline-block;
-		position: relative;
-		cursor: pointer;
+	margin-left: 0.5rem;
+	display: inline-block;
+	position: relative;
+	cursor: pointer;
 }
 .toggle-arrow {
-		line-height: 0;
+	line-height: 0;
 }
 #save-menu {
-		left: 100px;
-		top: 3rem;
+	left: 100px;
+	top: 3rem;
 }
 
+/*!************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/resources/components/DonutPanel.vue?vue&type=style&index=0&lang=css& ***!
+  \************************************************************************************************************************************************************************************************************************************************/
 
 .commerce-insights-donut-pane {
-		width: 100%;
+	width: 100%;
 }
 .commerce-insights-donut-chart-wrapper {
-		margin-left: auto;
-		margin-right: auto;
-		position: relative;
-		margin-bottom: 0.5rem;
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+	margin-bottom: 0.5rem;
 }
 .color-key {
-		width: 0.75rem;
-		height: 0.75rem;
-		border-radius: 9999px;
+	width: 0.75rem;
+	height: 0.75rem;
+	border-radius: 9999px;
 }
 
+/*!****************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/resources/components/LineChartPanel.vue?vue&type=style&index=0&lang=css& ***!
+  \****************************************************************************************************************************************************************************************************************************************************/
 
 .period-summary {
-		display: flex;
-		padding-top: 0.5rem;
-		padding-bottom: 0.5rem;
+	display: flex;
+	padding-top: 0.5rem;
+	padding-bottom: 0.5rem;
 }
 
+/*!********************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/resources/components/MiniSparklinePanel.vue?vue&type=style&index=0&lang=css& ***!
+  \********************************************************************************************************************************************************************************************************************************************************/
 
 .commerce-insights-mini-sparkline-pane {
-		display: flex;
-		width: 100%;
-		position: relative;
+	display: flex;
+	width: 100%;
+	position: relative;
 }
 .commerce-insights-mini-sparkline-pane-content {
-		display: flex;
-		width: 100%;
+	display: flex;
+	width: 100%;
 }
 .commerce-insights-mini-sparkline-pane-value {
-		color: #d3a87a;
-		font-weight: 300;
-		font-size: 1.5rem;
-		margin: 0;
-		padding: 0;
-		width: 100%;
+	color: #d3a87a;
+	font-weight: 300;
+	font-size: 1.5rem;
+	margin: 0;
+	padding: 0;
+	width: 100%;
 }
 .commerce-insights-mini-sparkline-pane-caption {
-		width: 100%;
-		margin: 0;
-		padding: 0;
-		line-height: 1.25;
-		display: flex;
-		font-size: 0.75rem;
-		color: #a0aec0;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	line-height: 1.25;
+	display: flex;
+	font-size: 0.75rem;
+	color: #a0aec0;
 }
 .chart-pane-fill-container {
-		position: absolute;
-		z-index: 0;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		margin: -16px;
+	position: absolute;
+	z-index: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin: -16px;
 }
 
+/*!****************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/resources/components/SparklinePanel.vue?vue&type=style&index=0&lang=css& ***!
+  \****************************************************************************************************************************************************************************************************************************************************/
 
 .commerce-insights-sparkline-pane {
-		display: flex;
-		width: 100%;
+	display: flex;
+	width: 100%;
 }
 .commerce-insights-sparkline-pane .sparkline-pane-left {
-		display: flex;
-		width: 50%;
+	display: flex;
+	width: 50%;
 }
 .commerce-insights-sparkline-pane .sparkline-pane-right {
-		display: flex;
-		height: 100%;
-		width: 47%;
-		position: relative;
-		margin-bottom: 0.5rem;
+	display: flex;
+	height: 100%;
+	width: 47%;
+	position: relative;
+	margin-bottom: 0.5rem;
 }
 
+/*!******************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/resources/components/SummaryDatapoint.vue?vue&type=style&index=0&lang=css& ***!
+  \******************************************************************************************************************************************************************************************************************************************************/
 
 .commerce-insights-summary-datapoint {
-		transition: width 0.5s linear;
-		display: inline-block;
+	transition: width 0.5s linear;
+	display: inline-block;
 }
 .placeholder-summary-text {
-		display: inline-block;
-		background-color: #f1f5f8;
-		color: #f1f5f8;
-		border-radius: 3px;
+	display: inline-block;
+	background-color: #f1f5f8;
+	color: #f1f5f8;
+	border-radius: 3px;
 }
 
+/*!*************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/resources/components/TabbedPanes.vue?vue&type=style&index=0&lang=css& ***!
+  \*************************************************************************************************************************************************************************************************************************************************/
 
 .commerce-insights-tab {
-		flex: 1 1 0%;
-		cursor: pointer;
-		user-select: none;
-		text-align: center;
-		padding-top: 0.75rem;
-		padding-bottom: 0.75rem;
-		padding-left: 1rem;
-		padding-right: 1rem;
-		border: 1px solid #e3e5e8;
-		border-left-color: transparent;
-		border-collapse: collapse;
+	flex: 1 1 0%;
+	cursor: pointer;
+	user-select: none;
+	text-align: center;
+	padding-top: 0.75rem;
+	padding-bottom: 0.75rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	border: 1px solid #e3e5e8;
+	border-left-color: transparent;
+	border-collapse: collapse;
 }
 .commerce-insights-tab:first-child {
-		border-top-left-radius: 0.25rem;
-		border-left-color: #e3e5e8;
+	border-top-left-radius: 0.25rem;
+	border-left-color: #e3e5e8;
 }
 .commerce-insights-tab:last-child {
-		border-top-right-radius: 0.25rem;
+	border-top-right-radius: 0.25rem;
 }
 .commerce-insights-tab.active {
-		border-bottom-color: transparent;
+	border-bottom-color: transparent;
 }
 .commerce-insights-tab-pane {
 @apply rounded-b;
-		border: 1px solid #e3e5e8;
-		border-top: 0;
+	border: 1px solid #e3e5e8;
+	border-top: 0;
 }
 

@@ -1,7 +1,7 @@
 <script>
 	import Pane from './Pane.vue';
 	import Chart from './Chart.vue';
-	import styles from '../css/common.module.css';
+	import styles from '../css/common.css';
 
 	export default {
 		name: 'line-chart-panel',
@@ -96,7 +96,7 @@
 	</div>
 </template>
 
-<style module>
+<style>
 	.period-summary {
 		display: flex;
 		padding-top: 0.5rem;

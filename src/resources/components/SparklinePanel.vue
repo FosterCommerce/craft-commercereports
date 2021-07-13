@@ -2,7 +2,7 @@
 	import Pane from './Pane.vue';
 	import Chart from './Chart.vue';
 
-	import styles from '../css/common.module.css';
+	import styles from '../css/common.css';
 
 	export default {
 		name: 'sparkline-panel',
@@ -64,7 +64,7 @@
 	</pane>
 </template>
 
-<style module>
+<style>
 	.commerce-insights-sparkline-pane {
 		display: flex;
 		width: 100%;

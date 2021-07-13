@@ -1,5 +1,5 @@
 <script>
-	import styles from '../css/common.module.css';
+	import styles from '../css/common.css';
 
 	export default {
 		name: 'summary-datapoint',
@@ -60,7 +60,7 @@
 	</span>
 </template>
 
-<style module>
+<style>
 	.commerce-insights-summary-datapoint {
 		transition: width 0.5s linear;
 		display: inline-block;

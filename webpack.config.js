@@ -1,6 +1,6 @@
 const path = require('path');
-const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
-const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const { VueLoaderPlugin } = require('vue-loader')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const isProduction = process.env.NODE_ENV === 'production'
@@ -28,7 +28,7 @@ module.exports = {
             'vue-style-loader',
             {
               loader: MiniCssExtractPlugin.loader,
-              options: {}
+              options: { esModule: false }
             },
             'css-loader'
           ]

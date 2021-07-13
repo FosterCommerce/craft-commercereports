@@ -1,7 +1,7 @@
 <script>
 	import Pane from './Pane.vue';
 	import Chart from './Chart.vue';
-	import styles from '../css/common.module.css';
+	import styles from '../css/common.css';
 
 	export default {
 		name: 'bar-chart-panel',
@@ -82,7 +82,7 @@
 	</pane>
 </template>
 
-<style module>
+<style>
 	.bar-chart-wrapper {
 		display: flex;
 		width: 350px;

@@ -3,7 +3,7 @@
 	import Pane from './Pane.vue';
 	import LineChartPanel from './LineChartPanel.vue';
 
-	import styles from '../css/common.module.css';
+	import styles from '../css/common.css';
 
 	export default {
 		name: 'tabbed-panes',
@@ -87,7 +87,7 @@
 	</div>
 </template>
 
-<style module>
+<style>
 	.commerce-insights-tab {
 		flex: 1 1 0%;
 		cursor: pointer;

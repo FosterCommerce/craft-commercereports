@@ -1,5 +1,5 @@
 <script>
-	import styles from '../css/common.module.css';
+	import styles from '../css/common.css';
 
 	export default {
 		name: 'pane',
@@ -57,7 +57,7 @@
 	</div>
 </template>
 
-<style module>
+<style>
 	.commerce-insights-pane {
 		position: relative;
 		background: white;
