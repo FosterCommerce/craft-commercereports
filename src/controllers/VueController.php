@@ -120,11 +120,9 @@ class VueController extends Controller
         $single = $_GET['purchasableId'] ?? $id;
         $start  = $this->start_date ?: '1970-01-01 00:00:00';
         $end    = $this->end_date ?: gmdate('Y-m-d 23:59:59');
-        $orders = Order::find()->datePaid(['and', ">= {$start}", "< {$end}"]);
+        $orders = Order::find()->dateOrdered(['and', ">= {$start}", "< {$end}"]);
         $url    = $_SERVER['REQUEST_URI'];
         $path   = basename(parse_url($url, PHP_URL_PATH));
-        /*$cache     = Craft::$app->getCache();
-        $cache_key = sha1("orders_{$start}_{$end}");*/
 
         if ($single) {
             $single = Variant::find()->id($single)->one();
@@ -135,9 +133,7 @@ class VueController extends Controller
             $orders->orderStatusId('< 4');
         }
 
-        // return $cache->getOrSet($cache_key, function() use ($start, $end) {
-            return $orders->isCompleted()->distinct()->orderBy('dateOrdered desc')->all() ?: [];
-        // }, 5 * 60);
+        return $orders->distinct()->orderBy('dateOrdered desc')->all() ?: [];
     }
 
     /**
