@@ -9,10 +9,6 @@
 	export default {
 		name: 'combined-search',
 		props: {
-			keyword: {
-				type: String,
-				default: '',
-			},
 			elements: {
 				type: Object | Array,
 				default: function() {
@@ -51,6 +47,7 @@
 				sort_direction: 'desc',
 				page_size: 100,
 				current_page: 1,
+        keyword: '',
 				selectedTypeOption: function() {
 					return {};
 				},
@@ -91,6 +88,7 @@
 				}
 			},
 			selectTypeOption(typeOption) {
+			  this.keyword = '';
 				this.selectedTypeOption = typeOption;
 			},
 			selectAllTypes() {
@@ -166,15 +164,15 @@
 						// match email and reference against keyword
 						filteredElements = filteredElements.filter(function(element) {
 							const lowerKeyword = self.keyword.toLowerCase();
-							return element.email.toLowerCase().indexOf(lowerKeyword) > -1 ||
-									element.reference.toLowerCase().indexOf(lowerKeyword) > -1 ||
-									element.amountPaid.toLowerCase().indexOf(lowerKeyword) > -1 ||
-									element.paymentStatus.toLowerCase().indexOf(lowerKeyword) > -1 ||
-									element.status.toLowerCase().indexOf(lowerKeyword) > -1 ||
-									element.billingName.toLowerCase().indexOf(lowerKeyword) > -1 ||
-									element.shippingName.toLowerCase().indexOf(lowerKeyword) > -1 ||
-									element.orderId.toLowerCase().indexOf(lowerKeyword) > -1 ||
-									element.fullDate.toLowerCase().indexOf(lowerKeyword) > -1;
+              return element?.email?.toLowerCase().indexOf(lowerKeyword) > -1 ||
+                element?.reference?.toLowerCase().indexOf(lowerKeyword) > -1 ||
+                element?.amountPaid?.toLowerCase().indexOf(lowerKeyword) > -1 ||
+                element?.paymentStatus?.toLowerCase().indexOf(lowerKeyword) > -1 ||
+                element?.status?.toLowerCase().indexOf(lowerKeyword) > -1 ||
+                element?.billingName?.toLowerCase().indexOf(lowerKeyword) > -1 ||
+                element?.shippingName?.toLowerCase().indexOf(lowerKeyword) > -1 ||
+                element?.orderId?.toString().indexOf(lowerKeyword) > -1 ||
+                element?.fullDate?.toLowerCase().indexOf(lowerKeyword) > -1;
 						});
 					}
 
@@ -276,15 +274,15 @@
 						// match email and reference against keyword
 						filteredElements = filteredElements.filter(function(element) {
 							const lowerKeyword = self.keyword.toLowerCase();
-							return element.email.toLowerCase().indexOf(lowerKeyword) > -1 ||
-									element.reference.toLowerCase().indexOf(lowerKeyword) > -1 ||
-									element.amountPaid.toLowerCase().indexOf(lowerKeyword) > -1 ||
-									element.paymentStatus.toLowerCase().indexOf(lowerKeyword) > -1 ||
-									element.status.toLowerCase().indexOf(lowerKeyword) > -1 ||
-									element.billingName.toLowerCase().indexOf(lowerKeyword) > -1 ||
-									element.shippingName.toLowerCase().indexOf(lowerKeyword) > -1 ||
-									element.orderId.toLowerCase().indexOf(lowerKeyword) > -1 ||
-									element.fullDate.toLowerCase().indexOf(lowerKeyword) > -1;
+							return element?.email?.toLowerCase().indexOf(lowerKeyword) > -1 ||
+									element?.reference?.toLowerCase().indexOf(lowerKeyword) > -1 ||
+									element?.amountPaid?.toLowerCase().indexOf(lowerKeyword) > -1 ||
+									element?.paymentStatus?.toLowerCase().indexOf(lowerKeyword) > -1 ||
+									element?.status?.toLowerCase().indexOf(lowerKeyword) > -1 ||
+									element?.billingName?.toLowerCase().indexOf(lowerKeyword) > -1 ||
+									element?.shippingName?.toLowerCase().indexOf(lowerKeyword) > -1 ||
+									element?.orderId?.toString().indexOf(lowerKeyword) > -1 ||
+									element?.fullDate?.toLowerCase().indexOf(lowerKeyword) > -1;
 						});
 					}
 
