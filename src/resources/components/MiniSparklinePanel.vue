@@ -1,13 +1,12 @@
 <script>
 	import Pane from './Pane.vue';
-	import Chart from './Chart.vue';
 	import styles from '../css/common.css';
+  import Chart from 'chart.js/auto';
 
 	export default {
 		name: 'mini-sparkline-panel',
 		components: {
 			Pane,
-			Chart,
 		},
 		props: {
 			title: String,
@@ -19,10 +18,76 @@
 		},
 		data() {
 			return {
+        chart: null, // chart instance
 				chartData: this.formatChartData(), // data formatted for Chart.js
+        fontFamily: `system-ui, BlinkMacSystemFont, -apple-system, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif`,
+        ticks: {
+          beginAtZero: true,
+          fontSize: 10,
+          fontColor: '#8c99a7',
+          fontFamily: `system-ui, BlinkMacSystemFont, -apple-system, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif`,
+        },
 			};
 		},
+    mounted() {
+      // draw the chart
+      this.chart = new Chart(this.$refs.chart.getContext('2d'), {
+        type: 'line',
+        data: this.getChartData(),
+        options: {
+          responsive: true,
+          legend: {display: false},
+          elements: {
+            line: {
+              borderColor: 'rgba(211, 167, 138, 0.2)',
+              borderWidth: 2,
+            },
+            point: {
+              radius: 0,
+            },
+          },
+          tooltips: {enabled: false},
+          scales: {
+            y: {
+              beginAtZero: true,
+              display: false,
+            },
+            x: {
+              display: false,
+            },
+          },
+        },
+      });
+    },
 		methods: {
+      getChartData() {
+        if (this.chartData.datasets) {
+          // if we have a muted-sparkline chart, set dataset bakgroundColor if missing or auto
+          this.chartData.datasets.forEach(function(dataset) {
+            this.styleDataset(dataset, {
+              backgroundColor: 'rgba(211, 167, 138, 0.05)',
+              fill: true,
+            });
+          }, this);
+        }
+
+        return this.chartData;
+      },
+      /**
+       * Sets styleProps on the provided dataset if it either doesn't have each one
+       * or it's explicitly set to `auto`.
+       */
+      styleDataset(dataset, styleProps) {
+        Object.entries(styleProps).forEach(entry => {
+          let key = entry[0];
+          let value = entry[1];
+
+          // property is not set, or set to `auto`
+          if (typeof dataset[key] === 'undefined' || dataset[key] == 'auto') {
+            dataset[key] = value;
+          }
+        }, this);
+      },
 			formatChartData() {
 				return {
 					labels: this.data,
@@ -38,6 +103,44 @@
 			data: function(newValue, oldValue) {
 				this.chartData = this.formatChartData();
 			},
+      chartData: function(newValue, oldValue) {
+        if (this.chartData !== null && this.chartData !== undefined) {
+
+          /**
+           * Only touch nodes that require updating to avoid redrawing the entire chart.
+           */
+          const updatedData = this.getChartData();
+
+          if (!Object.is(newValue.labels, oldValue.labels)) {
+            this.chart.data.labels = updatedData.labels;
+          }
+
+          if (!Object.is(newValue.datasets, oldValue.datasets)) {
+            // same number of datasets or new length?
+            if (newValue.datasets.length === oldValue.datasets.length || oldValue.datasets.length ===
+              0 && newValue.datasets.length > 0) {
+
+              // loop through and only update chart data and/or labels that changed
+              oldValue.datasets.forEach((oldDataset, index) => {
+                const newDataset = newValue.datasets[index];
+
+                if (oldDataset.label !== newDataset.label) {
+                  this.chart.data.datasets[index].label = newDataset.label;
+                }
+
+                if (JSON.stringify(oldDataset.data) !== JSON.stringify(newValue.data)) {
+                  this.chart.data.datasets[index].data = newDataset.data;
+                }
+              });
+            } else {
+              // update the node, which will re-render the chart
+              this.chart.data.datasets = updatedData.datasets;
+            }
+          }
+
+          this.chart.update();
+        }
+      }
 		},
 	};
 </script>
@@ -57,7 +160,9 @@
 				<p class="commerce-insights-mini-sparkline-pane-caption self-end">{{ caption }}</p>
 			</div>
 			<div class="chart-pane-fill-container">
-				<chart type="muted-sparkline" :chartData="chartData" class="w-full h-full"/>
+        <div v-cloak ref="container" class="commerce-insights-chart-container w-full h-full relative">
+          <canvas ref="chart"></canvas>
+        </div>
 			</div>
 		</div>
 	</pane>
