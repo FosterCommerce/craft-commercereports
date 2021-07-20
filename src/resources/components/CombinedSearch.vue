@@ -51,6 +51,9 @@ export default {
       selectedTypeOption: function() {
         return {};
       },
+      selectedPaymentTypeOption: function() {
+        return {};
+      },
     };
   },
   mounted() {
@@ -89,17 +92,35 @@ export default {
     },
     selectTypeOption(typeOption) {
       this.keyword = '';
+      this.selectedPaymentTypeOption = {};
       this.selectedTypeOption = typeOption;
     },
+    selectPaymentTypeOption(typeOption) {
+      this.keyword = '';
+      this.selectedTypeOption = {};
+      this.selectedPaymentTypeOption = typeOption;
+    },
     selectAllTypes() {
+      this.selectedPaymentTypeOption = {};
       this.selectedTypeOption = {};
     },
     getSelectedLabel() {
       if (Object.keys(this.selectedTypeOption).length === 0) {
+        if (this.elementType === 'Orders') {
+          return 'All Order Statuses';
+        }
+
         return this.allTypesLabel;
       }
 
       return this.selectedTypeOption.label;
+    },
+    getSelectedPaymentLabel() {
+      if (Object.keys(this.selectedPaymentTypeOption).length === 0) {
+        return 'All Order Statuses';
+      }
+
+      return this.selectedPaymentTypeOption.label;
     },
     sort: function(col) {
       if (col === this.sort_by) {
@@ -159,6 +180,13 @@ export default {
             return element.type.title === self.selectedTypeOption.value;
           });
         }
+
+        if (Object.keys(this.selectedPaymentTypeOption).length !== 0) {
+          filteredElements = filteredElements.filter(function(element) {
+            // filter by selected payment status
+            return element.type.title === self.selectedPaymentTypeOption.value;
+          });
+        }
       } else if (this.elementType === 'Orders') {
         if (this.keyword.length) {
           // match email and reference against keyword
@@ -180,6 +208,13 @@ export default {
           filteredElements = filteredElements.filter(function(element) {
             // filter by selected status
             return element.status === self.selectedTypeOption.value;
+          });
+        }
+
+        if (Object.keys(this.selectedPaymentTypeOption).length !== 0) {
+          filteredElements = filteredElements.filter(function(element) {
+            // filter by selected payment status
+            return element.paymentStatus === self.selectedPaymentTypeOption.value;
           });
         }
       } else if (this.elementType === 'Customers') {
@@ -269,6 +304,13 @@ export default {
             return element.type.title === self.selectedTypeOption.value;
           });
         }
+
+        if (Object.keys(this.selectedPaymentTypeOption).length !== 0) {
+          filteredElements = filteredElements.filter(function(element) {
+            // filter by selected payment status
+            return element.paymentStatus === self.selectedPaymentTypeOption.value;
+          });
+        }
       } else if (this.elementType === 'Orders') {
         if (this.keyword.length) {
           // match email and reference against keyword
@@ -290,6 +332,13 @@ export default {
           filteredElements = filteredElements.filter(function(element) {
             // filter by selected status
             return element.status === self.selectedTypeOption.value;
+          });
+        }
+
+        if (Object.keys(this.selectedPaymentTypeOption).length !== 0) {
+          filteredElements = filteredElements.filter(function(element) {
+            // filter by selected payment status
+            return element.paymentStatus === self.selectedPaymentTypeOption.value;
           });
         }
       } else if (this.elementType === 'Customers') {
@@ -357,7 +406,9 @@ export default {
       <div class="commerce-insights-combined-search-bar toolbar layout-flex">
         <div class="flex w-1/2">
           <div class="">
-            <div class="btn menubtn">{{ getSelectedLabel() }}</div>
+            <div class="btn menubtn">
+              {{ getSelectedLabel() }}
+            </div>
             <div class="menu">
               <ul class="padded">
                 <li>
@@ -365,7 +416,12 @@ export default {
                     :class='{ "sel": Object.keys(selectedTypeOption).length === 0 }'
                     @click="selectAllTypes()"
                   >
-                    {{ allTypesLabel }}
+                    <span v-if="elementType !== 'Orders'">
+                      {{ allTypesLabel }}
+                    </span>
+                    <span v-else>
+                      All Order Statuses
+                    </span>
                   </a>
                 </li>
                 <li v-for="option in typeOptions" :key="option.value">
@@ -374,6 +430,46 @@ export default {
                     @click="selectTypeOption(option)"
                   >
                     {{ option.label }}
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div v-if="elementType === 'Orders'">
+            <div class="btn menubtn">{{ getSelectedPaymentLabel() }}</div>
+            <div class="menu">
+              <ul class="padded">
+                <li>
+                  <a
+                    :class='{ "sel": Object.keys(selectedPaymentTypeOption).length === 0 }'
+                    @click="selectAllTypes()"
+                  >
+                    All Payment Statuses
+                  </a>
+                </li>
+                <li>
+                  <a
+                    :class="{ 'sel': selectedPaymentTypeOption.value === 'Paid' }"
+                    @click="selectPaymentTypeOption({label: 'Paid', value: 'Paid'})"
+                  >
+                    Paid
+                  </a>
+                </li>
+                <li>
+                  <a
+                    :class="{ 'sel': selectedPaymentTypeOption.value === 'Partial' }"
+                    @click="selectPaymentTypeOption({label: 'Partial', value: 'Partial'})"
+                  >
+                    Partial
+                  </a>
+                </li>
+                <li>
+                  <a
+                    :class="{ 'sel': selectedPaymentTypeOption.value === 'Unpaid' }"
+                    @click="selectPaymentTypeOption({label: 'Unpaid', value: 'Unpaid'})"
+                  >
+                    Unpaid
                   </a>
                 </li>
               </ul>
