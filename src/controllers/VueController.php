@@ -117,12 +117,16 @@ class VueController extends Controller
      */
     private function fetchOrders($id = null) : array
     {
-        $single = $_GET['purchasableId'] ?? $id;
-        $start  = $this->start_date ?: '1970-01-01 00:00:00';
-        $end    = $this->end_date ?: gmdate('Y-m-d 23:59:59');
-        $orders = Order::find()->dateOrdered(['and', ">= {$start}", "< {$end}"]);
-        $url    = $_SERVER['REQUEST_URI'];
-        $path   = basename(parse_url($url, PHP_URL_PATH));
+        $single   = $_GET['purchasableId'] ?? $id;
+        $start    = $this->start_date ? \DateTime::createFromFormat('Y-m-d H:i:s', $this->start_date) : '1970-01-01 00:00:00';
+        $end      = $this->end_date ? \DateTime::createFromFormat('Y-m-d H:i:s', $this->end_date) : gmdate('Y-m-d 23:59:59');
+        $numDays  = $end->diff($start)->format("%r%a");
+        $newStart = $start->modify($numDays . ' day')->format('Y-m-d 00:00:00');
+        $newEnd   = $end->format('Y-m-d 23:59:59');
+        $orders   = Order::find()->dateOrdered(['and', ">= {$newStart}", "< {$newEnd}"])->distinct()->orderBy('dateOrdered desc');
+        $url      = $_SERVER['REQUEST_URI'];
+        $path     = basename(parse_url($url, PHP_URL_PATH));
+        $result   = [];
 
         if ($single) {
             $single = Variant::find()->id($single)->one();
@@ -133,7 +137,7 @@ class VueController extends Controller
             $orders->orderStatusId('< 4');
         }
 
-        return $orders->distinct()->orderBy('dateOrdered desc')->all() ?: [];
+        return $orders->all() ?: [];
     }
 
     /**
@@ -167,10 +171,12 @@ class VueController extends Controller
         $currency   = 'USD';
         $result     = [
             'orders' => [
+                // This is for the paragraph data
+                // we probably don't need this but the component needs changed to look at orders data
                 'summary' => [
-                    'shipmentsPercentChange' => 0,
                     'ordersPercentChange' => 0
                 ],
+                // This is in the customers view
                 'topLocations' => [
                     [
                         'country' => 'US',
@@ -210,9 +216,10 @@ class VueController extends Controller
                 ],
                 'totalOrders' => [
                     'total' => $num_orders,
-                    'percentChange' => 8,
+                    'percentChange' => 8, // this is based on the new previous period data
                     'series' => [32, 40, 43, 45, 300, 56, 60, 80, 90, 105]
                 ],
+                // averageOrderValue, averageOrderQuantity
                 'averageValue' => [
                     'total' => 98.76,
                     'percentChange' => -3,
