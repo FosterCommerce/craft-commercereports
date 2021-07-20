@@ -63,13 +63,15 @@
 </div>
 
 <div>
+  {% set statuses = [] %}
+
+  {% for status in craft.commerce.orderStatuses.allOrderStatuses %}
+    {% set statuses = statuses|merge([{label: status.name, value: status.name }]) %}
+  {% endfor %}
+
   <combined-search
     element-type="Orders"
     :elements="orders"
-    :type-options='[
-      { "label": "Paid", "value": "Paid" },
-      { "label": "Shipped", "value": "Shipped" },
-      { "label": "Canceled", "value": "Canceled" }
-    ]'
+    :type-options='{{ (statuses|json_encode|raw) }}'
   />
 </div>
