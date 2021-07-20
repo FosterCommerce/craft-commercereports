@@ -1,75 +1,75 @@
 <div class="commerce-insights-summary">
-    <p>
-      Revenue is
-      <summary-datapoint
-        :number="stats.orders.totalOrders.revenue"
-        up-down
-      ></summary-datapoint>
-      for the selected date range compared the previous period. You also have
-      <summary-datapoint
-        :data="stats.orders.totalOrders"
-        format="orders"
-        up-down
-      ></summary-datapoint>
-      .
-    </p>
+  <p>
+    Revenue is
+    <summary-datapoint
+      :number="stats.orders.totalOrders.revenue"
+      up-down
+    ></summary-datapoint>
+    for the selected date range compared the previous period. You also have
+    <summary-datapoint
+      :data="stats.orders.totalOrders"
+      format="orders"
+      up-down
+    ></summary-datapoint>
+    .
+  </p>
 </div>
 
 <div class="-mx-3">
-    <div class="flex w-full">
-        <div class="w-full p-3">
-            <div class="-m-3 mini-sparkline-grid">
-                <div class="w-1/3">
-                    <div class="p-3">
-                        <mini-sparkline-panel
-                            title="Total Orders"
-                            caption="All orders this period"
-                            :trend="Math.abs(stats.orders.totalOrders.percentChange) + '%'"
-                            :positive-trend="stats.orders.totalOrders.percentChange >= 0"
-                            :value="stats.orders.totalOrders.total"
-                            :data="stats.orders.totalOrders.series"
-                        ></mini-sparkline-panel>
-                    </div>
-                </div>
-
-                <div class="w-1/3">
-                    <div class="p-3">
-                        <mini-sparkline-panel
-                            title="Average Value"
-                            caption="Average completed order value"
-                            :trend="Math.abs(stats.orders.averageValue.percentChange) + '%'"
-                            :positive-trend="stats.orders.averageValue.percentChange >= 0"
-                            :value="stats.orders.averageValue.total"
-                            :data="stats.orders.averageValue.series"
-                        ></mini-sparkline-panel>
-                    </div>
-                </div>
-
-                <div class="w-1/3">
-                    <div class="p-3">
-                        <mini-sparkline-panel
-                            title="Average Order Quantity"
-                            caption="Average items per order"
-                            :trend="Math.abs(stats.orders.averageQuantity.percentChange) + '%'"
-                            :positive-trend="stats.orders.averageQuantity.percentChange >= 0"
-                            :value="stats.orders.averageQuantity.total"
-                            :data="stats.orders.averageQuantity.series"
-                        ></mini-sparkline-panel>
-                    </div>
-                </div>
-            </div>
+  <div class="flex w-full">
+    <div class="w-full p-3">
+      <div class="-m-3 mini-sparkline-grid">
+        <div class="w-1/3">
+          <div class="p-3">
+            <mini-sparkline-panel
+              title="Total Orders"
+              caption="All orders this period"
+              :trend="Math.abs(stats.orders.totalOrders.percentChange) + '%'"
+              :positive-trend="stats.orders.totalOrders.percentChange >= 0"
+              :value="stats.orders.totalOrders.total"
+              :data="stats.orders.totalOrders.series"
+            ></mini-sparkline-panel>
+          </div>
         </div>
+
+        <div class="w-1/3">
+          <div class="p-3">
+            <mini-sparkline-panel
+              title="Average Value"
+              caption="Average completed order value"
+              :trend="Math.abs(stats.orders.averageValue.percentChange) + '%'"
+              :positive-trend="stats.orders.averageValue.percentChange >= 0"
+              :value="stats.orders.averageValue.total"
+              :data="stats.orders.averageValue.series"
+            ></mini-sparkline-panel>
+          </div>
+        </div>
+
+        <div class="w-1/3">
+          <div class="p-3">
+            <mini-sparkline-panel
+              title="Average Order Quantity"
+              caption="Average items per order"
+              :trend="Math.abs(stats.orders.averageQuantity.percentChange) + '%'"
+              :positive-trend="stats.orders.averageQuantity.percentChange >= 0"
+              :value="stats.orders.averageQuantity.total"
+              :data="stats.orders.averageQuantity.series"
+            ></mini-sparkline-panel>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 
 <div>
-    <combined-search
-        element-type="Orders"
-        :elements="orders"
-        :type-options='[
-            { "label": "Paid", "value": "Paid" },
-            { "label": "Shipped", "value": "Shipped" },
-            { "label": "Canceled", "value": "Canceled" }
-        ]'
-    />
+  <combined-search
+    element-type="Orders"
+    :elements="orders"
+    :type-options='[
+      { "label": "Paid", "value": "Paid" },
+      { "label": "Shipped", "value": "Shipped" },
+      { "label": "Canceled", "value": "Canceled" }
+    ]'
+  />
 </div>
