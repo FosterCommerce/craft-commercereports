@@ -3,7 +3,7 @@
         <div class="w-5/5 p-3">
             <bar-chart-panel 
                 title="Most Purchased Product Type"
-                v-bind:data="stats.products.mostPurchased.types"
+                :data="stats.products.mostPurchased.types"
             ></bar-chart-panel>
         </div>
     </div>
@@ -12,6 +12,6 @@
 <div class="px-3">
     <combined-search 
         element-type="Products" 
-        v-bind:elements="products"
+        :elements="products"
     />
 </div>

@@ -1,6 +1,6 @@
 <?php
 
-namespace fostercommerce\commerceinsightscomponents\bundles;
+namespace fostercommerce\commerceinsights\bundles;
 
 use craft\web\AssetBundle;
 use craft\web\assets\cp\CpAsset;
@@ -25,14 +25,10 @@ class WidgetBundle extends AssetBundle
         $jsFiles = [$isProduction ? 'bundle.min.js' : 'bundle.js'];
         $cssFiles = ['main.css'];
 
-        foreach ($files as $file) 
-        {
-            if (preg_match($jsPattern, $file)) 
-            {
+        foreach ($files as $file) {
+            if (preg_match($jsPattern, $file)) {
                 $jsFiles[] = $file;
-            } 
-            elseif (preg_match($cssPattern, $file)) 
-            {
+            } elseif (preg_match($cssPattern, $file)) {
                 $cssFiles[] = $file;
             }
         }

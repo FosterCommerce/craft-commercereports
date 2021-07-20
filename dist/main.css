@@ -5,17 +5,19 @@
 .commerce-insights-trend { position: relative; }
 
 .commerce-insights-summary {
-    font-size: 1.25rem; 
-    margin-bottom: 1.5rem; 
-    font-weight: 400; 
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+    font-weight: 400;
     width: 100%;
     padding-top: 0.5rem;
 }
 
 .commerce-insights-up { color: #27ae60; }
 .commerce-insights-down { color: #da5a47; }
+.commerce-insights-unchanged { color: #888; }
 .commerce-insights-trend.up { color: #27ae60; }
 .commerce-insights-trend.down { color: #da5a47; }
+.commerce-insights-trend.unchanged { color: #888; }
 
 .commerce-insights-trend::before {
     box-sizing: inherit;
@@ -48,24 +50,24 @@
     border-right-color: transparent;
 }
 
-.mini-table thead, 
+.mini-table thead,
 .mini-table tbody {
     font-size: 0.75rem;
 }
 
-.mini-table th, 
-.mini-table td { 
+.mini-table th,
+.mini-table td {
     padding-left: 0.5rem;
     padding-right: 0.5rem;
 }
 
 
-.mini-table th:first-child, 
+.mini-table th:first-child,
 .mini-table td:first-child {
     padding-left: 0;
 }
 
-.mini-table th:last-child, 
+.mini-table th:last-child,
 .mini-table td:last-child {
     padding-right: 0;
 }
@@ -133,13 +135,13 @@
 .items-center { align-items: center; }
 
 /* margin + padding */
-.-mx-3 { 
-    margin-left: -0.75rem; 
-    margin-right: -0.75rem; 
+.-mx-3 {
+    margin-left: -0.75rem;
+    margin-right: -0.75rem;
 }
 
-.-m-3 { 
-    margin: -0.75rem; 
+.-m-3 {
+    margin: -0.75rem;
 }
 
 .py-1 {
@@ -182,71 +184,71 @@
 
 
 .commerce-insights-pane {
-    position: relative;
-    background: white;
-    box-shadow: 0 0 0 1px #e3e5e8;
-    overflow: hidden;
-    padding: 16px;
-    border-radius: 5px;
-    word-wrap: break-word;
-    box-sizing: border-box;
+	position: relative;
+	background: white;
+	box-shadow: 0 0 0 1px #e3e5e8;
+	overflow: hidden;
+	padding: 16px;
+	border-radius: 5px;
+	word-wrap: break-word;
+	box-sizing: border-box;
 }
 .commerce-insights-pane.is-flex {
-    display: flex;
-    flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
 .commerce-insights-pane.vertical-center {
-    display: flex;
-    align-items: center;
+	display: flex;
+	align-items: center;
 }
 .commerce-insights-pane-title {
-    display: flex;
+	display: flex;
 }
 
 /* switch from a box-shadow "border" to a real one and remove it only on top */
 .commerce-insights-pane.flush-top {
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    margin-top: 0;
-    box-shadow: none;
-    border: 1px solid #e3e5e8;
-    border-top: 0;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+	margin-top: 0;
+	box-shadow: none;
+	border: 1px solid #e3e5e8;
+	border-top: 0;
 }
 
 
 .bar-chart-wrapper {
-    display: flex;
-    width: 350px;
-    height: 250px;
+	display: flex;
+	width: 350px;
+	height: 250px;
 }
 .bar-chart-key {
-    width: 10px; 
-    height: 10px; 
-    top: 1px;
-    display: inline-block;
-    position: relative;
-    margin-right: 0.25rem;
-    border-radius: 9999px;
+	width: 10px;
+	height: 10px;
+	top: 1px;
+	display: inline-block;
+	position: relative;
+	margin-right: 0.25rem;
+	border-radius: 9999px;
 }
 .bar-chart-legend {
-    display: flex;
+	display: flex;
 }
 
 
 .commerce-insights-combined-search-bar {
-    background-color: #f1f5f8;
-    border-radius: 5px;
-    padding: 0.75rem 0.75rem 0.4rem 0.75rem;
+	background-color: #f1f5f8;
+	border-radius: 5px;
+	padding: 0.75rem 0.75rem 0.4rem 0.75rem;
 }
 .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0,0,0,0);
-    border: 0;
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	border: 0;
 }
 
 /* modified from daterangepicker.css in daterangepicker package */
@@ -681,188 +683,187 @@
 
 
 .commerce-insights-date-range-picker {
-    padding: 0.5rem 0.5rem 0.5rem 1rem;
-    background: #fff;
-    width: 100%;
-    width: 500px;
-    position: relative;
-    border-radius: 0.125rem;
-    align-items: center;
-    display: flex;
+	padding: 0.5rem 0.5rem 0.5rem 1rem;
+	background: #fff;
+	width: 500px;
+	position: relative;
+	border-radius: 0.125rem;
+	align-items: center;
+	display: flex;
 }
 .commerce-insights-menu {
-    align-items: center;
-    width: 100%;
-    display: flex;
+	align-items: center;
+	width: 100%;
+	display: flex;
 }
 .commerce-insights-dates {
-    align-items: center;
-    display: flex;
+	align-items: center;
+	display: flex;
 }
 .commerce-insights-save-modal {
-    position: absolute;
-    display: block;
-    z-index: 30;
-    overflow: visible;
-    min-height: 0;
-    height: auto;
-    width: auto;
-    min-width: 300px;
+	position: absolute;
+	display: block;
+	z-index: 30;
+	overflow: visible;
+	min-height: 0;
+	height: auto;
+	width: auto;
+	min-width: 300px;
 }
 .commerce-insights-save-modal-content {
-    padding: 0.75rem;
+	padding: 0.75rem;
 }
 .commerce-insights-save-modal-footer {
-    padding: 0.5rem;
-    display: block;
-    text-align: right;
-    border-radius: 0 0 5px 5px;
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#ecedef), to(#e9eaec));
-    background-image: linear-gradient(#ecedef, #e9eaec);
-    -webkit-box-shadow: inset 0 2px 1px -2px rgba(0, 0, 0, 0.2);
-    box-shadow: inset 0 2px 1px -2px rgba(0, 0, 0, 0.2);
+	padding: 0.5rem;
+	display: block;
+	text-align: right;
+	border-radius: 0 0 5px 5px;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#ecedef), to(#e9eaec));
+	background-image: linear-gradient(#ecedef, #e9eaec);
+	-webkit-box-shadow: inset 0 2px 1px -2px rgba(0, 0, 0, 0.2);
+	box-shadow: inset 0 2px 1px -2px rgba(0, 0, 0, 0.2);
 }
 .commerce-insights-date-range-field {
-    width: 165px;
-    border: 0;
-    display: inline-block;
-    text-align: center;
-    z-index: 0;
-    padding: 0.5rem;
-    background: #edf2f7;
-    color: #718096;
-    font-size: 0.875rem;
-    border-radius: 0.125rem;
+	width: 165px;
+	border: 0;
+	display: inline-block;
+	text-align: center;
+	z-index: 0;
+	padding: 0.5rem;
+	background: #edf2f7;
+	color: #718096;
+	font-size: 0.875rem;
+	border-radius: 0.125rem;
 }
 .toggle-menu {
-    margin-left: 0.5rem;
-    display: inline-block;
-    position: relative;
-    cursor: pointer;
+	margin-left: 0.5rem;
+	display: inline-block;
+	position: relative;
+	cursor: pointer;
 }
 .toggle-arrow {
-    line-height: 0;
+	line-height: 0;
 }
 #save-menu {
-    left: 100px;
-    top: 3rem;
+	left: 100px;
+	top: 3rem;
 }
 
 
 .commerce-insights-donut-pane {
-    width: 100%;
+	width: 100%;
 }
 .commerce-insights-donut-chart-wrapper {
-    margin-left: auto;
-    margin-right: auto;
-    position: relative;
-    margin-bottom: 0.5rem;
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+	margin-bottom: 0.5rem;
 }
 .color-key {
-    width: 0.75rem;
-    height: 0.75rem;
-    border-radius: 9999px;
+	width: 0.75rem;
+	height: 0.75rem;
+	border-radius: 9999px;
 }
 
 
 .period-summary {
-    display: flex;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
+	display: flex;
+	padding-top: 0.5rem;
+	padding-bottom: 0.5rem;
 }
 
 
 .commerce-insights-mini-sparkline-pane {
-    display: flex;
-    width: 100%;
-    position: relative;
+	display: flex;
+	width: 100%;
+	position: relative;
 }
 .commerce-insights-mini-sparkline-pane-content {
-    display: flex;
-    width: 100%;
+	display: flex;
+	width: 100%;
 }
 .commerce-insights-mini-sparkline-pane-value {
-    color: #d3a87a;
-    font-weight: 300;
-    font-size: 1.5rem;
-    margin: 0;
-    padding: 0;
-    width: 100%;
+	color: #d3a87a;
+	font-weight: 300;
+	font-size: 1.5rem;
+	margin: 0;
+	padding: 0;
+	width: 100%;
 }
 .commerce-insights-mini-sparkline-pane-caption {
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    line-height: 1.25;
-    display: flex;
-    font-size: 0.75rem;
-    color: #a0aec0;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	line-height: 1.25;
+	display: flex;
+	font-size: 0.75rem;
+	color: #a0aec0;
 }
 .chart-pane-fill-container {
-    position: absolute;
-    z-index: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin: -16px;
+	position: absolute;
+	z-index: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin: -16px;
 }
 
 
 .commerce-insights-sparkline-pane {
-    display: flex;
-    width: 100%;
+	display: flex;
+	width: 100%;
 }
 .commerce-insights-sparkline-pane .sparkline-pane-left {
-    display: flex;
-    width: 50%;
+	display: flex;
+	width: 50%;
 }
 .commerce-insights-sparkline-pane .sparkline-pane-right {
-    display: flex;
-    height: 100%;
-    width: 47%;
-    position: relative;
-    margin-bottom: 0.5rem;
+	display: flex;
+	height: 100%;
+	width: 47%;
+	position: relative;
+	margin-bottom: 0.5rem;
 }
 
 
 .commerce-insights-summary-datapoint {
-    transition: width 0.5s linear;
-    display: inline-block;
+	transition: width 0.5s linear;
+	display: inline-block;
 }
 .placeholder-summary-text {
-    display: inline-block;
-    background-color: #f1f5f8;
-    color: #f1f5f8;
-    border-radius: 3px;
+	display: inline-block;
+	background-color: #f1f5f8;
+	color: #f1f5f8;
+	border-radius: 3px;
 }
 
 
 .commerce-insights-tab {
-    flex: 1 1 0%;
-    cursor: pointer;
-    user-select: none;
-    text-align: center;
-    padding-top: 0.75rem;
-    padding-bottom: 0.75rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    border: 1px solid #e3e5e8;
-    border-left-color: transparent;
-    border-collapse: collapse;
+	flex: 1 1 0%;
+	cursor: pointer;
+	user-select: none;
+	text-align: center;
+	padding-top: 0.75rem;
+	padding-bottom: 0.75rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	border: 1px solid #e3e5e8;
+	border-left-color: transparent;
+	border-collapse: collapse;
 }
 .commerce-insights-tab:first-child {
-    border-top-left-radius: 0.25rem;
-    border-left-color: #e3e5e8;
+	border-top-left-radius: 0.25rem;
+	border-left-color: #e3e5e8;
 }
 .commerce-insights-tab:last-child {
-    border-top-right-radius: 0.25rem;
+	border-top-right-radius: 0.25rem;
 }
 .commerce-insights-tab.active {
-    border-bottom-color: transparent;
+	border-bottom-color: transparent;
 }
 .commerce-insights-tab-pane {
 @apply rounded-b;
-    border: 1px solid #e3e5e8;
-    border-top: 0;
+	border: 1px solid #e3e5e8;
+	border-top: 0;
 }
 

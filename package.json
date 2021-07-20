@@ -1,6 +1,6 @@
 {
-  "name": "commerceinsightscomponents",
-  "version": "1.0.0-beta.1",
+  "name": "commerceinsights",
+  "version": "1.0.0-beta.4",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
@@ -9,31 +9,32 @@
     "prettify": "prettier --write src/resources/**/*.js"
   },
   "dependencies": {
-    "@babel/core": "^7.5.0",
+    "@babel/core": "^7.14.6",
     "axios": "^0.21.1",
-    "chart.js": "^2.7.2",
-    "daterangepicker": "^3.0.5",
-    "lodash": "^4.17.19",
-    "moment": "^2.24.0",
-    "qs": "^6.8.0",
-    "vue": "^2.6.10",
-    "vue-json-csv": "^1.2.9",
-    "vue-router": "^3.0.1"
+    "chart.js": "^3.4.1",
+    "daterangepicker": "^3.1.0",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.1",
+    "qs": "^6.10.1",
+    "vue": "^2.6.14",
+    "vue-json-csv": "^1.2.12",
+    "vue-router": "^3.5.2"
   },
   "devDependencies": {
-    "@vue/component-compiler-utils": "^3.0.0",
-    "babel-loader": "^8.0.6",
-    "cross-env": "^5.2.0",
-    "css-loader": "^3.0.0",
-    "mini-css-extract-plugin": "^0.7.0",
-    "postcss-nested": "^4.1.2",
-    "prettier": "^1.14.2",
-    "vue-click-outside": "^1.0.7",
-    "vue-loader": "^15.7.0",
-    "vue-style-loader": "^4.1.2",
-    "vue-template-compiler": "^2.6.10",
-    "webpack": "^4.16.5",
-    "webpack-bundle-analyzer": "^3.0.2",
-    "webpack-cli": "^3.3.8"
+    "@vue/component-compiler-utils": "^3.2.2",
+    "babel-loader": "^8.2.2",
+    "cross-env": "^7.0.3",
+    "css-loader": "^5.2.6",
+    "mini-css-extract-plugin": "^2.1.0",
+    "postcss": "^8.3.5",
+    "postcss-nested": "^5.0.5",
+    "prettier": "^2.3.2",
+    "vue-click-outside": "^1.1.0",
+    "vue-loader": "^15.9.7",
+    "vue-style-loader": "^4.1.3",
+    "vue-template-compiler": "^2.6.14",
+    "webpack": "^5.44.0",
+    "webpack-bundle-analyzer": "^4.4.2",
+    "webpack-cli": "^4.7.2"
   }
 }

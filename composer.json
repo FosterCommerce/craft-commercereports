@@ -1,18 +1,18 @@
 {
-    "name": "fostercommerce/commerce-insights-components",
+    "name": "fostercommerce/commerce-insights",
     "description": "Sales and purchase insights for Craft Commerce.",
     "type": "craft-plugin",
-    "version": "1.0.0-beta.1",
+    "version": "1.0.0-beta.4",
     "keywords": [
         "craft",
         "cms",
         "craftcms",
         "craft-plugin",
-        "commerce insights components"
+        "commerce insights"
     ],
     "support": {
-        "docs": "https://github.com/workingconcept/commerce-insights-components/blob/master/README.md",
-        "issues": "https://github.com/workingconcept/commerce-insights-components/issues"
+        "docs": "https://github.com/workingconcept/commerce-insights/blob/master/README.md",
+        "issues": "https://github.com/workingconcept/commerce-insights/issues"
     },
     "license": "proprietary",
     "authors": [
@@ -26,15 +26,15 @@
     },
     "autoload": {
         "psr-4": {
-          "fostercommerce\\commerceinsightscomponents\\": "src/"
+          "fostercommerce\\commerceinsights\\": "src/"
         }
     },
     "extra": {
-        "name": "Commerce Insights Components",
-        "handle": "commerceinsightscomponents",
+        "name": "Commerce Insights",
+        "handle": "commerceinsights",
         "hasCpSettings": false,
         "hasCpSection": true,
-        "changelogUrl": "https://raw.githubusercontent.com/workingconcept/commerce-insights-components/master/CHANGELOG.md",
-        "class": "fostercommerce\\commerceinsightscomponents\\CommerceInsightsComponents"
+        "changelogUrl": "https://raw.githubusercontent.com/workingconcept/commerce-insights/master/CHANGELOG.md",
+        "class": "fostercommerce\\commerceinsights\\CommerceInsights"
     }
 }
