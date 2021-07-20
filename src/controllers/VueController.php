@@ -25,9 +25,16 @@ class VueController extends Controller
     {
         parent::__construct($id, $module, $config);
 
-        $this->protocol   = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
-        $this->start_date = $_POST['range_start'] ?? null;
-        $this->end_date   = $_POST['range_end'] ?? null;
+        $this->protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+        $today          = new \DateTime(date('Y-m-d'));
+        $weekAgo        = new \DateTime(date('Y-m-d'));
+        $weekAgo        = $weekAgo->modify('-7 day')->format('Y-m-d 00:00:00');
+        $rangeStart     = $_POST['range_start'] ?? null;
+        $this->end_date = $_POST['range_end'] ?? $today->format('Y-m-d 23:59:59');
+
+        $this->start_date = $rangeStart ?
+            \DateTime::createFromFormat('Y-m-d H:i:s', $rangeStart)->format('Y-m-d 00:00:00') :
+            \DateTime::createFromFormat('Y-m-d H:i:s', $weekAgo)->format('Y-m-d 00:00:00');
     }
 
     public function actionIndex($view)
@@ -77,12 +84,16 @@ class VueController extends Controller
      */
     private function fetchOrders($id = null) : array
     {
-        $single   = $_GET['purchasableId'] ?? $id;
-        $start    = $this->start_date ? \DateTime::createFromFormat('Y-m-d H:i:s', $this->start_date) : '1970-01-01 00:00:00';
-        $end      = $this->end_date ? \DateTime::createFromFormat('Y-m-d H:i:s', $this->end_date) : gmdate('Y-m-d 23:59:59');
+        $single       = $_GET['purchasableId'] ?? $id;
+        $currentStart = \DateTime::createFromFormat('Y-m-d H:i:s', $this->start_date)->format('Y-m-d 00:00:00');
+        $start        = \DateTime::createFromFormat('Y-m-d H:i:s', $this->start_date);
+        $end          = \DateTime::createFromFormat('Y-m-d H:i:s', $this->end_date);
+        // nuber of days in selected range
         $numDays  = $end->diff($start)->format("%r%a");
+        // get the new start date based on what the previous period would be
         $newStart = $start->modify($numDays . ' day')->format('Y-m-d 00:00:00');
         $newEnd   = $end->format('Y-m-d 23:59:59');
+        // query the previous perior and selected range based on new start date
         $orders   = Order::find()->dateOrdered(['and', ">= {$newStart}", "< {$newEnd}"])->distinct()->orderBy('dateOrdered desc');
         $url      = $_SERVER['REQUEST_URI'];
         $path     = basename(parse_url($url, PHP_URL_PATH));
@@ -91,13 +102,13 @@ class VueController extends Controller
         if ($single) {
             $single = Variant::find()->id($single)->one();
             $orders->hasPurchasables([$single]);
-        }
-
-        if ($single || $path === 'sales') {
             $orders->orderStatusId('< 4');
         }
 
-        return $orders->all() ?: [];
+        $result['previousPeriod'] = $orders->dateOrdered(['and', ">= {$newStart}", "< {$currentStart}"])->all();
+        $result['currentPeriod']  = $orders->dateOrdered(['and', ">= {$currentStart}", "< {$newEnd}"])->all();
+
+        return $result;
     }
 
     /**
@@ -122,14 +133,10 @@ class VueController extends Controller
 
     private function _getStats()
     {
-        $this->start_date = $_POST['range_start'] ?? null;
-        $this->end_date   = $_POST['range_end']   ?? null;
-
-        $products   = Product::find()->all();
-        $orders     = $this->fetchOrders();
-        $num_orders = count($orders);
-        $currency   = 'USD';
-        $result     = [
+        $orders         = $this->fetchOrders();
+        $previousOrders = count($orders['previousPeriod']);
+        $currentOrders  = count($orders['currentPeriod']);
+        $result         = [
             'orders' => [
                 // This is for the paragraph data
                 // we probably don't need this but the component needs changed to look at orders data
@@ -175,8 +182,9 @@ class VueController extends Controller
                     ]
                 ],
                 'totalOrders' => [
-                    'total' => $num_orders,
-                    'percentChange' => 8, // this is based on the new previous period data
+                    'total' => $currentOrders,
+                    // this is based on the new previous period data
+                    'percentChange' => round((($currentOrders - $previousOrders) / $previousOrders) * 100, 2),
                     'series' => [32, 40, 43, 45, 300, 56, 60, 80, 90, 105]
                 ],
                 // averageOrderValue, averageOrderQuantity
@@ -218,61 +226,15 @@ class VueController extends Controller
             ]
         ];
 
-        foreach ($products as $product) {
-            if (!isset($result['products']['mostPurchased']['types'][$product['type']['name']])) {
-                $result['products']['mostPurchased']['types'][$product['type']['name']] = 0;
-            }
-
-            if ($product['type']['name'] === 'Additions' || $product['type']['name'] === 'Addons') {
-                $result['products']['mostProfitable'][$product['defaultSku']] = [
-                    'title'  => $product['title'],
-                    'values' => [0, 0]
-                ];
-            }
-        }
-
-        foreach ($orders as $order) {
-            $line_items = $order->lineItems;
-
-            foreach ($line_items as $item) {
-                $purchasable = $item->purchasable;
-
-                if ($purchasable) {
-                    $product = $purchasable->product;
-                    $result['products']['mostPurchased']['types'][$product->type->name] += $item->qty;
-
-                    if ($product->type->name === 'Additions' || $product->type->name === 'Addons') {
-                        $result['products']['mostProfitable'][$product->defaultSku]['values'][0] += $item->qty;
-                        $result['products']['mostProfitable'][$product->defaultSku]['values'][1] += $item->salePrice * $item->qty;
-                    }
-                }
-            }
-        }
-
-        foreach ($result['products']['mostProfitable'] as $sku => $product) {
-            $qty = $product['values'][0];
-
-            if ($qty > 0 && $num_orders > 0) {
-                $result['products']['mostProfitable'][$sku]['values'][0] = round($product['values'][0] / $num_orders * 100) . '%';
-            } else {
-                $result['products']['mostProfitable'][$sku]['values'][0] = '0%';
-            }
-
-            $result['products']['mostProfitable'][$sku]['values'][1] = static::convertCurrency($product['values'][1], $currency);
-        }
-
         return $result;
     }
 
     protected function _getOrders($id = null)
     {
-        $this->start_date = $_POST['range_start'] ?? $this->start_date;
-        $this->end_date   = $_POST['range_end']   ?? $this->end_date;
-
         $orders = $this->fetchOrders($id);
         $result = [];
 
-        foreach ($orders as $idx => $order) {
+        foreach ($orders['currentPeriod'] as $idx => $order) {
             $currency   = $order->currency;
             $line_items = $order->lineItems;
             $result[]   = [
