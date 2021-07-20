@@ -133,9 +133,22 @@ class VueController extends Controller
 
     private function _getStats()
     {
-        $orders         = $this->fetchOrders();
-        $previousOrders = count($orders['previousPeriod']);
-        $currentOrders  = count($orders['currentPeriod']);
+        $orders            = $this->fetchOrders();
+        $previousOrders    = $orders['previousPeriod'];
+        $currentOrders     = $orders['currentPeriod'];
+        $numPreviousOrders = count($previousOrders);
+        $numCurrentOrders  = count($currentOrders);
+        $previousRevenue   = 0;
+        $currentRevenue    = 0;
+
+        foreach ($previousOrders as $order) {
+            $previousRevenue += $order->totalPaid;
+        }
+
+        foreach ($currentOrders as $order) {
+            $currentRevenue += $order->totalPaid;
+        }
+
         $result         = [
             'orders' => [
                 // This is for the paragraph data
@@ -182,9 +195,10 @@ class VueController extends Controller
                     ]
                 ],
                 'totalOrders' => [
-                    'total' => $currentOrders,
+                    'total' => $numCurrentOrders,
                     // this is based on the new previous period data
-                    'percentChange' => round((($currentOrders - $previousOrders) / $previousOrders) * 100, 2),
+                    'percentChange' => round((($numCurrentOrders - $numPreviousOrders) / $numPreviousOrders) * 100, 2),
+                    'revenue' => round((($currentRevenue - $previousRevenue) / $previousRevenue) * 100, 2),
                     'series' => [32, 40, 43, 45, 300, 56, 60, 80, 90, 105]
                 ],
                 // averageOrderValue, averageOrderQuantity
@@ -213,16 +227,6 @@ class VueController extends Controller
                     'percentChange' => 8,
                     'series' => [32, 40, 43, 45, 49, 56, 60, 80, 90, 105]
                 ]
-            ],
-            'products' => [
-                'summary' => [
-                    'shipmentsPercentChange' => 0,
-                    'ordersPercentChange'    => 0
-                ],
-                'mostPurchased' => [
-                    'types' => []
-                ],
-                'mostProfitable' => []
             ]
         ];
 

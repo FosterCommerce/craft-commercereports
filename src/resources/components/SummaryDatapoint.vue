@@ -4,7 +4,13 @@
 	export default {
 		name: 'summary-datapoint',
 		props: {
-			changeValue: Number,
+			data: {
+			  type: Object,
+        default: () => {},
+      },
+      number: {
+        type: Number,
+      },
 			format: {
 				type: String,
 				default: 'percent',
@@ -20,9 +26,9 @@
 		},
 		methods: {
 			getTrendPhrase() {
-				if (this.changeValue > 0) {
+				if (this.data.percentChange > 0) {
 					return this.upDown ? 'up by' : 'increased by';
-				} else if (this.changeValue === 0) {
+				} else if (this.data.percentChange === 0) {
 				  return 'unchanged';
         }
 
@@ -31,13 +37,13 @@
 			getFormattedChangeValue() {
 			  let text = this.format === 'percent' ? `${this.getTrendPhrase()} ` : '';
 
-        if (this.format === 'percent' && this.changeValue !== 0) {
-          text += `${Math.abs(this.changeValue)}%`;
+        if (this.format === 'percent' && this.data.percentChange !== 0) {
+          text += `${Math.abs(this.data.percentChange)}%`;
         }
 
 			  if (this.format === 'orders') {
-			    text += `${this.changeValue} ${this.changeValue !== 1 ? 'orders' : 'order'}`;
-			    text += ` (${this.getTrendPhrase()}${this.changeValue !== 0 ? ' ' + Math.abs(this.changeValue) + '%' : ''})`;
+			    text += `${this.data.total} ${this.total !== 1 ? 'orders' : 'order'}`;
+			    text += ` (${this.getTrendPhrase()}${this.data.percentChange !== 0 ? ' ' + Math.abs(this.data.percentChange) + '%' : ''})`;
         }
 
 				return text;
@@ -48,16 +54,31 @@
 
 <template>
 	<span
+    v-if="data"
 		:class="{
-			'placeholder-summary-text': changeValue === undefined || changeValue === NaN,
-			'commerce-insights-up': changeValue > 0,
-			'commerce-insights-down': changeValue < 0,
-			'commerce-insights-unchanged': changeValue === 0,
+			'placeholder-summary-text': data.percentChange === undefined || data.percentChange === NaN,
+			'commerce-insights-up': data.percentChange > 0,
+			'commerce-insights-down': data.percentChange < 0,
+			'commerce-insights-unchanged': data.percentChange === 0,
 		}"
 		class="commerce-insights-summary-datapoint"
 	>
 		{{ getFormattedChangeValue() }}
 	</span>
+
+  <span
+    v-else
+    :class="{
+      'commerce-insights-up': number > 0,
+			'commerce-insights-down': number < 0,
+			'commerce-insights-unchanged': number === 0,
+    }"
+  >
+    <span v-if="number > 0">up</span>
+    <span v-if="number < 0">down</span>
+    <span v-if="number === 0">unchanged</span>
+    <span v-if="number !== 0">{{ number }}%</span>
+  </span>
 </template>
 
 <style>

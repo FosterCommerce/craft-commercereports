@@ -2,12 +2,12 @@
     <p>
       Revenue is
       <summary-datapoint
-        :change-value="stats.products.summary.shipmentsPercentChange"
+        :number="stats.orders.totalOrders.revenue"
         up-down
       ></summary-datapoint>
       for the selected date range compared the previous period. You also have
       <summary-datapoint
-        :change-value="stats.products.summary.shipmentsPercentChange"
+        :data="stats.orders.totalOrders"
         format="orders"
         up-down
       ></summary-datapoint>
