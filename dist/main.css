@@ -236,19 +236,19 @@
 
 
 .commerce-insights-combined-search-bar {
-	background-color: #f1f5f8;
-	border-radius: 5px;
-	padding: 0.75rem 0.75rem 0.4rem 0.75rem;
+  background-color: #f1f5f8;
+  border-radius: 5px;
+  padding: 0.75rem 0.75rem 0.4rem 0.75rem;
 }
 .sr-only {
-	position: absolute;
-	width: 1px;
-	height: 1px;
-	padding: 0;
-	margin: -1px;
-	overflow: hidden;
-	clip: rect(0, 0, 0, 0);
-	border: 0;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
 }
 
 /* modified from daterangepicker.css in daterangepicker package */
