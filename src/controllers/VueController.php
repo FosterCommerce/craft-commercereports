@@ -326,7 +326,7 @@ class VueController extends Controller
                 'base'          => static::convertCurrency(($order->total - $order->adjustmentSubtotal), $currency),
                 'merchTotal'    => static::convertCurrency(($order->total - $order->totalTax - $order->totalShippingCost - $order->totalDiscount), $currency),
                 'tax'           => static::convertCurrency($order->totalTax, $currency),
-                'shipping'      => $order->totalShippingCost,
+                'shipping'      => static::convertCurrency($order->totalShippingCost, $currency),
                 'discount'      => static::convertCurrency($order->totalDiscount, $currency),
                 'amountPaid'    => static::convertCurrency($order->totalPaid, $currency),
                 'paymentStatus' => ucwords($order->paidStatus),
@@ -340,8 +340,6 @@ class VueController extends Controller
             foreach ($line_items as $item) {
                 $result[$idx]['numItems'] += $item->qty;
             }
-
-            $result[$idx]['shipping'] = static::convertCurrency($result[$idx]['shipping'], $currency);
         }
 
         return $result;
