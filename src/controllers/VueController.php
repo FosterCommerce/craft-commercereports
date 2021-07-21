@@ -134,39 +134,41 @@ class VueController extends Controller
         $numCurrentOrders  = count($currentOrders);
         $previousRevenue   = 0;
         $currentRevenue    = 0;
+        $totalOrdersArr    = [];
+        $totalOrdersSet    = [];
         $datePeriod        = new \DatePeriod(
             new \DateTime($this->start_date),
             new \DateInterval('P1D'),
             new \DateTime($this->end_date)
         );
-        $totalOrdersArr    = [];
-        $totalOrdersSet    = [];
 
+        // build the total orders arr
         foreach ($datePeriod as $key => $value) {
             $totalOrdersArr[$value->format('Y-m-d')] = 0;
         }
 
+        // calculate total revenue for last period
         foreach ($previousOrders as $order) {
             $previousRevenue += $order->totalPaid;
         }
 
+        // add orders to their dates in the total orders arr, and
+        // calculate revenue for current period
         foreach ($currentOrders as $order) {
             $dateOrdered = $order->dateOrdered->format('Y-m-d');
-
-            if (!array_key_exists($dateOrdered, $totalOrdersArr)) {
-                $totalOrdersArr[$dateOrdered] = 0;
-            }
-
             $totalOrdersArr[$dateOrdered] += 1;
             $currentRevenue += $order->totalPaid;
         }
 
         $numDaysInSet = count($totalOrdersArr);
 
+        // if 12 weeks or more is selected, chunk the stats by the
+        // largest prime factor of days so the series doesn't get too large
         if ($numDaysInSet > 83) {
             $largestPrime = self::largestPrime($numDaysInSet);
             $chunkedArr   = array_chunk($totalOrdersArr, $largestPrime);
 
+            // build the total orders set
             foreach ($chunkedArr as $key => $arr) {
                 $chunkTotal = 0;
 
@@ -176,19 +178,15 @@ class VueController extends Controller
 
                 $totalOrdersSet[] = $chunkTotal;
             }
-        } else {
+        } else { // selected range is less than 12 weeks
+            // build the total orders set
             foreach ($totalOrdersArr as $date => $num) {
                 $totalOrdersSet[] = $num;
             }
         }
 
-        $result         = [
+        $result = [
             'orders' => [
-                // This is for the paragraph data
-                // we probably don't need this but the component needs changed to look at orders data
-                'summary' => [
-                    'ordersPercentChange' => 0
-                ],
                 // This is in the customers view
                 'topLocations' => [
                     [
@@ -236,7 +234,7 @@ class VueController extends Controller
                 ],
                 // averageOrderValue, averageOrderQuantity
                 'averageValue' => [
-                    'total' => 98.76,
+                    'total' => round($currentRevenue / $numCurrentOrders, 2),
                     'percentChange' => -3,
                     'series' => [32, 40, 43, 45, 49, 56, 60, 80, 90, 105]
                 ],
