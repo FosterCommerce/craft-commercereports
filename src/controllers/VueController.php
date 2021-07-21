@@ -134,6 +134,10 @@ class VueController extends Controller
         $numCurrentOrders  = count($currentOrders);
         $previousRevenue   = 0;
         $currentRevenue    = 0;
+        $previousQuantity  = 0;
+        $currentQuantity   = 0;
+        $previousAoq       = 0;
+        $currentAoq        = 0;
         $totalOrdersArr    = [];
         $totalOrdersSet    = [];
         $aovArr            = [];
@@ -150,21 +154,34 @@ class VueController extends Controller
             $aovArr[$value->format('Y-m-d')] = 0;
         }
 
-        // calculate total revenue for last period
+        // calculate total revenue and average order quantity for last period
         foreach ($previousOrders as $order) {
+            $lineItems = $order->lineItems;
             $previousRevenue += $order->totalPaid;
+
+            foreach ($lineItems as $item) {
+                $previousQuantity += $item->qty;
+            }
         }
 
         // add orders to their dates in the total orders arr, and
         // calculate revenue and AOV for current period
         foreach ($currentOrders as $order) {
+            $lineItems   = $order->lineItems;
             $dateOrdered = $order->dateOrdered->format('Y-m-d');
+
             $totalOrdersArr[$dateOrdered] += 1;
             $aovArr[$dateOrdered] += $order->totalPaid;
             $currentRevenue += $order->totalPaid;
+
+            foreach ($lineItems as $item) {
+                $currentQuantity += $item->qty;
+            }
         }
 
         $numDaysInSet = count($totalOrdersArr);
+        $previousAoq  = $previousQuantity / $numPreviousOrders;
+        $currentAoq   = $currentQuantity / $numCurrentOrders;
 
         // if 12 weeks or more is selected, chunk the stats by the
         // largest prime factor of days so the series doesn't get too large
@@ -260,8 +277,8 @@ class VueController extends Controller
                     'series' => $aovSet
                 ],
                 'averageQuantity' => [
-                    'total' => 4,
-                    'percentChange' => 25,
+                    'total' => round($currentAoq, 2),
+                    'percentChange' => round((($currentAoq - $previousAoq) / $previousAoq) * 100, 2),
                     'series' => [32, 40, 43, 45, 49, 56, 60, 80, 90, 105]
                 ],
                 'totalCustomers' => [
