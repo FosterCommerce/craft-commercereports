@@ -134,13 +134,52 @@ class VueController extends Controller
         $numCurrentOrders  = count($currentOrders);
         $previousRevenue   = 0;
         $currentRevenue    = 0;
+        $datePeriod        = new \DatePeriod(
+            new \DateTime($this->start_date),
+            new \DateInterval('P1D'),
+            new \DateTime($this->end_date)
+        );
+        $totalOrdersArr    = [];
+        $totalOrdersSet    = [];
+
+        foreach ($datePeriod as $key => $value) {
+            $totalOrdersArr[$value->format('Y-m-d')] = 0;
+        }
 
         foreach ($previousOrders as $order) {
             $previousRevenue += $order->totalPaid;
         }
 
         foreach ($currentOrders as $order) {
+            $dateOrdered = $order->dateOrdered->format('Y-m-d');
+
+            if (!array_key_exists($dateOrdered, $totalOrdersArr)) {
+                $totalOrdersArr[$dateOrdered] = 0;
+            }
+
+            $totalOrdersArr[$dateOrdered] += 1;
             $currentRevenue += $order->totalPaid;
+        }
+
+        $numDaysInSet = count($totalOrdersArr);
+
+        if ($numDaysInSet > 83) {
+            $largestPrime = self::largestPrime($numDaysInSet);
+            $chunkedArr   = array_chunk($totalOrdersArr, $largestPrime);
+
+            foreach ($chunkedArr as $key => $arr) {
+                $chunkTotal = 0;
+
+                foreach ($arr as $num) {
+                    $chunkTotal += $num;
+                }
+
+                $totalOrdersSet[] = $chunkTotal;
+            }
+        } else {
+            foreach ($totalOrdersArr as $date => $num) {
+                $totalOrdersSet[] = $num;
+            }
         }
 
         $result         = [
@@ -193,7 +232,7 @@ class VueController extends Controller
                     // this is based on the new previous period data
                     'percentChange' => round((($numCurrentOrders - $numPreviousOrders) / $numPreviousOrders) * 100, 2),
                     'revenue' => round((($currentRevenue - $previousRevenue) / $previousRevenue) * 100, 2),
-                    'series' => [32, 40, 43, 45, 300, 56, 60, 80, 90, 105]
+                    'series' => $totalOrdersSet
                 ],
                 // averageOrderValue, averageOrderQuantity
                 'averageValue' => [
@@ -243,12 +282,12 @@ class VueController extends Controller
                 'dateStamp'     => $order->dateOrdered->getTimestamp(),
                 'status'        => $order->orderStatus->name,
                 'color'         => $order->orderStatus->color,
-                'base'          => static::convertCurrency(($order->total - $order->adjustmentSubtotal), $currency),
-                'merchTotal'    => static::convertCurrency(($order->total - $order->totalTax - $order->totalShippingCost - $order->totalDiscount), $currency),
-                'tax'           => static::convertCurrency($order->totalTax, $currency),
-                'shipping'      => static::convertCurrency($order->totalShippingCost, $currency),
-                'discount'      => static::convertCurrency($order->totalDiscount, $currency),
-                'amountPaid'    => static::convertCurrency($order->totalPaid, $currency),
+                'base'          => self::convertCurrency(($order->total - $order->adjustmentSubtotal), $currency),
+                'merchTotal'    => self::convertCurrency(($order->total - $order->totalTax - $order->totalShippingCost - $order->totalDiscount), $currency),
+                'tax'           => self::convertCurrency($order->totalTax, $currency),
+                'shipping'      => self::convertCurrency($order->totalShippingCost, $currency),
+                'discount'      => self::convertCurrency($order->totalDiscount, $currency),
+                'amountPaid'    => self::convertCurrency($order->totalPaid, $currency),
                 'paymentStatus' => ucwords($order->paidStatus),
                 'paidColor'     => $order->paidStatus === 'paid' ? 'green' : 'red',
                 'email'         => $order->customer->email,
@@ -263,5 +302,31 @@ class VueController extends Controller
         }
 
         return $result;
+    }
+
+    private static function largestPrime($num)
+    {
+        $largestPrime = -1;
+
+        //check divisibility by 2 to know if 2 might be the largest prime factor
+        while ($num % 2 == 0) {
+            $largestPrime = 2;
+            $num >>= 1;
+        }
+
+        //Prime factors are always odd, so skipping even numbers
+        for ($flag = 3; $flag <= sqrt($num); $flag += 2) {
+            while ($num % $flag == 0) {
+                $largestPrime = $flag;
+                $num = $num / $flag;
+            }
+        }
+
+        //see if the $number is a prime which is greater than 2
+        if ($num > 2) {
+            $largestPrime = $num;
+        }
+
+        return $largestPrime;
     }
 }
