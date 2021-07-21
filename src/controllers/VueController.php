@@ -136,15 +136,18 @@ class VueController extends Controller
         $currentRevenue    = 0;
         $totalOrdersArr    = [];
         $totalOrdersSet    = [];
+        $aovArr            = [];
+        $aovSet            = [];
         $datePeriod        = new \DatePeriod(
             new \DateTime($this->start_date),
             new \DateInterval('P1D'),
             new \DateTime($this->end_date)
         );
 
-        // build the total orders arr
+        // build the total orders and AOV arrs
         foreach ($datePeriod as $key => $value) {
             $totalOrdersArr[$value->format('Y-m-d')] = 0;
+            $aovArr[$value->format('Y-m-d')] = 0;
         }
 
         // calculate total revenue for last period
@@ -153,10 +156,11 @@ class VueController extends Controller
         }
 
         // add orders to their dates in the total orders arr, and
-        // calculate revenue for current period
+        // calculate revenue and AOV for current period
         foreach ($currentOrders as $order) {
             $dateOrdered = $order->dateOrdered->format('Y-m-d');
             $totalOrdersArr[$dateOrdered] += 1;
+            $aovArr[$dateOrdered] += $order->totalPaid;
             $currentRevenue += $order->totalPaid;
         }
 
@@ -165,11 +169,12 @@ class VueController extends Controller
         // if 12 weeks or more is selected, chunk the stats by the
         // largest prime factor of days so the series doesn't get too large
         if ($numDaysInSet > 83) {
-            $largestPrime = self::largestPrime($numDaysInSet);
-            $chunkedArr   = array_chunk($totalOrdersArr, $largestPrime);
+            $largestPrime     = self::largestPrime($numDaysInSet);
+            $chunkedOrdersArr = array_chunk($totalOrdersArr, $largestPrime);
+            $chunkedAovArr    = array_chunk($aovArr, $largestPrime);
 
             // build the total orders set
-            foreach ($chunkedArr as $key => $arr) {
+            foreach ($chunkedOrdersArr as $key => $arr) {
                 $chunkTotal = 0;
 
                 foreach ($arr as $num) {
@@ -178,10 +183,26 @@ class VueController extends Controller
 
                 $totalOrdersSet[] = $chunkTotal;
             }
+
+            // build the AOV set
+            foreach ($chunkedAovArr as $key => $arr) {
+                $chunkTotal = 0;
+
+                foreach ($arr as $num) {
+                    $chunkTotal += $num;
+                }
+
+                $aovSet[] = $chunkTotal;
+            }
         } else { // selected range is less than 12 weeks
             // build the total orders set
             foreach ($totalOrdersArr as $date => $num) {
                 $totalOrdersSet[] = $num;
+            }
+
+            // build the AOV set
+            foreach ($aovArr as $date => $val) {
+                $aovSet[] = $val;
             }
         }
 
@@ -236,7 +257,7 @@ class VueController extends Controller
                 'averageValue' => [
                     'total' => round($currentRevenue / $numCurrentOrders, 2),
                     'percentChange' => round((($currentRevenue - $previousRevenue) / $previousRevenue) * 100, 2),
-                    'series' => [32, 40, 43, 45, 49, 56, 60, 80, 90, 105]
+                    'series' => $aovSet
                 ],
                 'averageQuantity' => [
                     'total' => 4,
