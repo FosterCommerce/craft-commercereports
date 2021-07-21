@@ -12,7 +12,6 @@ use kuriousagency\commerce\bundles\elements\Bundle;
 
 class VueController extends Controller
 {
-    private $protocol;
     private $stats;
     private $orders;
     private $products;
@@ -25,12 +24,11 @@ class VueController extends Controller
     {
         parent::__construct($id, $module, $config);
 
-        $this->protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
         $today          = new \DateTime(date('Y-m-d'));
         $weekAgo        = new \DateTime(date('Y-m-d'));
         $weekAgo        = $weekAgo->modify('-7 day')->format('Y-m-d 00:00:00');
-        $rangeStart     = $_POST['range_start'] ?? null;
-        $this->end_date = $_POST['range_end'] ?? $today->format('Y-m-d 23:59:59');
+        $rangeStart     = Craft::$app->request->getBodyParam('range_start');
+        $this->end_date = Craft::$app->request->getBodyParam('range_end') ?? $today->format('Y-m-d 23:59:59');
 
         $this->start_date = $rangeStart ?
             \DateTime::createFromFormat('Y-m-d H:i:s', $rangeStart)->format('Y-m-d 00:00:00') :
@@ -46,7 +44,7 @@ class VueController extends Controller
 
     public function actionGetStats()
     {
-        return $this->asJson(static::_getStats());
+        return $this->asJson($this->_getStats());
     }
 
     public function actionGetOrders()
@@ -84,7 +82,7 @@ class VueController extends Controller
      */
     private function fetchOrders($id = null) : array
     {
-        $single       = $_GET['purchasableId'] ?? $id;
+        $single       = Craft::$app->request->getQueryParam('purchasableId') ?? $id;
         $currentStart = \DateTime::createFromFormat('Y-m-d H:i:s', $this->start_date)->format('Y-m-d 00:00:00');
         $start        = \DateTime::createFromFormat('Y-m-d H:i:s', $this->start_date);
         $end          = \DateTime::createFromFormat('Y-m-d H:i:s', $this->end_date);
@@ -92,11 +90,9 @@ class VueController extends Controller
         $numDays  = $end->diff($start)->format("%r%a");
         // get the new start date based on what the previous period would be
         $newStart = $start->modify($numDays . ' day')->format('Y-m-d 00:00:00');
-        $newEnd   = $end->format('Y-m-d 23:59:59');
-        // query the previous perior and selected range based on new start date
-        $orders   = Order::find()->dateOrdered(['and', ">= {$newStart}", "< {$newEnd}"])->distinct()->orderBy('dateOrdered desc');
-        $url      = $_SERVER['REQUEST_URI'];
-        $path     = basename(parse_url($url, PHP_URL_PATH));
+        $end->modify('1 day')->format('Y-m-d 00:00:00');
+        // query the previous period and selected range based on new start date
+        $orders   = Order::find()->dateOrdered(['and', ">= {$newStart}", "< {$end}"])->distinct()->orderBy('dateOrdered desc');
         $result   = [];
 
         if ($single) {
@@ -106,7 +102,7 @@ class VueController extends Controller
         }
 
         $result['previousPeriod'] = $orders->dateOrdered(['and', ">= {$newStart}", "< {$currentStart}"])->all();
-        $result['currentPeriod']  = $orders->dateOrdered(['and', ">= {$currentStart}", "< {$newEnd}"])->all();
+        $result['currentPeriod']  = $orders->dateOrdered(['and', ">= {$currentStart}", "< {$end}"])->all();
 
         return $result;
     }
