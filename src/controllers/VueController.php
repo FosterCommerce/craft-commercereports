@@ -7,8 +7,6 @@ use craft\commerce\elements\Order;
 use craft\commerce\elements\Product;
 use craft\commerce\elements\Variant;
 use craft\commerce\helpers\Currency;
-use craft\elements\User;
-use kuriousagency\commerce\bundles\elements\Bundle;
 
 class VueController extends Controller
 {
