@@ -235,7 +235,7 @@ class VueController extends Controller
                 // averageOrderValue, averageOrderQuantity
                 'averageValue' => [
                     'total' => round($currentRevenue / $numCurrentOrders, 2),
-                    'percentChange' => -3,
+                    'percentChange' => round((($currentRevenue - $previousRevenue) / $previousRevenue) * 100, 2),
                     'series' => [32, 40, 43, 45, 49, 56, 60, 80, 90, 105]
                 ],
                 'averageQuantity' => [
