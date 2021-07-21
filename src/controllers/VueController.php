@@ -84,6 +84,10 @@ class VueController extends Controller
         $currentStart = \DateTime::createFromFormat('Y-m-d H:i:s', $this->start_date)->format('Y-m-d 00:00:00');
         $start        = \DateTime::createFromFormat('Y-m-d H:i:s', $this->start_date);
         $end          = \DateTime::createFromFormat('Y-m-d H:i:s', $this->end_date);
+        // possible filters
+        $keyword      = \Craft::$app->request->getBodyParam('keyword');
+        $orderType    = \Craft::$app->request->getBodyParam('orderType');
+        $paymentType  = \Craft::$app->request->getBodyParam('paymentType');
         // nuber of days in selected range
         $numDays  = $end->diff($start)->format("%r%a");
         // get the new start date based on what the previous period would be
@@ -97,6 +101,18 @@ class VueController extends Controller
             $single = Variant::find()->id($single)->one();
             $orders->hasPurchasables([$single]);
             $orders->orderStatusId('< 4');
+        }
+
+        if ($keyword) {
+            // TODO: filter results by keyword
+        }
+
+        if ($orderType) {
+            $orders->orderStatus(strtolower($orderType));
+        }
+
+        if ($paymentType) {
+            $orders->where(['paidStatus' => strtolower($paymentType)]);
         }
 
         $result['previousPeriod'] = $orders->dateOrdered(['and', ">= {$newStart}", "< {$currentStart}"])->all();
@@ -186,8 +202,14 @@ class VueController extends Controller
         }
 
         $numDaysInSet = count($totalOrdersArr);
-        $previousAoq  = $previousQuantity / $numPreviousOrders;
-        $currentAoq   = $currentQuantity / $numCurrentOrders;
+
+        if ($previousQuantity && $numPreviousOrders) {
+            $previousAoq = $previousQuantity / $numPreviousOrders;
+        }
+
+        if ($currentQuantity && $numPreviousOrders) {
+            $currentAoq = $currentQuantity / $numCurrentOrders;
+        }
 
         // if 12 weeks or more is selected, chunk the stats by the
         // largest prime factor of days so the series doesn't get too large
@@ -289,19 +311,19 @@ class VueController extends Controller
                 'totalOrders' => [
                     'total' => $numCurrentOrders,
                     // this is based on the new previous period data
-                    'percentChange' => round((($numCurrentOrders - $numPreviousOrders) / $numPreviousOrders) * 100, 2),
-                    'revenue' => round((($currentRevenue - $previousRevenue) / $previousRevenue) * 100, 2),
+                    'percentChange' => $numPreviousOrders ? round((($numCurrentOrders - $numPreviousOrders) / $numPreviousOrders) * 100, 2) : 0,
+                    'revenue' => $previousRevenue ? round((($currentRevenue - $previousRevenue) / $previousRevenue) * 100, 2) : 0,
                     'series' => $totalOrdersSet
                 ],
                 // averageOrderValue, averageOrderQuantity
                 'averageValue' => [
-                    'total' => round($currentRevenue / $numCurrentOrders, 2),
-                    'percentChange' => round((($currentRevenue - $previousRevenue) / $previousRevenue) * 100, 2),
+                    'total' => $numCurrentOrders ? round($currentRevenue / $numCurrentOrders, 2) : 0,
+                    'percentChange' => $previousRevenue ? round((($currentRevenue - $previousRevenue) / $previousRevenue) * 100, 2) : 0,
                     'series' => $aovSet
                 ],
                 'averageQuantity' => [
                     'total' => round($currentAoq, 2),
-                    'percentChange' => round((($currentAoq - $previousAoq) / $previousAoq) * 100, 2),
+                    'percentChange' => $previousAoq ? round((($currentAoq - $previousAoq) / $previousAoq) * 100, 2) : 0,
                     'series' => $aoqSet
                 ],
                 'totalCustomers' => [

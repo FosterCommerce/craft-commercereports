@@ -1,3 +1,4 @@
+import Orders from './layouts/Orders.vue';
 import BarChartPanel from './components/BarChartPanel.vue';
 import Chart from './components/Chart.vue';
 import CombinedSearch from './components/CombinedSearch.vue';
@@ -19,6 +20,7 @@ const app = new Vue({
   el: '#main',
   delimiters: ['${', '}'],
   components: {
+    'orders': Orders,
     'bar-chart-panel': BarChartPanel,
     'combined-search': CombinedSearch,
     'chart': Chart,

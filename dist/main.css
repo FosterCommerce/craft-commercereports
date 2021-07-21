@@ -363,6 +363,18 @@
 
 
 
+.commerce-insights-summary-datapoint {
+  transition: width 0.5s linear;
+  display: inline-block;
+}
+.placeholder-summary-text {
+  display: inline-block;
+  background-color: #f1f5f8;
+  color: #f1f5f8;
+  border-radius: 3px;
+}
+
+
 .commerce-insights-pane {
   position: relative;
   background: white;
@@ -396,22 +408,39 @@
 }
 
 
-.bar-chart-wrapper {
+.commerce-insights-mini-sparkline-pane {
   display: flex;
-  width: 350px;
-  height: 250px;
-}
-.bar-chart-key {
-  width: 10px;
-  height: 10px;
-  top: 1px;
-  display: inline-block;
+  width: 100%;
   position: relative;
-  margin-right: 0.25rem;
-  border-radius: 9999px;
 }
-.bar-chart-legend {
+.commerce-insights-mini-sparkline-pane-content {
   display: flex;
+  width: 100%;
+}
+.commerce-insights-mini-sparkline-pane-value {
+  color: #d3a87a;
+  font-weight: 300;
+  font-size: 1.5rem;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+.commerce-insights-mini-sparkline-pane-caption {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  line-height: 1.25;
+  display: flex;
+  font-size: 0.75rem;
+  color: #a0aec0;
+}
+.chart-pane-fill-container {
+  position: absolute;
+  z-index: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: -16px;
 }
 
 
@@ -429,6 +458,25 @@
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   border: 0;
+}
+
+
+.bar-chart-wrapper {
+  display: flex;
+  width: 350px;
+  height: 250px;
+}
+.bar-chart-key {
+  width: 10px;
+  height: 10px;
+  top: 1px;
+  display: inline-block;
+  position: relative;
+  margin-right: 0.25rem;
+  border-radius: 9999px;
+}
+.bar-chart-legend {
+  display: flex;
 }
 
 /* modified from daterangepicker.css in daterangepicker package */
@@ -960,42 +1008,6 @@
 }
 
 
-.commerce-insights-mini-sparkline-pane {
-  display: flex;
-  width: 100%;
-  position: relative;
-}
-.commerce-insights-mini-sparkline-pane-content {
-  display: flex;
-  width: 100%;
-}
-.commerce-insights-mini-sparkline-pane-value {
-  color: #d3a87a;
-  font-weight: 300;
-  font-size: 1.5rem;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-}
-.commerce-insights-mini-sparkline-pane-caption {
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  line-height: 1.25;
-  display: flex;
-  font-size: 0.75rem;
-  color: #a0aec0;
-}
-.chart-pane-fill-container {
-  position: absolute;
-  z-index: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: -16px;
-}
-
-
 .commerce-insights-sparkline-pane {
   display: flex;
   width: 100%;
@@ -1010,18 +1022,6 @@
   width: 47%;
   position: relative;
   margin-bottom: 0.5rem;
-}
-
-
-.commerce-insights-summary-datapoint {
-  transition: width 0.5s linear;
-  display: inline-block;
-}
-.placeholder-summary-text {
-  display: inline-block;
-  background-color: #f1f5f8;
-  color: #f1f5f8;
-  border-radius: 3px;
 }
 
 
