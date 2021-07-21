@@ -117,7 +117,7 @@ export default {
     },
     getSelectedPaymentLabel() {
       if (Object.keys(this.selectedPaymentTypeOption).length === 0) {
-        return 'All Order Statuses';
+        return 'All Payment Statuses';
       }
 
       return this.selectedPaymentTypeOption.label;

@@ -27,8 +27,8 @@ class VueController extends Controller
         $today          = new \DateTime(date('Y-m-d'));
         $weekAgo        = new \DateTime(date('Y-m-d'));
         $weekAgo        = $weekAgo->modify('-7 day')->format('Y-m-d 00:00:00');
-        $rangeStart     = Craft::$app->request->getBodyParam('range_start');
-        $this->end_date = Craft::$app->request->getBodyParam('range_end') ?? $today->format('Y-m-d 23:59:59');
+        $rangeStart     = \Craft::$app->request->getBodyParam('range_start');
+        $this->end_date = \Craft::$app->request->getBodyParam('range_end') ?? $today->format('Y-m-d 23:59:59');
 
         $this->start_date = $rangeStart ?
             \DateTime::createFromFormat('Y-m-d H:i:s', $rangeStart)->format('Y-m-d 00:00:00') :
@@ -82,7 +82,7 @@ class VueController extends Controller
      */
     private function fetchOrders($id = null) : array
     {
-        $single       = Craft::$app->request->getQueryParam('purchasableId') ?? $id;
+        $single       = \Craft::$app->request->getQueryParam('purchasableId') ?? $id;
         $currentStart = \DateTime::createFromFormat('Y-m-d H:i:s', $this->start_date)->format('Y-m-d 00:00:00');
         $start        = \DateTime::createFromFormat('Y-m-d H:i:s', $this->start_date);
         $end          = \DateTime::createFromFormat('Y-m-d H:i:s', $this->end_date);
@@ -90,9 +90,9 @@ class VueController extends Controller
         $numDays  = $end->diff($start)->format("%r%a");
         // get the new start date based on what the previous period would be
         $newStart = $start->modify($numDays . ' day')->format('Y-m-d 00:00:00');
-        $end->modify('1 day')->format('Y-m-d 00:00:00');
+        $newEnd   = $end->modify('1 day')->format('Y-m-d 00:00:00');
         // query the previous period and selected range based on new start date
-        $orders   = Order::find()->dateOrdered(['and', ">= {$newStart}", "< {$end}"])->distinct()->orderBy('dateOrdered desc');
+        $orders   = Order::find()->dateOrdered(['and', ">= {$newStart}", "< {$newEnd}"])->distinct()->orderBy('dateOrdered desc');
         $result   = [];
 
         if ($single) {
@@ -102,7 +102,7 @@ class VueController extends Controller
         }
 
         $result['previousPeriod'] = $orders->dateOrdered(['and', ">= {$newStart}", "< {$currentStart}"])->all();
-        $result['currentPeriod']  = $orders->dateOrdered(['and', ">= {$currentStart}", "< {$end}"])->all();
+        $result['currentPeriod']  = $orders->dateOrdered(['and', ">= {$currentStart}", "< {$newEnd}"])->all();
 
         return $result;
     }
