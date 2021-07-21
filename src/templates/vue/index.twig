@@ -7,13 +7,13 @@
 {% set lastSegment = craft.app.request.segments | last %}
 
 {% if lastSegment == 'orders' %}
-    {% set title = "Orders"|t('commerceinsights') %}
+  {% set title = "Orders"|t('commerceinsights') %}
 {% elseif lastSegment == 'sales' %}
-    {% set title = "Items Sold"|t('commerceinsights') %}
+  {% set title = "Items Sold"|t('commerceinsights') %}
 {% elseif lastSegment == 'products' %}
-    {% set title = "Product Insights"|t('commerceinsights') %}
+  {% set title = "Product Insights"|t('commerceinsights') %}
 {% elseif lastSegment == 'customers' %}
-    {% set title = "Customers"|t('commerceinsights') %}
+  {% set title = "Customers"|t('commerceinsights') %}
 {% endif %}
 
 {% set selectedSubnavItem = navItem %}
@@ -21,22 +21,22 @@
 {% extends "_layouts/cp" %}
 
 {% block header %}
-    {% block pageTitle %}
-        {% if title is defined and title|length %}
-            <h1>{{ title }}</h1>
-        {% endif %}
-    {% endblock %}
-    {% block contextMenu %}{% endblock %}
-    <div class="flex-grow"></div>
-    <date-range-picker @change="handleDateChange"></date-range-picker>
+  {% block pageTitle %}
+    {% if title is defined and title|length %}
+      <h1>{{ title }}</h1>
+    {% endif %}
+  {% endblock %}
+  {% block contextMenu %}{% endblock %}
+  <div class="flex-grow"></div>
+  <date-range-picker @change="handleDateChange"></date-range-picker>
 {% endblock %}
 
 {% block content %}
-    <div class="commerce-insights-wrapper">
-        {% if not id is defined %}
-            {% include "commerceinsights/vue/_" ~ lastSegment %}
-        {% else %}
-            {% include "commerceinsights/vue/_product" %}
-        {% endif %}
-    </div>
+  <div class="commerce-insights-wrapper">
+    {% if not id is defined %}
+      {% include "commerceinsights/vue/_" ~ lastSegment %}
+    {% else %}
+      {% include "commerceinsights/vue/_product" %}
+    {% endif %}
+  </div>
 {% endblock %}
