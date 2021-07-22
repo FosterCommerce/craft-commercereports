@@ -47,7 +47,6 @@ class VueController extends Controller
 
     public function actionGetOrders()
     {
-        $this->orders = $this->fetchOrders();
         return $this->asJson($this->_getOrders());
     }
 
