@@ -2,6 +2,8 @@
 
 namespace fostercommerce\commerceinsights\controllers;
 
+use Craft;
+use DateTime;
 use craft\web\Controller;
 use craft\commerce\elements\Order;
 use craft\commerce\elements\Product;
@@ -22,15 +24,15 @@ class VueController extends Controller
     {
         parent::__construct($id, $module, $config);
 
-        $today          = new \DateTime(date('Y-m-d'));
-        $weekAgo        = new \DateTime(date('Y-m-d'));
+        $today          = new DateTime(date('Y-m-d'));
+        $weekAgo        = new DateTime(date('Y-m-d'));
         $weekAgo        = $weekAgo->modify('-7 day')->format('Y-m-d 00:00:00');
-        $rangeStart     = \Craft::$app->request->getBodyParam('range_start');
-        $this->end_date = \Craft::$app->request->getBodyParam('range_end') ?? $today->format('Y-m-d 23:59:59');
+        $rangeStart     = Craft::$app->request->getBodyParam('range_start');
+        $this->end_date = Craft::$app->request->getBodyParam('range_end') ?? $today->format('Y-m-d 23:59:59');
 
         $this->start_date = $rangeStart ?
-            \DateTime::createFromFormat('Y-m-d H:i:s', $rangeStart)->format('Y-m-d 00:00:00') :
-            \DateTime::createFromFormat('Y-m-d H:i:s', $weekAgo)->format('Y-m-d 00:00:00');
+            DateTime::createFromFormat('Y-m-d H:i:s', $rangeStart)->format('Y-m-d 00:00:00') :
+            DateTime::createFromFormat('Y-m-d H:i:s', $weekAgo)->format('Y-m-d 00:00:00');
     }
 
     public function actionIndex($view)
@@ -79,10 +81,10 @@ class VueController extends Controller
      */
     private function fetchOrders($id = null) : array
     {
-        $single       = \Craft::$app->request->getQueryParam('purchasableId') ?? $id;
-        $currentStart = \DateTime::createFromFormat('Y-m-d H:i:s', $this->start_date)->format('Y-m-d 00:00:00');
-        $start        = \DateTime::createFromFormat('Y-m-d H:i:s', $this->start_date);
-        $end          = \DateTime::createFromFormat('Y-m-d H:i:s', $this->end_date);
+        $single       = Craft::$app->request->getQueryParam('purchasableId') ?? $id;
+        $currentStart = DateTime::createFromFormat('Y-m-d H:i:s', $this->start_date)->format('Y-m-d 00:00:00');
+        $start        = DateTime::createFromFormat('Y-m-d H:i:s', $this->start_date);
+        $end          = DateTime::createFromFormat('Y-m-d H:i:s', $this->end_date);
         // nuber of days in selected range
         $numDays  = $end->diff($start)->format("%r%a");
         // get the new start date based on what the previous period would be
