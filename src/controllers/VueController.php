@@ -81,27 +81,20 @@ class VueController extends Controller
      */
     private function fetchOrders($id = null) : array
     {
-        $single       = Craft::$app->request->getQueryParam('purchasableId') ?? $id;
         $currentStart = DateTime::createFromFormat('Y-m-d H:i:s', $this->start_date)->format('Y-m-d 00:00:00');
         $start        = DateTime::createFromFormat('Y-m-d H:i:s', $this->start_date);
         $end          = DateTime::createFromFormat('Y-m-d H:i:s', $this->end_date);
-        // nuber of days in selected range
-        $numDays  = $end->diff($start)->format("%r%a");
+        // number of days in selected range
+        $numDays = $end->diff($start)->format("%r%a");
         // get the new start date based on what the previous period would be
-        $newStart = $start->modify($numDays . ' day')->format('Y-m-d 00:00:00');
-        $end      = $end->modify('1 day')->format('Y-m-d 00:00:00');
+        $start = $start->modify($numDays . ' day')->format('Y-m-d 00:00:00');
+        $end   = $end->modify('1 day')->format('Y-m-d 00:00:00');
         // query the previous period and selected range based on new start date
-        $orders   = Order::find()->dateOrdered(['and', ">= {$newStart}", "< {$end}"])->distinct()->orderBy('dateOrdered desc');
-        $result   = [];
-
-        if ($single) {
-            $single = Variant::find()->id($single)->one();
-            $orders->hasPurchasables([$single]);
-            $orders->orderStatusId('< 4');
-        }
-
-        $result['previousPeriod'] = $orders->dateOrdered(['and', ">= {$newStart}", "< {$currentStart}"])->all();
-        $result['currentPeriod']  = $orders->dateOrdered(['and', ">= {$currentStart}", "< {$end}"])->all();
+        $orders = Order::find()->distinct()->orderBy('dateOrdered desc');
+        $result = [
+            'previousPeriod' => $orders->dateOrdered(['and', ">= {$start}", "< {$currentStart}"])->all(),
+            'currentPeriod'  => $orders->dateOrdered(['and', ">= {$currentStart}", "< {$end}"])->all()
+        ];
 
         return $result;
     }
