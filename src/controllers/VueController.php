@@ -211,61 +211,19 @@ class VueController extends Controller
             $currentAoq = $currentQuantity / $numCurrentOrders;
         }
 
-        // if 12 weeks or more is selected, chunk the stats by the
-        // largest prime factor of days so the series doesn't get too large
-        if ($numDaysInSet > 83) {
-            $largestPrime     = self::largestPrime($numDaysInSet);
-            $chunkedOrdersArr = array_chunk($totalOrdersArr, $largestPrime);
-            $chunkedAovArr    = array_chunk($aovArr, $largestPrime);
-            $chunkedAoqArr    = array_chunk($aoqArr, $largestPrime);
+        // build the total orders set
+        foreach ($totalOrdersArr as $date => $num) {
+            $totalOrdersSet[] = $num;
+        }
 
-            // build the total orders set
-            foreach ($chunkedOrdersArr as $key => $arr) {
-                $chunkTotal = 0;
+        // build the AOV set
+        foreach ($aovArr as $date => $val) {
+            $aovSet[] = $val;
+        }
 
-                foreach ($arr as $num) {
-                    $chunkTotal += $num;
-                }
-
-                $totalOrdersSet[] = $chunkTotal;
-            }
-
-            // build the AOV set
-            foreach ($chunkedAovArr as $key => $arr) {
-                $chunkTotal = 0;
-
-                foreach ($arr as $num) {
-                    $chunkTotal += $num;
-                }
-
-                $aovSet[] = $chunkTotal;
-            }
-
-            // build the AOQ set
-            foreach ($chunkedAoqArr as $key => $arr) {
-                $chunkTotal = 0;
-
-                foreach ($arr as $num) {
-                    $chunkTotal += $num;
-                }
-
-                $aoqSet[] = $chunkTotal;
-            }
-        } else { // selected range is less than 12 weeks
-            // build the total orders set
-            foreach ($totalOrdersArr as $date => $num) {
-                $totalOrdersSet[] = $num;
-            }
-
-            // build the AOV set
-            foreach ($aovArr as $date => $val) {
-                $aovSet[] = $val;
-            }
-
-            // build the AOQ set
-            foreach ($aoqArr as $date => $val) {
-                $aoqSet[] = $val;
-            }
+        // build the AOQ set
+        foreach ($aoqArr as $date => $val) {
+            $aoqSet[] = $val;
         }
 
         $result = [
@@ -383,31 +341,5 @@ class VueController extends Controller
         }
 
         return $result;
-    }
-
-    private static function largestPrime($num)
-    {
-        $largestPrime = -1;
-
-        //check divisibility by 2 to know if 2 might be the largest prime factor
-        while ($num % 2 == 0) {
-            $largestPrime = 2;
-            $num >>= 1;
-        }
-
-        //Prime factors are always odd, so skipping even numbers
-        for ($flag = 3; $flag <= sqrt($num); $flag += 2) {
-            while ($num % $flag == 0) {
-                $largestPrime = $flag;
-                $num = $num / $flag;
-            }
-        }
-
-        //see if the $number is a prime which is greater than 2
-        if ($num > 2) {
-            $largestPrime = $num;
-        }
-
-        return $largestPrime;
     }
 }
