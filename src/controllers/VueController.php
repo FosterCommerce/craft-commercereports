@@ -89,9 +89,9 @@ class VueController extends Controller
         $numDays  = $end->diff($start)->format("%r%a");
         // get the new start date based on what the previous period would be
         $newStart = $start->modify($numDays . ' day')->format('Y-m-d 00:00:00');
-        $newEnd   = $end->modify('1 day')->format('Y-m-d 00:00:00');
+        $end      = $end->modify('1 day')->format('Y-m-d 00:00:00');
         // query the previous period and selected range based on new start date
-        $orders   = Order::find()->dateOrdered(['and', ">= {$newStart}", "< {$newEnd}"])->distinct()->orderBy('dateOrdered desc');
+        $orders   = Order::find()->dateOrdered(['and', ">= {$newStart}", "< {$end}"])->distinct()->orderBy('dateOrdered desc');
         $result   = [];
 
         if ($single) {
@@ -101,7 +101,7 @@ class VueController extends Controller
         }
 
         $result['previousPeriod'] = $orders->dateOrdered(['and', ">= {$newStart}", "< {$currentStart}"])->all();
-        $result['currentPeriod']  = $orders->dateOrdered(['and', ">= {$currentStart}", "< {$newEnd}"])->all();
+        $result['currentPeriod']  = $orders->dateOrdered(['and', ">= {$currentStart}", "< {$end}"])->all();
 
         return $result;
     }
