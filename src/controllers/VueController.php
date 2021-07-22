@@ -25,9 +25,16 @@ class VueController extends Controller
     {
         parent::__construct($id, $module, $config);
 
-        $this->protocol   = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
-        $this->start_date = $_POST['range_start'] ?? null;
-        $this->end_date   = $_POST['range_end'] ?? null;
+        $this->protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+        $today          = new \DateTime(date('Y-m-d'));
+        $weekAgo        = new \DateTime(date('Y-m-d'));
+        $weekAgo        = $weekAgo->modify('-7 day')->format('Y-m-d 00:00:00');
+        $rangeStart     = $_POST['range_start'] ?? null;
+        $this->end_date = $_POST['range_end'] ?? $today->format('Y-m-d 23:59:59');
+
+        $this->start_date = $rangeStart ?
+            \DateTime::createFromFormat('Y-m-d H:i:s', $rangeStart)->format('Y-m-d 00:00:00') :
+            \DateTime::createFromFormat('Y-m-d H:i:s', $weekAgo)->format('Y-m-d 00:00:00');
     }
 
     public function actionIndex($view)
@@ -46,46 +53,6 @@ class VueController extends Controller
     {
         $this->orders = $this->fetchOrders();
         return $this->asJson($this->_getOrders());
-    }
-
-    public function actionGetProducts()
-    {
-        $this->orders   = $this->fetchOrders();
-        $this->products = $this->fetchProducts();
-        $this->variants = $this->fetchVariants();
-        return $this->asJson($this->_getProducts());
-    }
-
-    public function actionGetSales()
-    {
-        return $this->asJson(static::_getSales());
-    }
-
-    public function actionGetCustomers()
-    {
-        $this->orders = $this->fetchOrders();
-        return $this->asJson(static::_getCustomers());
-    }
-
-    public function actionGetPresets()
-    {
-        //return $this->asJson(static::_getFakeData('presets.json'));
-        return false;
-    }
-
-    /**
-     * Grab data from a static JSON file for quick testing.
-     *
-     * @param string $filename - Name of JSON file saved in our special path.
-     *
-     * @return array decoded data
-     */
-    private static function _getFakeData(string $filename) : array
-    {
-        $mockJsonPath = CRAFT_VENDOR_PATH . '/fostercommerce/commerce-insights/resources/mock-data/';
-        $data = \json_decode(\file_get_contents($mockJsonPath . $filename));
-
-        return $data;
     }
 
     /**
@@ -117,23 +84,31 @@ class VueController extends Controller
      */
     private function fetchOrders($id = null) : array
     {
-        $single = $_GET['purchasableId'] ?? $id;
-        $start  = $this->start_date ?: '1970-01-01 00:00:00';
-        $end    = $this->end_date ?: gmdate('Y-m-d 23:59:59');
-        $orders = Order::find()->dateOrdered(['and', ">= {$start}", "< {$end}"]);
-        $url    = $_SERVER['REQUEST_URI'];
-        $path   = basename(parse_url($url, PHP_URL_PATH));
+        $single       = $_GET['purchasableId'] ?? $id;
+        $currentStart = \DateTime::createFromFormat('Y-m-d H:i:s', $this->start_date)->format('Y-m-d 00:00:00');
+        $start        = \DateTime::createFromFormat('Y-m-d H:i:s', $this->start_date);
+        $end          = \DateTime::createFromFormat('Y-m-d H:i:s', $this->end_date);
+        // nuber of days in selected range
+        $numDays  = $end->diff($start)->format("%r%a");
+        // get the new start date based on what the previous period would be
+        $newStart = $start->modify($numDays . ' day')->format('Y-m-d 00:00:00');
+        $newEnd   = $end->format('Y-m-d 23:59:59');
+        // query the previous perior and selected range based on new start date
+        $orders   = Order::find()->dateOrdered(['and', ">= {$newStart}", "< {$newEnd}"])->distinct()->orderBy('dateOrdered desc');
+        $url      = $_SERVER['REQUEST_URI'];
+        $path     = basename(parse_url($url, PHP_URL_PATH));
+        $result   = [];
 
         if ($single) {
             $single = Variant::find()->id($single)->one();
             $orders->hasPurchasables([$single]);
-        }
-
-        if ($single || $path === 'sales') {
             $orders->orderStatusId('< 4');
         }
 
-        return $orders->distinct()->orderBy('dateOrdered desc')->all() ?: [];
+        $result['previousPeriod'] = $orders->dateOrdered(['and', ">= {$newStart}", "< {$currentStart}"])->all();
+        $result['currentPeriod']  = $orders->dateOrdered(['and', ">= {$currentStart}", "< {$newEnd}"])->all();
+
+        return $result;
     }
 
     /**
@@ -158,19 +133,17 @@ class VueController extends Controller
 
     private function _getStats()
     {
-        $this->start_date = $_POST['range_start'] ?? null;
-        $this->end_date   = $_POST['range_end']   ?? null;
-
-        $products   = Product::find()->all();
-        $orders     = $this->fetchOrders();
-        $num_orders = count($orders);
-        $currency   = 'USD';
-        $result     = [
+        $orders         = $this->fetchOrders();
+        $previousOrders = count($orders['previousPeriod']);
+        $currentOrders  = count($orders['currentPeriod']);
+        $result         = [
             'orders' => [
+                // This is for the paragraph data
+                // we probably don't need this but the component needs changed to look at orders data
                 'summary' => [
-                    'shipmentsPercentChange' => 0,
                     'ordersPercentChange' => 0
                 ],
+                // This is in the customers view
                 'topLocations' => [
                     [
                         'country' => 'US',
@@ -209,10 +182,12 @@ class VueController extends Controller
                     ]
                 ],
                 'totalOrders' => [
-                    'total' => $num_orders,
-                    'percentChange' => 8,
+                    'total' => $currentOrders,
+                    // this is based on the new previous period data
+                    'percentChange' => round((($currentOrders - $previousOrders) / $previousOrders) * 100, 2),
                     'series' => [32, 40, 43, 45, 300, 56, 60, 80, 90, 105]
                 ],
+                // averageOrderValue, averageOrderQuantity
                 'averageValue' => [
                     'total' => 98.76,
                     'percentChange' => -3,
@@ -251,61 +226,15 @@ class VueController extends Controller
             ]
         ];
 
-        foreach ($products as $product) {
-            if (!isset($result['products']['mostPurchased']['types'][$product['type']['name']])) {
-                $result['products']['mostPurchased']['types'][$product['type']['name']] = 0;
-            }
-
-            if ($product['type']['name'] === 'Additions' || $product['type']['name'] === 'Addons') {
-                $result['products']['mostProfitable'][$product['defaultSku']] = [
-                    'title'  => $product['title'],
-                    'values' => [0, 0]
-                ];
-            }
-        }
-
-        foreach ($orders as $order) {
-            $line_items = $order->lineItems;
-
-            foreach ($line_items as $item) {
-                $purchasable = $item->purchasable;
-
-                if ($purchasable) {
-                    $product = $purchasable->product;
-                    $result['products']['mostPurchased']['types'][$product->type->name] += $item->qty;
-
-                    if ($product->type->name === 'Additions' || $product->type->name === 'Addons') {
-                        $result['products']['mostProfitable'][$product->defaultSku]['values'][0] += $item->qty;
-                        $result['products']['mostProfitable'][$product->defaultSku]['values'][1] += $item->salePrice * $item->qty;
-                    }
-                }
-            }
-        }
-
-        foreach ($result['products']['mostProfitable'] as $sku => $product) {
-            $qty = $product['values'][0];
-
-            if ($qty > 0 && $num_orders > 0) {
-                $result['products']['mostProfitable'][$sku]['values'][0] = round($product['values'][0] / $num_orders * 100) . '%';
-            } else {
-                $result['products']['mostProfitable'][$sku]['values'][0] = '0%';
-            }
-
-            $result['products']['mostProfitable'][$sku]['values'][1] = static::convertCurrency($product['values'][1], $currency);
-        }
-
         return $result;
     }
 
     protected function _getOrders($id = null)
     {
-        $this->start_date = $_POST['range_start'] ?? $this->start_date;
-        $this->end_date   = $_POST['range_end']   ?? $this->end_date;
-
         $orders = $this->fetchOrders($id);
         $result = [];
 
-        foreach ($orders as $idx => $order) {
+        foreach ($orders['currentPeriod'] as $idx => $order) {
             $currency   = $order->currency;
             $line_items = $order->lineItems;
             $result[]   = [
@@ -319,7 +248,7 @@ class VueController extends Controller
                 'base'          => static::convertCurrency(($order->total - $order->adjustmentSubtotal), $currency),
                 'merchTotal'    => static::convertCurrency(($order->total - $order->totalTax - $order->totalShippingCost - $order->totalDiscount), $currency),
                 'tax'           => static::convertCurrency($order->totalTax, $currency),
-                'shipping'      => $order->totalShippingCost,
+                'shipping'      => static::convertCurrency($order->totalShippingCost, $currency),
                 'discount'      => static::convertCurrency($order->totalDiscount, $currency),
                 'amountPaid'    => static::convertCurrency($order->totalPaid, $currency),
                 'paymentStatus' => ucwords($order->paidStatus),
@@ -333,222 +262,8 @@ class VueController extends Controller
             foreach ($line_items as $item) {
                 $result[$idx]['numItems'] += $item->qty;
             }
-
-            $result[$idx]['shipping'] = static::convertCurrency($result[$idx]['shipping'], $currency);
         }
 
         return $result;
-    }
-
-    private function _getSales()
-    {
-        $this->start_date = $_POST['range_start'] ?? null;
-        $this->end_date   = $_POST['range_end']   ?? null;
-
-        $currency = 'USD';
-        $result   = $this->_initVariantSalesArray();
-        $orders   = $this->fetchOrders();
-
-        foreach ($orders as $order) {
-            foreach ($order->lineItems as $item) {
-                $purchasable = $item->purchasable;
-
-                // Skip if line item variant has been deleted
-                if (!$purchasable) {
-                    continue;
-                }
-
-                // is purchasable a bundle?
-                if ($purchasable instanceof Bundle) {
-                    // get the individual variants from the bundle.
-                    $bundleItems = $purchasable->getProducts();
-                    $bundleQtys = $purchasable->getQtys();
-
-                    foreach ($bundleItems as $bundleItem) {
-                        if (!$resultItem = $result[$bundleItem->sku]) {
-                            continue;
-                        }
-
-                        if ($resultItem['lastOrderId'] != $order->id) {
-                            $resultItem['numOrders'] += 1;
-                        }
-                        $resultItem['lastOrderId'] = $order->id;
-
-                        // Multiply the qty of the items in this bundle
-                        // by the line item qty for cases where a user
-                        // buys two sets of the same letters. E.g.: A custom
-                        // licence plate frame with the same letters for both.
-                        $qty = $bundleQtys[$bundleItem->id] * $item->qty;
-                        $resultItem['totalSold'] += $qty;
-                        $resultItem['sales'] += $bundleItem->price * $qty;
-
-                        $result[$bundleItem->sku] = $resultItem;
-                    }
-                } else {
-                    if ($result[$purchasable->sku]['lastOrderId'] != $order->id) {
-                        $result[$purchasable->sku]['numOrders'] += 1;
-                    }
-                    $result[$purchasable->sku]['lastOrderId'] = $order->id;
-                    $result[$purchasable->sku]['totalSold'] += $item->qty;
-                    $result[$purchasable->sku]['sales'] += $item->salePrice * $item->qty;
-                }
-            }
-        }
-
-        foreach ($result as $sku => $item) {
-            $result[$sku]['sales'] = static::convertCurrency($result[$sku]['sales'], $currency);
-            if ($result[$sku]['totalSold'] == 0) {
-                unset($result[$sku]);
-            }
-        }
-
-        usort($result, function ($a, $b) {
-            return $b['totalSold'] <=> $a['totalSold'];
-        });
-
-        return $result;
-    }
-
-    private function _initVariantSalesArray(): array
-    {
-        $result = [];
-
-        $variants = Variant::find()->anyStatus()->all();
-
-        foreach ($variants as $variant) {
-            $product = $variant->product;
-            $result[$variant->sku] = [
-                'id'        => $variant->id,
-                'title'     => $variant->title,
-                'status'    => $variant->status,
-                'sku'       => $variant->sku ?: 'No known SKU',
-                'productId' => $product->id,
-                'type'      => $product->type->name,
-                'typeHandle' => $product->type->handle,
-                'totalSold' => 0,
-                'sales'     => 0,
-                'numOrders' => 0,
-                'lastOrderId' => 0
-            ];
-        }
-
-        return $result;
-    }
-
-    private function _getProducts()
-    {
-        $result   = [];
-        $currency = 'USD';
-
-        foreach ($this->products as $product) {
-            $result[$product['defaultSku']] = [
-                'id'        => $product['id'],
-                'title'     => $product['title'],
-                'status'    => $product['status'],
-                'type'      => $product['type'],
-                'sku'       => $product['defaultSku'],
-                'totalSold' => 0,
-                'sales'     => 0,
-                'variants'  => 0,
-                'page'      => ''
-            ];
-        }
-
-        foreach ($this->variants as $variant) {
-            $parent   = $variant->product;
-            $page     = $this->protocol . $_SERVER['SERVER_NAME'] . '/admin/commerce/products/';
-            $page    .= $parent->type->handle . '/' . $parent->id . '-' . $parent->slug;
-            $result[$parent->defaultSku]['variants'] += 1;
-            $result[$parent->defaultSku]['page'] = $page;
-        }
-
-        foreach ($this->orders as $order) {
-            $line_items = $order->lineItems;
-
-            foreach ($line_items as $item) {
-                $purchasable = $item->purchasable;
-                // Check if line item variant has not been deleted
-                if ($purchasable) {
-                    $product     = $purchasable->product;
-                    $result[$product->defaultSku]['type']['name'] = $product->type->name;
-                    $result[$product->defaultSku]['totalSold'] += $item->qty;
-                    $result[$product->defaultSku]['sales'] += $item->salePrice * $item->qty;
-                    $result[$product->defaultSku]['variants'] += 1;
-                }
-            }
-        }
-
-        foreach ($result as $sku => $item) {
-            $result[$sku]['sales'] = static::convertCurrency($result[$sku]['sales'], $currency);
-        }
-
-        usort($result, function ($a, $b) {
-            return $b['totalSold'] <=> $a['totalSold'];
-        });
-
-        return $result;
-    }
-
-    private function _getCustomers()
-    {
-        $this->start_date = $_POST['range_start'] ?? null;
-        $this->end_date   = $_POST['range_end']   ?? null;
-        $orders           = $this->fetchOrders();
-        $processed        = [];
-        $results          = [];
-
-        foreach ($orders as $order) {
-            $line_items = $order->lineItems;
-            $email      = $order->email;
-
-            if (!array_key_exists($email, $processed)) {
-                $processed[$email] = [
-                    'ordersCount'   => 1,
-                    'itemsQty'      => 0,
-                    'aov'           => 0,
-                    'amountPaid'    => $order->totalPaid,
-                    'email'         => $email,
-                    'customer'      => User::find()->email($email)->one(),
-                    'billingName'   => ($order->billingAddress->firstName ?? ' ') . ' ' . ($order->billingAddress->lastName ?? ' '),
-                    'shippingName'  => ($order->shippingAddress->firstName ?? ' ') . ' ' . ($order->shippingAddress->lastName ?? ' '),
-                    'currency'      => $order->currency,
-                    'firstPurchase' => $order->datePaid->format('m/d/Y'),
-                    'lastPurchase'  => $order->datePaid->format('m/d/Y')
-                ];
-            } else {
-                $processed[$email]['ordersCount'] += 1;
-                $processed[$email]['amountPaid']  += $order->totalPaid;
-
-                if ($order->datePaid < $processed[$email]['lastPurchase']) {
-                    $processed[$email]['lastPurchase'] = $order->datePaid->format('m/d/Y');
-                }
-
-                if ($order->datePaid > $processed[$email]['firstPurchase']) {
-                    $processed[$email]['firstPurchase'] = $order->datePaid->format('m/d/Y');
-                }
-            }
-
-            foreach ($line_items as $item) {
-                $processed[$email]['itemsQty'] += $item->qty;
-            }
-        }
-
-        foreach ($processed as $email => $data) {
-            $results[] = [
-                'ordersCount'   => $processed[$email]['ordersCount'],
-                'itemsQty'      => $processed[$email]['itemsQty'],
-                'aov'           => static::convertCurrency($data['amountPaid'] / $data['ordersCount'], $data['currency']),
-                'amountPaid'    => static::convertCurrency($data['amountPaid'], $data['currency']),
-                'email'         => $email,
-                'customer'      => $processed[$email]['customer'],
-                'currency'      => $processed[$email]['currency'],
-                'firstPurchase' => $processed[$email]['firstPurchase'],
-                'lastPurchase'  => $processed[$email]['lastPurchase'],
-                'billingName'   => $processed[$email]['billingName'],
-                'shippingName'  => $processed[$email]['shippingName']
-            ];
-        }
-
-        return $results;
     }
 }

@@ -224,23 +224,6 @@ const app = new Vue({
                 console.log(error);
             });
         },
-        fetchSales() {
-            const self = this;
-            const data = {
-                range_start: self.dateRange.start,
-                range_end: self.dateRange.end
-            };
-
-            data[Craft.csrfTokenName] = Craft.csrfTokenValue;
-
-            axios.post('/actions/commerceinsights/vue/get-sales', qs.stringify(data))
-            .then(response => {
-                self.sales = response.data;
-            })
-            .catch(error => {
-                console.log(error);
-            });
-        },
         fetchCustomers() {
             const self = this;
             const data = {

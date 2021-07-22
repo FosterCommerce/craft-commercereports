@@ -198,18 +198,4 @@ class OrderController extends VueController
 
         return $data;
     }
-
-    public function actionProduct($id)
-    {
-        $render = $_POST['render'] ?? true;
-
-        if ($render !== 'false') {
-            return $this->renderTemplate('commerceinsights/vue/index', [
-                'id' => $id,
-                'navItem' => 'orders'
-            ]);
-        } else {
-            return $this->asJson($this->getOrders($id));
-        }
-    }
 }

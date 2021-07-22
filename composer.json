@@ -2,7 +2,7 @@
     "name": "fostercommerce/commerce-insights",
     "description": "Sales and purchase insights for Craft Commerce.",
     "type": "craft-plugin",
-    "version": "1.0.0-beta.4",
+    "version": "1.0.0-beta.5",
     "keywords": [
         "craft",
         "cms",

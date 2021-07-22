@@ -1,5 +1,4 @@
 const path = require('path');
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const { VueLoaderPlugin } = require('vue-loader')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
@@ -42,11 +41,6 @@ module.exports = {
     devtool: !isProduction && 'eval-source-map',
     plugins: [
       new VueLoaderPlugin(),
-      new BundleAnalyzerPlugin({
-        analyzerMode: 'static',
-        openAnalyzer: false,
-        reportFilename: '../webpack-bundle-report.html'
-      }),
       new MiniCssExtractPlugin({
         filename: '[name].css',
         chunkFilename: '[id].css',

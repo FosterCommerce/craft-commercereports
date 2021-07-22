@@ -101,8 +101,6 @@
 						this.selectPreset('last-7');
 					}
 				}
-
-				this.fetchSavedPresets();
 			},
 			getCookie(name) {
 				const v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
@@ -181,58 +179,6 @@
 						preset: key,
 					});
 				}
-			},
-			selectSavedPreset(preset) {
-				this.start = moment(preset.start, this.defaultDateFormat);
-				this.end = moment(preset.end, this.defaultDateFormat);
-				this.selectedPreset = preset;
-				this.ready = true;
-
-				this.updateRange();
-
-				this.$emit('change', {
-					start: this.start,
-					end: this.end,
-					preset: preset,
-				});
-			},
-			savePreset() {
-				const preset = {
-					start: this.start,
-					end: this.end,
-					label: this.customPresetLabel,
-				};
-
-				this.savedPresets.push(preset);
-
-				let data = {};
-
-				// TODO: really save
-
-				axios.post('/actions/commerceinsights/vue/save-preset').then(function(response) {
-
-				}).catch(function(error) {
-					console.log(error);
-				});
-
-				// select the new preset
-				this.selectedPreset = preset;
-
-				// reset the save dialog
-				this.saveDialogOpen = false;
-				this.customPresetLabel = '';
-			},
-			deletePreset() {
-				// TODO: delete preset
-			},
-			fetchSavedPresets() {
-				const self = this;
-
-				axios.get('/actions/commerceinsights/vue/get-presets').then(function(response) {
-					self.savedPresets = response.data;
-				}).catch(function(error) {
-					console.log(error);
-				});
 			},
 			toggleMenu() {
 				this.menuOpen = !this.menuOpen;
@@ -396,13 +342,6 @@
 							class="commerce-insights-preset"
 						>
 							<a @click="selectPreset(key)">{{ settings.label }}</a>
-						</li>
-						<li v-if="savedPresetCount" class="mb-1">
-							<hr>
-							<h6>saved</h6>
-						</li>
-						<li v-for="preset in savedPresets" :key="preset.label" class="commerce-insights-preset">
-							<a @click="selectSavedPreset(preset)">{{ preset.label }}</a>
 						</li>
 					</ul>
 				</div>
