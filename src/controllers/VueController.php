@@ -9,6 +9,7 @@ Use DateInterval;
 use craft\web\Controller;
 use craft\commerce\elements\Order;
 use craft\commerce\helpers\Currency;
+use craft\commerce\elements\Variant;
 
 class VueController extends Controller
 {
@@ -32,6 +33,10 @@ class VueController extends Controller
     public function actionGetOrders()
     {
         return $this->asJson(self::_getOrders());
+    }
+
+    public function actionGetItemsSold() {
+        return $this->asJson(self::_getItemsSold());
     }
 
     /**
@@ -311,6 +316,97 @@ class VueController extends Controller
             foreach ($line_items as $item) {
                 $result[$idx]['numItems'] += $item->qty;
             }
+        }
+
+        return $result;
+    }
+
+    private static function _getItemsSold() {
+        $currency = 'USD';
+        $result   = self::_initVariantSalesArray();
+        $orders   = self::fetchOrders();
+
+        foreach ($orders['currentPeriod'] as $order) {
+            foreach ($order->lineItems as $item) {
+                $purchasable = $item->purchasable;
+
+                // Skip if line item variant has been deleted
+                if (!$purchasable) {
+                    continue;
+                }
+
+                // is purchasable a bundle?
+                if ($purchasable instanceof Bundle) {
+                    // get the individual variants from the bundle.
+                    $bundleItems = $purchasable->getProducts();
+                    $bundleQtys = $purchasable->getQtys();
+
+                    foreach ($bundleItems as $bundleItem) {
+
+                        if (!$resultItem = $result[$bundleItem->sku]) {
+                            continue;
+                        }
+
+                        if ($resultItem['lastOrderId'] != $order->id) {
+                            $resultItem['numOrders'] += 1;
+                        }
+                        $resultItem['lastOrderId'] = $order->id;
+
+                        // Multiply the qty of the items in this bundle
+                        // by the line item qty for cases where a user
+                        // buys two sets of the same letters. E.g.: A custom
+                        // licence plate frame with the same letters for both.
+                        $qty = $bundleQtys[$bundleItem->id] * $item->qty;
+                        $resultItem['totalSold'] += $qty;
+                        $resultItem['sales'] += $bundleItem->price * $qty;
+
+                        $result[$bundleItem->sku] = $resultItem;
+                    }
+                } else {
+                    if ($result[$purchasable->sku]['lastOrderId'] != $order->id) {
+                        $result[$purchasable->sku]['numOrders'] += 1;
+                    }
+                    $result[$purchasable->sku]['lastOrderId'] = $order->id;
+                    $result[$purchasable->sku]['totalSold'] += $item->qty;
+                    $result[$purchasable->sku]['sales'] += $item->salePrice * $item->qty;
+                }
+            }
+        }
+
+        foreach ($result as $sku => $item) {
+            $result[$sku]['sales'] = self::convertCurrency($result[$sku]['sales'], $currency);
+            if($result[$sku]['totalSold'] == 0) {
+                unset($result[$sku]);
+            }
+        }
+
+        usort($result, function($a, $b) {
+            return $b['totalSold'] <=> $a['totalSold'];
+        });
+
+        return $result;
+    }
+
+    private static function _initVariantSalesArray(): array {
+        $result = [];
+
+        $variants = Variant::find()->anyStatus()->all();
+
+        foreach($variants as $variant) {
+            $product = $variant->product;
+            $result[$variant->sku] = [
+                'id'          => $variant->id,
+                'title'       => $variant->title,
+                'status'      => $variant->status,
+                'sku'         => $variant->sku ?: 'No known SKU',
+                'productId'   => $product->id,
+                'type'        => $product->type->name,
+                'typeHandle'  => $product->type->handle,
+                'totalSold'   => 0,
+                'sales'       => 0,
+                'numOrders'   => 0,
+                'lastOrderId' => 0
+            ];
         }
 
         return $result;

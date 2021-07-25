@@ -107,7 +107,7 @@ const app = new Vue({
           this.fetchOrders();
           break;
         case 'sales':
-          this.fetchSales();
+          this.fetchItemsSold();
           break;
         case 'products':
           this.fetchProducts();
@@ -118,7 +118,7 @@ const app = new Vue({
         default:
           if (isNaN(page)) {
             this.fetchOrders();
-            this.fetchSales();
+            this.fetchItemsSold();
             this.fetchProducts();
             this.fetchCustomers();
           } else {
@@ -221,6 +221,23 @@ const app = new Vue({
         catch(error => {
           console.log(error);
         });
+    },
+    fetchItemsSold() {
+      const self = this;
+      const data = {
+        range_start: self.dateRange.start,
+        range_end: self.dateRange.end
+      };
+
+      data[Craft.csrfTokenName] = Craft.csrfTokenValue;
+
+      axios.post('/actions/commerceinsights/vue/get-items-sold', qs.stringify(data))
+      .then(response => {
+        self.sales = response.data;
+      })
+      .catch(error => {
+        console.log(error);
+      });
     },
     fetchCustomers() {
       const self = this;

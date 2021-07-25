@@ -86,10 +86,10 @@ class CommerceInsights extends Plugin {
                 'label' => Craft::t('commerceinsights', 'Items Sold'),
                 'url'   => 'commerceinsights/view/sales'
             ],
-            'products'  => [
+            /*'products'  => [
                 'label' => Craft::t('commerceinsights', 'Product Insights'),
                 'url'   => 'commerceinsights/view/products'
-            ],
+            ],*/
             'customers' => [
                 'label' => Craft::t('commerceinsights', 'Customers'),
                 'url'   => 'commerceinsights/view/customers'
