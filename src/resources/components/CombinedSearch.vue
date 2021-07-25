@@ -94,36 +94,15 @@ export default {
       this.keyword = '';
       this.selectedPaymentTypeOption = {};
       this.selectedTypeOption = typeOption;
-      this.$emit('filtersChanged', {
-        filters: {
-          keyword: this.keyword ?? null,
-          orderType: this.selectedTypeOption?.value,
-          paymentType: this.selectedPaymentTypeOption?.value,
-        }
-      });
     },
     selectPaymentTypeOption(typeOption) {
       this.keyword = '';
       this.selectedTypeOption = {};
       this.selectedPaymentTypeOption = typeOption;
-      this.$emit('filtersChanged', {
-        filters: {
-          keyword: this.keyword ?? null,
-          orderType: this.selectedTypeOption?.value,
-          paymentType: this.selectedPaymentTypeOption?.value,
-        }
-      });
     },
     selectAllTypes() {
       this.selectedPaymentTypeOption = {};
       this.selectedTypeOption = {};
-      this.$emit('filtersChanged', {
-        filters: {
-          keyword: this.keyword ?? null,
-          orderType: this.selectedTypeOption?.value,
-          paymentType: this.selectedPaymentTypeOption?.value,
-        }
-      });
     },
     getSelectedLabel() {
       if (Object.keys(this.selectedTypeOption).length === 0) {
@@ -299,6 +278,14 @@ export default {
         let end = this.current_page * this.page_size;
 
         if (idx >= start && idx < end) return true;
+      });
+
+      this.$emit('filtersChanged', {
+        filters: {
+          keyword: this.keyword ?? null,
+          orderType: this.selectedTypeOption?.value,
+          paymentType: this.selectedPaymentTypeOption?.value,
+        }
       });
 
       this.hideLoader();

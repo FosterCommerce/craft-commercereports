@@ -78,7 +78,7 @@ class VueController extends Controller
         $keyword      = Craft::$app->request->getBodyParam('keyword');
         $orderType    = Craft::$app->request->getBodyParam('orderType');
         $paymentType  = Craft::$app->request->getBodyParam('paymentType');
-        // nuber of days in selected range
+        // number of days in selected range
         $numDays  = $end->diff($start)->format("%r%a");
         // get the new start date based on what the previous period would be
         $newStart = $start->modify($numDays . ' day')->format('Y-m-d 00:00:00');
@@ -87,7 +87,7 @@ class VueController extends Controller
         $orders   = Order::find()->distinct()->orderBy('dateOrdered desc');
 
         if ($keyword) {
-            // TODO: filter results by keyword
+            $orders->search($keyword);
         }
 
         if ($orderType) {
