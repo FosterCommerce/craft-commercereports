@@ -2,35 +2,19 @@
 
 namespace fostercommerce\commerceinsights\controllers;
 
+use Craft;
+use DateTime;
+Use DatePeriod;
+Use DateInterval;
 use craft\web\Controller;
 use craft\commerce\elements\Order;
-use craft\commerce\elements\Product;
-use craft\commerce\elements\Variant;
 use craft\commerce\helpers\Currency;
 
 class VueController extends Controller
 {
-    private $stats;
-    private $orders;
-    private $products;
-    private $variants;
-    private $customers;
-    protected $start_date;
-    protected $end_date;
-
     public function __construct($id, $module, $config = [])
     {
         parent::__construct($id, $module, $config);
-
-        $today          = new \DateTime(date('Y-m-d'));
-        $weekAgo        = new \DateTime(date('Y-m-d'));
-        $weekAgo        = $weekAgo->modify('-7 day')->format('Y-m-d 00:00:00');
-        $rangeStart     = \Craft::$app->request->getBodyParam('range_start');
-        $this->end_date = \Craft::$app->request->getBodyParam('range_end') ?? $today->format('Y-m-d 23:59:59');
-
-        $this->start_date = $rangeStart ?
-            \DateTime::createFromFormat('Y-m-d H:i:s', $rangeStart)->format('Y-m-d 00:00:00') :
-            \DateTime::createFromFormat('Y-m-d H:i:s', $weekAgo)->format('Y-m-d 00:00:00');
     }
 
     public function actionIndex($view)
@@ -42,13 +26,12 @@ class VueController extends Controller
 
     public function actionGetStats()
     {
-        return $this->asJson($this->_getStats());
+        return $this->asJson(self::_getStats());
     }
 
     public function actionGetOrders()
     {
-        $this->orders = $this->fetchOrders();
-        return $this->asJson($this->_getOrders());
+        return $this->asJson(self::_getOrders());
     }
 
     /**
@@ -60,7 +43,7 @@ class VueController extends Controller
      *
      * @return string
      */
-    protected static function convertCurrency(float $amount, string $currency, bool $convert = true) : string
+    private static function convertCurrency(float $amount, string $currency, bool $convert = true) : string
     {
         $amt = Currency::formatAsCurrency($amount, $currency, $convert);
 
@@ -78,30 +61,30 @@ class VueController extends Controller
      *
      * @return array - All orders in range, or an empty array
      */
-    private function fetchOrders($id = null) : array
+    private static function fetchOrders($id = null) : array
     {
-        $single       = \Craft::$app->request->getQueryParam('purchasableId') ?? $id;
-        $currentStart = \DateTime::createFromFormat('Y-m-d H:i:s', $this->start_date)->format('Y-m-d 00:00:00');
-        $start        = \DateTime::createFromFormat('Y-m-d H:i:s', $this->start_date);
-        $end          = \DateTime::createFromFormat('Y-m-d H:i:s', $this->end_date);
+        $today      = new DateTime(date('Y-m-d'));
+        $weekAgo    = new DateTime(date('Y-m-d'));
+        $weekAgo    = $weekAgo->modify('-7 day')->format('Y-m-d 00:00:00');
+        $rangeStart = Craft::$app->request->getBodyParam('range_start');
+        $endDate    = Craft::$app->request->getBodyParam('range_end') ?? $today->format('Y-m-d 23:59:59');
+        $startDate  = $rangeStart ?
+            DateTime::createFromFormat('Y-m-d H:i:s', $rangeStart)->format('Y-m-d 00:00:00') :
+            DateTime::createFromFormat('Y-m-d H:i:s', $weekAgo)->format('Y-m-d 00:00:00');
+        $currentStart = DateTime::createFromFormat('Y-m-d H:i:s', $startDate)->format('Y-m-d 00:00:00');
+        $start        = DateTime::createFromFormat('Y-m-d H:i:s', $startDate);
+        $end          = DateTime::createFromFormat('Y-m-d H:i:s', $endDate);
         // possible filters
-        $keyword      = \Craft::$app->request->getBodyParam('keyword');
-        $orderType    = \Craft::$app->request->getBodyParam('orderType');
-        $paymentType  = \Craft::$app->request->getBodyParam('paymentType');
+        $keyword      = Craft::$app->request->getBodyParam('keyword');
+        $orderType    = Craft::$app->request->getBodyParam('orderType');
+        $paymentType  = Craft::$app->request->getBodyParam('paymentType');
         // nuber of days in selected range
         $numDays  = $end->diff($start)->format("%r%a");
         // get the new start date based on what the previous period would be
         $newStart = $start->modify($numDays . ' day')->format('Y-m-d 00:00:00');
         $newEnd   = $end->modify('1 day')->format('Y-m-d 00:00:00');
         // query the previous period and selected range based on new start date
-        $orders   = Order::find()->dateOrdered(['and', ">= {$newStart}", "< {$newEnd}"])->distinct()->orderBy('dateOrdered desc');
-        $result   = [];
-
-        if ($single) {
-            $single = Variant::find()->id($single)->one();
-            $orders->hasPurchasables([$single]);
-            $orders->orderStatusId('< 4');
-        }
+        $orders   = Order::find()->distinct()->orderBy('dateOrdered desc');
 
         if ($keyword) {
             // TODO: filter results by keyword
@@ -115,35 +98,25 @@ class VueController extends Controller
             $orders->where(['paidStatus' => strtolower($paymentType)]);
         }
 
-        $result['previousPeriod'] = $orders->dateOrdered(['and', ">= {$newStart}", "< {$currentStart}"])->all();
-        $result['currentPeriod']  = $orders->dateOrdered(['and', ">= {$currentStart}", "< {$newEnd}"])->all();
+        $result = [
+            'previousPeriod' => $orders->dateOrdered(['and', ">= {$newStart}", "< {$currentStart}"])->all(),
+            'currentPeriod'  => $orders->dateOrdered(['and', ">= {$currentStart}", "< {$newEnd}"])->all()
+        ];
 
         return $result;
     }
 
-    /**
-     * Get all products that are in the system.
-     *
-     * @return array - All products, or an empty array
-     */
-    private function fetchProducts() : array
+    private static function _getStats()
     {
-        return Product::find()->anyStatus()->all() ?: [];
-    }
-
-    /**
-     * Get all variants that are in the system.
-     *
-     * @return array - All variants, or an empty array
-     */
-    private function fetchVariants() : array
-    {
-        return Variant::find()->anyStatus()->all() ?: [];
-    }
-
-    private function _getStats()
-    {
-        $orders            = $this->fetchOrders();
+        $today      = new DateTime(date('Y-m-d'));
+        $weekAgo    = new DateTime(date('Y-m-d'));
+        $weekAgo    = $weekAgo->modify('-7 day')->format('Y-m-d 00:00:00');
+        $rangeStart = Craft::$app->request->getBodyParam('range_start');
+        $endDate    = Craft::$app->request->getBodyParam('range_end') ?? $today->format('Y-m-d 23:59:59');
+        $startDate  = $rangeStart ?
+            DateTime::createFromFormat('Y-m-d H:i:s', $rangeStart)->format('Y-m-d 00:00:00') :
+            DateTime::createFromFormat('Y-m-d H:i:s', $weekAgo)->format('Y-m-d 00:00:00');
+        $orders            = self::fetchOrders();
         $previousOrders    = $orders['previousPeriod'];
         $currentOrders     = $orders['currentPeriod'];
         $numPreviousOrders = count($previousOrders);
@@ -160,10 +133,10 @@ class VueController extends Controller
         $aovSet            = [];
         $aoqArr            = [];
         $aoqSet            = [];
-        $datePeriod        = new \DatePeriod(
-            new \DateTime($this->start_date),
-            new \DateInterval('P1D'),
-            new \DateTime($this->end_date)
+        $datePeriod        = new DatePeriod(
+            new DateTime($startDate),
+            new DateInterval('P1D'),
+            new DateTime($endDate)
         );
 
         // build the total orders and AOV arrs
@@ -305,9 +278,9 @@ class VueController extends Controller
         return $result;
     }
 
-    protected function _getOrders($id = null)
+    private static function _getOrders($id = null)
     {
-        $orders = $this->fetchOrders($id);
+        $orders = self::fetchOrders($id);
         $result = [];
 
         foreach ($orders['currentPeriod'] as $idx => $order) {
