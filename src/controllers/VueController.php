@@ -13,25 +13,21 @@ use craft\commerce\elements\Variant;
 
 class VueController extends Controller
 {
-    public function __construct($id, $module, $config = [])
-    {
+    public function __construct($id, $module, $config = []) {
         parent::__construct($id, $module, $config);
     }
 
-    public function actionIndex($view)
-    {
+    public function actionIndex($view) {
         return $this->renderTemplate('commerceinsights/vue/index', [
             'navItem' => $view,
         ]);
     }
 
-    public function actionGetStats()
-    {
+    public function actionGetStats() {
         return $this->asJson(self::_getStats());
     }
 
-    public function actionGetOrders()
-    {
+    public function actionGetOrders() {
         return $this->asJson(self::_getOrders());
     }
 
@@ -48,8 +44,7 @@ class VueController extends Controller
      *
      * @return string
      */
-    private static function convertCurrency(float $amount, string $currency, bool $convert = true) : string
-    {
+    protected static function convertCurrency(float $amount, string $currency, bool $convert = true) : string {
         $amt = Currency::formatAsCurrency($amount, $currency, $convert);
 
         if (strpos($amt, '-')) {
@@ -66,8 +61,7 @@ class VueController extends Controller
      *
      * @return array - All orders in range, or an empty array
      */
-    private static function fetchOrders($id = null) : array
-    {
+    private static function fetchOrders($id = null) : array {
         $today      = new DateTime(date('Y-m-d'));
         $weekAgo    = new DateTime(date('Y-m-d'));
         $weekAgo    = $weekAgo->modify('-7 day')->format('Y-m-d 00:00:00');
@@ -103,6 +97,11 @@ class VueController extends Controller
             $orders->where(['paidStatus' => strtolower($paymentType)]);
         }
 
+        if($id) {
+            $product = Variant::find()->id($id)->one();
+            $orders->hasPurchasables([$product]);
+        }
+
         $result = [
             'previousPeriod' => $orders->dateOrdered(['and', ">= {$newStart}", "< {$currentStart}"])->all(),
             'currentPeriod'  => $orders->dateOrdered(['and', ">= {$currentStart}", "< {$newEnd}"])->all()
@@ -111,8 +110,7 @@ class VueController extends Controller
         return $result;
     }
 
-    private static function _getStats()
-    {
+    private static function _getStats() {
         $today      = new DateTime(date('Y-m-d'));
         $weekAgo    = new DateTime(date('Y-m-d'));
         $weekAgo    = $weekAgo->modify('-7 day')->format('Y-m-d 00:00:00');
@@ -283,8 +281,7 @@ class VueController extends Controller
         return $result;
     }
 
-    private static function _getOrders($id = null)
-    {
+    protected static function _getOrders($id = null) {
         $orders = self::fetchOrders($id);
         $result = [];
 
