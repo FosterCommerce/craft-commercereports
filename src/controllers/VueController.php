@@ -4,12 +4,16 @@ namespace fostercommerce\commerceinsights\controllers;
 
 use Craft;
 use DateTime;
-Use DatePeriod;
-Use DateInterval;
+use DatePeriod;
+use DateInterval;
+use NumberFormatter;
 use craft\web\Controller;
 use craft\commerce\elements\Order;
-use craft\commerce\helpers\Currency;
 use craft\commerce\elements\Variant;
+use Money\Money;
+use Money\Currency;
+use Money\Currencies\ISOCurrencies;
+use Money\Formatter\IntlMoneyFormatter;
 
 class VueController extends Controller
 {
@@ -38,21 +42,20 @@ class VueController extends Controller
     /**
      * Converts a number into a string with the proper currency symbol
      *
-     * @param float     $amount     - The amount to convert
-     * @param string    $currency   - The currency
-     * @param bool      $convert    - Whether to convert to the payment currency
+     * @param int    $amount   - The amount to convert
+     * @param string $currency - The currency
      *
      * @return string
      */
-    protected static function convertCurrency(float $amount, string $currency, bool $convert = true) : string {
-        $amt = Currency::formatAsCurrency($amount, $currency, $convert);
+    protected static function convertCurrency(float $amount, string $currency) : string {
+        $amount          = strpos($amount, '.') ? str_replace('.', '', $amount) : $amount . '00';
+        $amount          = $amount === '000' ? 0 : $amount;
+        $money           = new Money($amount, new Currency($currency));
+        $currencies      = new ISOCurrencies();
+        $numberFormatter = new NumberFormatter('en_US', NumberFormatter::CURRENCY);
+        $moneyFormatter  = new IntlMoneyFormatter($numberFormatter, $currencies);
 
-        if (strpos($amt, '-')) {
-            $amt = str_replace('-', '', $amt);
-            $amt = '-' . $amt;
-        }
-
-        return $amt;
+        return $moneyFormatter->format($money);
     }
 
     /**
@@ -320,23 +323,37 @@ class VueController extends Controller
 
     private static function _getItemsSold() {
         $currency = 'USD';
-        $result   = self::_initVariantSalesArray();
-        $orders   = self::fetchOrders();
+        $orders   = self::fetchOrders()['currentPeriod'];
+        $result   = [];
 
-        foreach ($orders['currentPeriod'] as $order) {
+        foreach ($orders as $order) {
             foreach ($order->lineItems as $item) {
-                $purchasable = $item->purchasable;
+                $variant = $item->purchasable;
+                $product = $variant->product;
+                $result[ $variant->sku ] = [
+                    'id'          => $variant->id,
+                    'title'       => $variant->title,
+                    'status'      => $variant->status,
+                    'sku'         => $variant->sku ?: 'No known SKU',
+                    'productId'   => $product->id,
+                    'type'        => $product->type->name,
+                    'typeHandle'  => $product->type->handle,
+                    'totalSold'   => 0,
+                    'sales'       => 0,
+                    'numOrders'   => 0,
+                    'lastOrderId' => 0
+                ];
 
                 // Skip if line item variant has been deleted
-                if (!$purchasable) {
+                if (!$variant) {
                     continue;
                 }
 
                 // is purchasable a bundle?
-                if ($purchasable instanceof Bundle) {
+                if ($variant instanceof Bundle) {
                     // get the individual variants from the bundle.
-                    $bundleItems = $purchasable->getProducts();
-                    $bundleQtys = $purchasable->getQtys();
+                    $bundleItems = $variant->getProducts();
+                    $bundleQtys = $variant->getQtys();
 
                     foreach ($bundleItems as $bundleItem) {
 
@@ -360,12 +377,13 @@ class VueController extends Controller
                         $result[$bundleItem->sku] = $resultItem;
                     }
                 } else {
-                    if ($result[$purchasable->sku]['lastOrderId'] != $order->id) {
-                        $result[$purchasable->sku]['numOrders'] += 1;
+                    if ($result[$variant->sku]['lastOrderId'] != $order->id) {
+                        $result[$variant->sku]['numOrders'] += 1;
                     }
-                    $result[$purchasable->sku]['lastOrderId'] = $order->id;
-                    $result[$purchasable->sku]['totalSold'] += $item->qty;
-                    $result[$purchasable->sku]['sales'] += $item->salePrice * $item->qty;
+
+                    $result[$variant->sku]['lastOrderId'] = $order->id;
+                    $result[$variant->sku]['totalSold'] += $item->qty;
+                    $result[$variant->sku]['sales'] += $item->salePrice * $item->qty;
                 }
             }
         }
@@ -380,31 +398,6 @@ class VueController extends Controller
         usort($result, function($a, $b) {
             return $b['totalSold'] <=> $a['totalSold'];
         });
-
-        return $result;
-    }
-
-    private static function _initVariantSalesArray(): array {
-        $result = [];
-
-        $variants = Variant::find()->anyStatus()->all();
-
-        foreach($variants as $variant) {
-            $product = $variant->product;
-            $result[$variant->sku] = [
-                'id'          => $variant->id,
-                'title'       => $variant->title,
-                'status'      => $variant->status,
-                'sku'         => $variant->sku ?: 'No known SKU',
-                'productId'   => $product->id,
-                'type'        => $product->type->name,
-                'typeHandle'  => $product->type->handle,
-                'totalSold'   => 0,
-                'sales'       => 0,
-                'numOrders'   => 0,
-                'lastOrderId' => 0
-            ];
-        }
 
         return $result;
     }
