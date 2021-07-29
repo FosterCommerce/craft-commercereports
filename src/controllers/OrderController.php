@@ -2,6 +2,7 @@
 
 namespace fostercommerce\commerceinsights\controllers;
 
+use Craft;
 use craft\commerce\web\twig\Extension;
 use craft\web\Controller;
 
@@ -19,36 +20,51 @@ class OrderController extends VueController
         ]);
     }
 
+    public function actionProduct($id) {
+        $render = Craft::$app->request->getBodyParam('render') ?? true;
+
+        if($render !== 'false') {
+            return $this->renderTemplate('commerceinsights/vue/index', [
+                'id' => $id,
+                'navItem' => 'orders'
+            ]);
+        } else {
+            return $this->asJson($this->getOrders($id));
+        }
+    }
+
     private function getOrders($id)
     {
-        $todayObj    = new \DateTime();
         $grouped     = [];
         $data        = [];
-        $variant     = $_GET['variant'] ?? null;
-        $variantType = $_GET['variant_type'] ?? null;
-        $color       = $_GET['color'] ?? null;
-        $id          = isset($_POST['id']) ? $_POST['id'] : $id;
+        $id          = Craft::$app->request->getBodyParam('id') ?? $id;
+        $rangeStart  = Craft::$app->request->getBodyParam('range_start') ?? null;
+        $rangeEnd    = Craft::$app->request->getBodyParam('range_end') ?? null;
+        $variant     = Craft::$app->request->getQueryParam('variant') ?? null;
+        $variantType = Craft::$app->request->getQueryParam('variant_type') ?? null;
+        $startDate   = Craft::$app->request->getQueryParam('startDate') ?? null;
+        $endDate     = Craft::$app->request->getQueryParam('endDate') ?? null;
 
-        if (isset($_GET['startDate']) && !isset($_POST['range_start'])) {
-            $startObj = new \DateTime(urldecode($_GET['startDate']));
-        } elseif (isset($_POST['range_start'])) {
-            $startObj = new \DateTime(urldecode($_POST['range_start']));
+        if ($startDate && !$rangeStart) {
+            $startObj = new \DateTime(urldecode($startDate));
+        } elseif ($rangeStart) {
+            $startObj = new \DateTime(urldecode($rangeStart));
         } else {
             $startObj = new \DateTime(date('Y-m-d 00:00:00', strtotime('-1 month')));
         }
 
-        if (isset($_GET['endDate']) && !isset($_POST['range_end'])) {
-            $endObj = new \DateTime(urldecode($_GET['endDate']));
-        } elseif (isset($_POST['range_end'])) {
-            $endObj = new \DateTime(urldecode($_POST['range_end']));
+        if ($endDate && !$rangeEnd) {
+            $endObj = new \DateTime(urldecode($endDate));
+        } elseif ($rangeEnd) {
+            $endObj = new \DateTime(urldecode($rangeEnd));
         } else {
-            $endObj = $todayObj;
+            $endObj = new \DateTime();
         }
 
         $start = $startObj->format('Y-m-d 00:00:00');
         $end   = $endObj->format('Y-m-d 23:59:59');
 
-        if ($variant || $variantType || $color) {
+        if ($variant || $variantType) {
             $query   = new \yii\db\Query();
             $results = $query->select('orders.id as ID, orders.dateOrdered as dateOrdered, orders.reference, orders.email as email, statuses.name as status, statuses.color as color, lineitems.options, orders.currency as currency, orders.totalPrice as total, orders.totalPaid as amountPaid, shippingAddress.firstName as shippingFirstName, shippingAddress.lastName as shippingLastName, billingAddress.firstName as billingFirstName, billingAddress.lastName as billingLastName')
                              ->from('`craft_commerce_lineitems` `lineitems`')
@@ -67,9 +83,6 @@ class OrderController extends VueController
 
             foreach (array_reverse($results, true) as $index => &$row) {
                 $options        = json_decode($row['options']);
-                $hasPlateColor  = isset($options->{'plate-color'});
-                $hasLetterColor = isset($options->{'letter-color'});
-                $hasLetters     = isset($options->letters);
                 $currency       = $row['currency'];
                 $query          = new \yii\db\Query();
                 $adjustments    = ['tax' => 0, 'shipping' => 0, 'discount' => 0, 'adjustmentsTotal' => 0];
@@ -82,88 +95,6 @@ class OrderController extends VueController
                     $type = strtolower($adjustment['type']);
                     $adjustments[$type] += $adjustment['amount'];
                     $adjustments['adjustmentsTotal'] += $adjustment['amount'];
-                }
-
-                if ($hasPlateColor) {
-                    $plateKey = $options->{'plate-color'};
-
-                    if (trim(strtoupper($color)) === trim(strtoupper($plateKey)) || !$color) {
-                        $grouped[$row['ID']] = [
-                            'id'           => $row['ID'],
-                            'reference'    => $row['reference'],
-                            'dateOrdered'  => $row['dateOrdered'],
-                            'status'       => $row['status'],
-                            'color'        => $row['color'],
-                            'base'         => static::convertCurrency(($row['total'] - $adjustments['adjustmentsTotal']), $currency),
-                            'merchTotal'   => static::convertCurrency(($row['total'] - $adjustments['tax'] - $adjustments['discount']), $currency),
-                            'tax'          => static::convertCurrency($adjustments['tax'], $currency),
-                            'shipping'     => static::convertCurrency($adjustments['shipping'], $currency),
-                            'discount'     => static::convertCurrency($adjustments['discount'], $currency),
-                            'amountPaid'   => static::convertCurrency($row['amountPaid'], $currency),
-                            'billingName'  => $row['billingFirstName'] . ' ' . $row['billingLastName'],
-                            'shippingName' => $row['shippingFirstName'] . ' ' . $row['shippingLastName'],
-                            'email'        => $row['email']
-                        ];
-                    }
-                }
-
-                if ($hasLetterColor) {
-                    $letterColor = ucfirst($options->{'letter-color'}) . ' ';
-                } else {
-                    $letterColor = null;
-                }
-
-                if ($hasLetters) {
-                    $letters = str_split(str_replace(' ', '', $options->letters));
-
-                    foreach ($letters as $letter) {
-                        if ($hasLetters && !$hasPlateColor) {
-                            $letter  = strtoupper($letter);
-                            $variant = strtoupper($variant);
-                        }
-
-                        if (($letter === $variant && $letterColor === $color) || (!$variant && !$color)) {
-                            $grouped[$row['ID']] = [
-                                'id'          => $row['ID'],
-                                'reference'   => $row['reference'],
-                                'dateOrdered' => $row['dateOrdered'],
-                                'status'      => $row['status'],
-                                'color'       => $row['color'],
-                                'base'        => static::convertCurrency(($row['total'] - $adjustments['adjustmentsTotal']), $currency),
-                                'merchTotal'  => static::convertCurrency(($row['total'] - $adjustments['tax'] - $adjustments['discount'] - $adjustments['shipping']), $currency),
-                                'tax'         => static::convertCurrency($adjustments['tax'], $currency),
-                                'shipping'    => static::convertCurrency($adjustments['shipping'], $currency),
-                                'discount'    => static::convertCurrency($adjustments['discount'], $currency),
-                                'amountPaid'  => static::convertCurrency($row['amountPaid'], $currency),
-                                'billingName'  => $row['billingFirstName'] . ' ' . $row['billingLastName'],
-                                'shippingName' => $row['shippingFirstName'] . ' ' . $row['shippingLastName'],
-                                'email'        => $row['email']
-                            ];
-                        }
-                    }
-                }
-
-                if (!$hasLetters && !$hasPlateColor) {
-                    $itemTitle = $row['ID'];
-
-                    if (!array_key_exists($itemTitle, $grouped)) {
-                        $grouped[$row['ID']] = [
-                            'id'          => $row['ID'],
-                            'reference'   => $row['reference'],
-                            'dateOrdered' => $row['dateOrdered'],
-                            'status'      => $row['status'],
-                            'color'       => $row['color'],
-                            'base'        => static::convertCurrency(($row['total'] - $adjustments['adjustmentsTotal']), $currency),
-                            'merchTotal'  => static::convertCurrency(($row['total'] - $adjustments['tax'] - $adjustments['discount']), $currency),
-                            'tax'         => static::convertCurrency($adjustments['tax'], $currency),
-                            'shipping'    => static::convertCurrency($adjustments['shipping'], $currency),
-                            'discount'    => static::convertCurrency($adjustments['discount'], $currency),
-                            'amountPaid'  => static::convertCurrency($row['amountPaid'], $currency),
-                            'billingName'  => $row['billingFirstName'] . ' ' . $row['billingLastName'],
-                            'shippingName' => $row['shippingFirstName'] . ' ' . $row['shippingLastName'],
-                            'email'        => $row['email']
-                        ];
-                    }
                 }
             }
 
@@ -191,8 +122,6 @@ class OrderController extends VueController
                 ];
             }
         } else {
-            $this->start_date = $start;
-            $this->end_date = $end;
             $data = $this->_getOrders($id);
         }
 
