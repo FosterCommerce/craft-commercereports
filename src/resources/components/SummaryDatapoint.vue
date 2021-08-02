@@ -10,7 +10,7 @@ export default {
       },
     },
     number: {
-      type: Number,
+      type: [Number, String],
     },
     format: {
       type: String,
@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     getTrendPhrase() {
-      if (this.data.percentChange > 0) {
+      if (this.data.percentChange > 0 || this.data.percentChange === 'INF') {
         return this.upDown ? 'up by' : 'increased by';
       } else if (this.data.percentChange === 0) {
         return 'unchanged';
@@ -45,8 +45,8 @@ export default {
       if (this.format === 'orders') {
         text += `${this.data.total} ${this.total !== 1 ? 'orders' : 'order'}`;
         text += ` (${this.getTrendPhrase()}${this.data.percentChange !== 0 ?
-          ' ' + Math.abs(this.data.percentChange) + '%' :
-          ''})`;
+          ' ' + (this.data.percentChange === 'INF' ? '∞' : Math.abs(this.data.percentChange))
+          + '%' : ''})`;
       }
 
       return text;
@@ -60,7 +60,7 @@ export default {
     v-if="data"
     :class="{
 			'placeholder-summary-text': data.percentChange === undefined || data.percentChange === NaN,
-			'commerce-insights-up': data.percentChange > 0,
+			'commerce-insights-up': data.percentChange > 0 || data.percentChange === 'INF',
 			'commerce-insights-down': data.percentChange < 0,
 			'commerce-insights-unchanged': data.percentChange === 0,
 		}"
@@ -72,15 +72,15 @@ export default {
   <span
     v-else
     :class="{
-      'commerce-insights-up': number > 0,
+      'commerce-insights-up': number > 0 || number === 'INF',
 			'commerce-insights-down': number < 0,
 			'commerce-insights-unchanged': number === 0,
     }"
   >
-    <span v-if="number > 0">up</span>
+    <span v-if="number > 0 || number === 'INF'">up</span>
     <span v-if="number < 0">down</span>
     <span v-if="number === 0">unchanged</span>
-    <span v-if="number !== 0">{{ number }}%</span>
+    <span v-if="number !== 0">{{ (number === 'INF' ? '∞' : number) }}%</span>
   </span>
 </template>
 

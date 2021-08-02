@@ -186,7 +186,7 @@ class VueController extends Controller
             $previousAoq = $previousQuantity / $numPreviousOrders;
         }
 
-        if ($currentQuantity && $numPreviousOrders) {
+        if ($currentQuantity) {
             $currentAoq = $currentQuantity / $numCurrentOrders;
         }
 
@@ -248,19 +248,19 @@ class VueController extends Controller
                 'totalOrders' => [
                     'total' => $numCurrentOrders,
                     // this is based on the new previous period data
-                    'percentChange' => $numPreviousOrders ? round((($numCurrentOrders - $numPreviousOrders) / $numPreviousOrders) * 100, 2) : 0,
-                    'revenue' => $previousRevenue ? round((($currentRevenue - $previousRevenue) / $previousRevenue) * 100, 2) : 0,
+                    'percentChange' => $numPreviousOrders ? round((($numCurrentOrders - $numPreviousOrders) / $numPreviousOrders) * 100, 2) : 'INF',
+                    'revenue' => $previousRevenue ? round((($currentRevenue - $previousRevenue) / $previousRevenue) * 100, 2) : 'INF',
                     'series' => $totalOrdersSet
                 ],
                 // averageOrderValue, averageOrderQuantity
                 'averageValue' => [
-                    'total' => $numCurrentOrders ? round($currentRevenue / $numCurrentOrders, 2) : 0,
-                    'percentChange' => $previousRevenue ? round((($currentRevenue - $previousRevenue) / $previousRevenue) * 100, 2) : 0,
+                    'total' => $numCurrentOrders ? round($currentRevenue / $numCurrentOrders, 2) : 'INF',
+                    'percentChange' => $previousRevenue ? round((($currentRevenue - $previousRevenue) / $previousRevenue) * 100, 2) : 'INF',
                     'series' => $aovSet
                 ],
                 'averageQuantity' => [
                     'total' => round($currentAoq, 2),
-                    'percentChange' => $previousAoq ? round((($currentAoq - $previousAoq) / $previousAoq) * 100, 2) : 0,
+                    'percentChange' => $previousAoq ? round((($currentAoq - $previousAoq) / $previousAoq) * 100, 2) : 'INF',
                     'series' => $aoqSet
                 ],
                 'totalCustomers' => [
@@ -329,55 +329,24 @@ class VueController extends Controller
         foreach ($orders as $order) {
             foreach ($order->lineItems as $item) {
                 $variant = $item->purchasable;
-                $product = $variant->product;
-                $result[ $variant->sku ] = [
-                    'id'          => $variant->id,
-                    'title'       => $variant->title,
-                    'status'      => $variant->status,
-                    'sku'         => $variant->sku ?: 'No known SKU',
-                    'productId'   => $product->id,
-                    'type'        => $product->type->name,
-                    'typeHandle'  => $product->type->handle,
-                    'totalSold'   => 0,
-                    'sales'       => 0,
-                    'numOrders'   => 0,
-                    'lastOrderId' => 0
-                ];
 
-                // Skip if line item variant has been deleted
-                if (!$variant) {
-                    continue;
-                }
+                if ($variant) {
+                    $product = $variant->product;
+                    $result[$variant->sku] = [
+                        'id'          => $variant->id,
+                        'title'       => $variant->title,
+                        'status'      => $variant->status,
+                        'sku'         => $variant->sku ?: 'No known SKU',
+                        'productId'   => $product->id,
+                        'type'        => $product->type->name,
+                        'typeHandle'  => $product->type->handle,
+                        'lastOrderId' => $result[$variant->sku]['lastOrderId'] ?? 0,
+                        'numOrders'   => $result[$variant->sku]['numOrders'] ?? 0,
+                        'totalSold'   => $result[$variant->sku]['totalSold'] ?? 0,
+                        'sales'       => $result[$variant->sku]['sales'] ?? 0
+                    ];
 
-                // is purchasable a bundle?
-                if ($variant instanceof Bundle) {
-                    // get the individual variants from the bundle.
-                    $bundleItems = $variant->getProducts();
-                    $bundleQtys = $variant->getQtys();
-
-                    foreach ($bundleItems as $bundleItem) {
-
-                        if (!$resultItem = $result[$bundleItem->sku]) {
-                            continue;
-                        }
-
-                        if ($resultItem['lastOrderId'] != $order->id) {
-                            $resultItem['numOrders'] += 1;
-                        }
-                        $resultItem['lastOrderId'] = $order->id;
-
-                        // Multiply the qty of the items in this bundle
-                        // by the line item qty for cases where a user
-                        // buys two sets of the same letters. E.g.: A custom
-                        // licence plate frame with the same letters for both.
-                        $qty = $bundleQtys[$bundleItem->id] * $item->qty;
-                        $resultItem['totalSold'] += $qty;
-                        $resultItem['sales'] += $bundleItem->price * $qty;
-
-                        $result[$bundleItem->sku] = $resultItem;
-                    }
-                } else {
-                    if ($result[$variant->sku]['lastOrderId'] != $order->id) {
+                    if ($result[$variant->sku]['lastOrderId'] !== $order->id) {
                         $result[$variant->sku]['numOrders'] += 1;
                     }
 
@@ -390,9 +359,6 @@ class VueController extends Controller
 
         foreach ($result as $sku => $item) {
             $result[$sku]['sales'] = self::convertCurrency($result[$sku]['sales'], $currency);
-            if($result[$sku]['totalSold'] == 0) {
-                unset($result[$sku]);
-            }
         }
 
         usort($result, function($a, $b) {

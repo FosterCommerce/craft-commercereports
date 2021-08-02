@@ -48,6 +48,7 @@ export default {
       page_size: 100,
       current_page: 1,
       keyword: '',
+      previousKeywordLen: 0,
       selectedTypeOption: function() {
         return {};
       },
@@ -94,15 +95,18 @@ export default {
       this.keyword = '';
       this.selectedPaymentTypeOption = {};
       this.selectedTypeOption = typeOption;
+      this.emitChange();
     },
     selectPaymentTypeOption(typeOption) {
       this.keyword = '';
       this.selectedTypeOption = {};
       this.selectedPaymentTypeOption = typeOption;
+      this.emitChange();
     },
     selectAllTypes() {
       this.selectedPaymentTypeOption = {};
       this.selectedTypeOption = {};
+      this.emitChange();
     },
     getSelectedLabel() {
       if (Object.keys(this.selectedTypeOption).length === 0) {
@@ -156,6 +160,26 @@ export default {
         }
       }
     },
+    emitChange() {
+      this.$emit('filtersChanged', {
+        filters: {
+          keyword: this.keyword.length > 2 ? this.keyword : '',
+          orderType: this.selectedTypeOption?.value,
+          paymentType: this.selectedPaymentTypeOption?.value,
+        }
+      });
+    },
+    emitKeywordChange() {
+      if (this.keyword.length > 2) {
+        this.previousKeywordLen = this.keyword.length;
+        this.emitChange();
+      } else {
+        if (this.previousKeywordLen > 2) {
+          this.previousKeywordLen = 0;
+          this.emitChange();
+        }
+      }
+    },
   },
   computed: {
     filteredElements() {
@@ -165,7 +189,7 @@ export default {
       this.showLoader();
 
       if (this.elementType === 'Products' || this.elementType === 'Sales') {
-        if (this.keyword.length) {
+        if (this.keyword.length > 2) {
           // match title and sku against keyword
           filteredElements = filteredElements.filter(function(element) {
             const lowerKeyword = self.keyword.toLowerCase();
@@ -188,7 +212,7 @@ export default {
           });
         }
       } else if (this.elementType === 'Orders') {
-        if (this.keyword.length) {
+        if (this.keyword.length > 2) {
           // match email and reference against keyword
           filteredElements = filteredElements.filter(function(element) {
             const lowerKeyword = self.keyword.toLowerCase();
@@ -218,7 +242,7 @@ export default {
           });
         }
       } else if (this.elementType === 'Customers') {
-        if (this.keyword.length) {
+        if (this.keyword.length > 2) {
           // match email and name against keyword
           filteredElements = filteredElements.filter(function(element) {
             const lowerKeyword = self.keyword.toLowerCase();
@@ -278,14 +302,6 @@ export default {
         let end = this.current_page * this.page_size;
 
         if (idx >= start && idx < end) return true;
-      });
-
-      this.$emit('filtersChanged', {
-        filters: {
-          keyword: this.keyword ?? null,
-          orderType: this.selectedTypeOption?.value,
-          paymentType: this.selectedPaymentTypeOption?.value,
-        }
       });
 
       this.hideLoader();
@@ -350,7 +366,7 @@ export default {
           });
         }
       } else if (this.elementType === 'Customers') {
-        if (this.keyword.length) {
+        if (this.keyword.length ) {
           // match email and name against keyword
           filteredElements = filteredElements.filter(function(element) {
             const lowerKeyword = self.keyword.toLowerCase();
@@ -487,7 +503,7 @@ export default {
             <input
               class="text fullwidth"
               v-model="keyword"
-              @input="resetPage"
+              @input="resetPage(); emitKeywordChange()"
               type="text"
               autocomplete="off"
               :placeholder="getPlaceholder()"
