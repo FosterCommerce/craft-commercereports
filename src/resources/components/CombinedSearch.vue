@@ -3,11 +3,15 @@ import Vue from 'vue';
 import styles from '../css/common.css';
 import moment from 'moment';
 import JsonCSV from 'vue-json-csv';
+import Pagination from '../components/Pagination.vue';
 
 Vue.component('downloadCsv', JsonCSV);
 
 export default {
   name: 'combined-search',
+  components: {
+    Pagination,
+  },
   props: {
     elements: {
       type: Object | Array,
@@ -45,10 +49,12 @@ export default {
     return {
       sort_by: '',
       sort_direction: 'desc',
-      page_size: 100,
-      current_page: 1,
       keyword: '',
       previousKeywordLen: 0,
+      page_size: 0,
+      current_page: 0,
+      paged_elements: [],
+      reset_page: false,
       selectedTypeOption: function() {
         return {};
       },
@@ -133,15 +139,6 @@ export default {
 
       this.sort_by = col;
     },
-    prevPage: function() {
-      if (this.current_page > 1) this.current_page--;
-    },
-    nextPage: function() {
-      if ((this.current_page * this.page_size) < this.elements.length) this.current_page++;
-    },
-    resetPage: function() {
-      this.current_page = 1;
-    },
     showLoader: function() {
       const loaders = document.getElementsByClassName('commerce-insights-ajax-loader');
 
@@ -178,6 +175,19 @@ export default {
           this.previousKeywordLen = 0;
           this.emitChange();
         }
+      }
+    },
+    paginationLoaded(pageData) {
+      this.page_size = pageData.pageSize;
+      this.current_page = pageData.currentPage;
+    },
+    changePage(currentPage) {
+      this.reset_page = false;
+      this.current_page = currentPage;
+    },
+    resetPage() {
+      if (this.keyword.length > 2) {
+        this.reset_page = true;
       }
     },
   },
@@ -303,6 +313,12 @@ export default {
 
         if (idx >= start && idx < end) return true;
       });
+
+      if (this.keyword.length > 2 || Object.keys(this.selectedTypeOption).length !== 0 || Object.keys(this.selectedPaymentTypeOption).length !== 0) {
+        this.paged_elements = filteredElements;
+      } else {
+        this.paged_elements = this.elements;
+      }
 
       this.hideLoader();
       return filteredElements;
@@ -818,10 +834,13 @@ export default {
             </tbody>
           </table>
 
-          <div style="margin-top: 30px">
-            <button @click="prevPage" class="btn">Previous</button>
-            <button @click="nextPage" class="btn">Next</button>
-          </div>
+          <Pagination
+            v-if="paged_elements.length"
+            :num-elements="paged_elements.length"
+            :reset="reset_page"
+            @pagination-loaded="paginationLoaded"
+            @change-page="changePage"
+          />
         </div>
       </div>
     </div>
