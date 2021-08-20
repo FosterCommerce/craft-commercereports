@@ -3,11 +3,15 @@ import Vue from 'vue';
 import styles from '../css/common.css';
 import moment from 'moment';
 import JsonCSV from 'vue-json-csv';
+import Pagination from '../components/Pagination.vue';
 
 Vue.component('downloadCsv', JsonCSV);
 
 export default {
   name: 'combined-search',
+  components: {
+    Pagination,
+  },
   props: {
     elements: {
       type: Object | Array,
@@ -45,9 +49,12 @@ export default {
     return {
       sort_by: '',
       sort_direction: 'desc',
-      page_size: 100,
-      current_page: 1,
       keyword: '',
+      previousKeywordLen: 0,
+      page_size: 0,
+      current_page: 0,
+      paged_elements: [],
+      reset_page: false,
       selectedTypeOption: function() {
         return {};
       },
@@ -94,15 +101,18 @@ export default {
       this.keyword = '';
       this.selectedPaymentTypeOption = {};
       this.selectedTypeOption = typeOption;
+      this.emitChange();
     },
     selectPaymentTypeOption(typeOption) {
       this.keyword = '';
       this.selectedTypeOption = {};
       this.selectedPaymentTypeOption = typeOption;
+      this.emitChange();
     },
     selectAllTypes() {
       this.selectedPaymentTypeOption = {};
       this.selectedTypeOption = {};
+      this.emitChange();
     },
     getSelectedLabel() {
       if (Object.keys(this.selectedTypeOption).length === 0) {
@@ -129,15 +139,6 @@ export default {
 
       this.sort_by = col;
     },
-    prevPage: function() {
-      if (this.current_page > 1) this.current_page--;
-    },
-    nextPage: function() {
-      if ((this.current_page * this.page_size) < this.elements.length) this.current_page++;
-    },
-    resetPage: function() {
-      this.current_page = 1;
-    },
     showLoader: function() {
       const loaders = document.getElementsByClassName('commerce-insights-ajax-loader');
 
@@ -156,6 +157,39 @@ export default {
         }
       }
     },
+    emitChange() {
+      this.$emit('filtersChanged', {
+        filters: {
+          keyword: this.keyword.length > 2 ? this.keyword : '',
+          orderType: this.selectedTypeOption?.value,
+          paymentType: this.selectedPaymentTypeOption?.value,
+        }
+      });
+    },
+    emitKeywordChange() {
+      if (this.keyword.length > 2) {
+        this.previousKeywordLen = this.keyword.length;
+        this.emitChange();
+      } else {
+        if (this.previousKeywordLen > 2) {
+          this.previousKeywordLen = 0;
+          this.emitChange();
+        }
+      }
+    },
+    paginationLoaded(pageData) {
+      this.page_size = pageData.pageSize;
+      this.current_page = pageData.currentPage;
+    },
+    changePage(currentPage) {
+      this.reset_page = false;
+      this.current_page = currentPage;
+    },
+    resetPage() {
+      if (this.keyword.length > 2) {
+        this.reset_page = true;
+      }
+    },
   },
   computed: {
     filteredElements() {
@@ -165,7 +199,7 @@ export default {
       this.showLoader();
 
       if (this.elementType === 'Products' || this.elementType === 'Sales') {
-        if (this.keyword.length) {
+        if (this.keyword.length > 2) {
           // match title and sku against keyword
           filteredElements = filteredElements.filter(function(element) {
             const lowerKeyword = self.keyword.toLowerCase();
@@ -188,7 +222,7 @@ export default {
           });
         }
       } else if (this.elementType === 'Orders') {
-        if (this.keyword.length) {
+        if (this.keyword.length > 2) {
           // match email and reference against keyword
           filteredElements = filteredElements.filter(function(element) {
             const lowerKeyword = self.keyword.toLowerCase();
@@ -218,7 +252,7 @@ export default {
           });
         }
       } else if (this.elementType === 'Customers') {
-        if (this.keyword.length) {
+        if (this.keyword.length > 2) {
           // match email and name against keyword
           filteredElements = filteredElements.filter(function(element) {
             const lowerKeyword = self.keyword.toLowerCase();
@@ -280,13 +314,11 @@ export default {
         if (idx >= start && idx < end) return true;
       });
 
-      this.$emit('filtersChanged', {
-        filters: {
-          keyword: this.keyword ?? null,
-          orderType: this.selectedTypeOption?.value,
-          paymentType: this.selectedPaymentTypeOption?.value,
-        }
-      });
+      if (this.keyword.length > 2 || Object.keys(this.selectedTypeOption).length !== 0 || Object.keys(this.selectedPaymentTypeOption).length !== 0) {
+        this.paged_elements = filteredElements;
+      } else {
+        this.paged_elements = this.elements;
+      }
 
       this.hideLoader();
       return filteredElements;
@@ -350,7 +382,7 @@ export default {
           });
         }
       } else if (this.elementType === 'Customers') {
-        if (this.keyword.length) {
+        if (this.keyword.length ) {
           // match email and name against keyword
           filteredElements = filteredElements.filter(function(element) {
             const lowerKeyword = self.keyword.toLowerCase();
@@ -487,7 +519,7 @@ export default {
             <input
               class="text fullwidth"
               v-model="keyword"
-              @input="resetPage"
+              @input="resetPage(); emitKeywordChange()"
               type="text"
               autocomplete="off"
               :placeholder="getPlaceholder()"
@@ -802,10 +834,13 @@ export default {
             </tbody>
           </table>
 
-          <div style="margin-top: 30px">
-            <button @click="prevPage" class="btn">Previous</button>
-            <button @click="nextPage" class="btn">Next</button>
-          </div>
+          <Pagination
+            v-if="paged_elements.length"
+            :num-elements="paged_elements.length"
+            :reset="reset_page"
+            @pagination-loaded="paginationLoaded"
+            @change-page="changePage"
+          />
         </div>
       </div>
     </div>

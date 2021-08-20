@@ -96,8 +96,14 @@ export default {
                 <mini-sparkline-panel
                   title="Total Orders"
                   caption="All orders this period"
-                  :trend="Math.abs(computedStats.orders.totalOrders.percentChange) + '%'"
-                  :positive-trend="computedStats.orders.totalOrders.percentChange >= 0"
+                  :trend="
+                    computedStats.orders.totalOrders.percentChange === 'INF' ? '∞%' :
+                    Math.abs(computedStats.orders.totalOrders.percentChange) + '%'
+                  "
+                  :positive-trend="
+                    computedStats.orders.totalOrders.percentChange >= 0 ||
+                    computedStats.orders.totalOrders.percentChange === 'INF'
+                  "
                   :value="computedStats.orders.totalOrders.total"
                   :data="computedStats.orders.totalOrders.series"
                 ></mini-sparkline-panel>
@@ -109,8 +115,14 @@ export default {
                 <mini-sparkline-panel
                   title="Average Value"
                   caption="Average completed order value"
-                  :trend="Math.abs(computedStats.orders.averageValue.percentChange) + '%'"
-                  :positive-trend="computedStats.orders.averageValue.percentChange >= 0"
+                  :trend="
+                    computedStats.orders.averageValue.percentChange === 'INF' ? '∞%' :
+                    Math.abs(computedStats.orders.averageValue.percentChange) + '%'
+                  "
+                  :positive-trend="
+                    computedStats.orders.averageValue.percentChange >= 0 ||
+                    computedStats.orders.averageValue.percentChange === 'INF'
+                  "
                   :value="computedStats.orders.averageValue.total"
                   :data="computedStats.orders.averageValue.series"
                 ></mini-sparkline-panel>
@@ -122,8 +134,14 @@ export default {
                 <mini-sparkline-panel
                   title="Average Order Quantity"
                   caption="Average items per order"
-                  :trend="Math.abs(computedStats.orders.averageQuantity.percentChange) + '%'"
-                  :positive-trend="computedStats.orders.averageQuantity.percentChange >= 0"
+                  :trend="
+                    computedStats.orders.averageQuantity.percentChange === 'INF' ? '∞%' :
+                    Math.abs(computedStats.orders.averageQuantity.percentChange) + '%'
+                  "
+                  :positive-trend="
+                    computedStats.orders.averageQuantity.percentChange >= 0 ||
+                    computedStats.orders.averageQuantity.percentChange === 'INF'
+                  "
                   :value="computedStats.orders.averageQuantity.total"
                   :data="computedStats.orders.averageQuantity.series"
                 ></mini-sparkline-panel>
