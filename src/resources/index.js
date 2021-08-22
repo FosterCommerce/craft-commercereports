@@ -1,4 +1,6 @@
 import Orders from './layouts/Orders.vue';
+import Sales from './layouts/Sales.vue';
+import Customers from './layouts/Customers.vue';
 import BarChartPanel from './components/BarChartPanel.vue';
 import Chart from './components/Chart.vue';
 import CombinedSearch from './components/CombinedSearch.vue';
@@ -20,19 +22,21 @@ const app = new Vue({
   el: '#main',
   delimiters: ['${', '}'],
   components: {
-    'orders': Orders,
-    'bar-chart-panel': BarChartPanel,
-    'combined-search': CombinedSearch,
-    'chart': Chart,
-    'date-range-picker': DateRangePicker,
-    'donut-panel': DonutPanel,
-    'line-chart-panel': LineChartPanel,
-    'mini-sparkline-panel': MiniSparklinePanel,
-    'pane': Pane,
-    'sparkline-panel': SparklinePanel,
-    'summary-datapoint': SummaryDatapoint,
-    'tab': Tab,
-    'tabbed-panes': TabbedPanes,
+    Orders,
+    Sales,
+    Customers,
+    BarChartPanel,
+    CombinedSearch,
+    Chart,
+    DateRangePicker,
+    DonutPanel,
+    LineChartPanel,
+    MiniSparklinePanel,
+    Pane,
+    SparklinePanel,
+    SummaryDatapoint,
+    Tab,
+    TabbedPanes,
   },
   data() {
     return {

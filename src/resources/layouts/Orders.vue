@@ -6,7 +6,7 @@ import axios from 'axios';
 import qs from 'qs';
 
 export default {
-  name: 'orders',
+  name: 'Orders',
   props: {
     elements: {
       type: Object | Array,
@@ -73,16 +73,16 @@ export default {
     <div class="commerce-insights-summary">
       <p>
         Revenue is
-        <summary-datapoint
+        <SummaryDatapoint
           :number="stats.orders.totalOrders.revenue"
           up-down
-        ></summary-datapoint>
+        ></SummaryDatapoint>
         for the selected date range compared the previous period. You also have
-        <summary-datapoint
+        <SummaryDatapoint
           :data="stats.orders.totalOrders"
           format="orders"
           up-down
-        ></summary-datapoint>
+        ></SummaryDatapoint>
         .
       </p>
     </div>
@@ -93,7 +93,7 @@ export default {
           <div class="-m-3 mini-sparkline-grid">
             <div class="w-1/3">
               <div class="p-3">
-                <mini-sparkline-panel
+                <MiniSparklinePanel
                   title="Total Orders"
                   caption="All orders this period"
                   :trend="
@@ -106,13 +106,13 @@ export default {
                   "
                   :value="computedStats.orders.totalOrders.total"
                   :data="computedStats.orders.totalOrders.series"
-                ></mini-sparkline-panel>
+                ></MiniSparklinePanel>
               </div>
             </div>
 
             <div class="w-1/3">
               <div class="p-3">
-                <mini-sparkline-panel
+                <MiniSparklinePanel
                   title="Average Value"
                   caption="Average completed order value"
                   :trend="
@@ -125,13 +125,13 @@ export default {
                   "
                   :value="computedStats.orders.averageValue.total"
                   :data="computedStats.orders.averageValue.series"
-                ></mini-sparkline-panel>
+                ></MiniSparklinePanel>
               </div>
             </div>
 
             <div class="w-1/3">
               <div class="p-3">
-                <mini-sparkline-panel
+                <MiniSparklinePanel
                   title="Average Order Quantity"
                   caption="Average items per order"
                   :trend="
@@ -144,7 +144,7 @@ export default {
                   "
                   :value="computedStats.orders.averageQuantity.total"
                   :data="computedStats.orders.averageQuantity.series"
-                ></mini-sparkline-panel>
+                ></MiniSparklinePanel>
               </div>
             </div>
           </div>
@@ -152,7 +152,7 @@ export default {
       </div>
     </div>
 
-    <combined-search
+    <CombinedSearch
       :elements="elements"
       :type-options="typeOptions"
       element-type="Orders"

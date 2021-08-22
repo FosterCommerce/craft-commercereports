@@ -5,11 +5,11 @@
     {% set statuses = statuses|merge([{label: status.name, value: status.name }]) %}
   {% endfor %}
 
-  <orders
+  <Orders
     :elements="orders"
     :stats="stats"
     :date-start="dateRange.start"
     :date-end="dateRange.end"
     :type-options='{{ (statuses|json_encode|raw) }}'
-  ></orders>
+  ></Orders>
 </div>

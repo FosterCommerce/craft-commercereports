@@ -15,20 +15,22 @@ export default {
   },
   data() {
     return {
-      pageSize: 20,
+      pageSize: 5,
       currentPage: 1,
-      numPages: 0,
+      numPages: 1,
     }
   },
   watch: {
     numElements() {
-      this.numPages = this.numElements ? Math.ceil(this.numElements / this.pageSize) : 0;
+      this.updateNumPages();
     },
     reset() {
       if (this.reset) this.resetPage();
     },
   },
   mounted() {
+    this.updateNumPages();
+
     this.$emit('pagination-loaded', {
       pageSize: this.pageSize,
       currentPage: this.currentPage
@@ -49,6 +51,9 @@ export default {
     },
     changePage() {
       this.$emit('change-page', this.currentPage);
+    },
+    updateNumPages() {
+      this.numPages = this.numElements ? Math.ceil(this.numElements / this.pageSize) : 0;
     },
   },
 }
