@@ -33,11 +33,10 @@ class OrderController extends VueController
         }
     }
 
-    private function getOrders($id)
+    private function getOrders()
     {
         $grouped     = [];
         $data        = [];
-        $id          = Craft::$app->request->getBodyParam('id') ?? $id;
         $rangeStart  = Craft::$app->request->getBodyParam('range_start') ?? null;
         $rangeEnd    = Craft::$app->request->getBodyParam('range_end') ?? null;
         $variant     = Craft::$app->request->getQueryParam('variant') ?? null;
@@ -122,7 +121,7 @@ class OrderController extends VueController
                 ];
             }
         } else {
-            $data = $this->_getOrders($id);
+            $data = $this->_getOrders();
         }
 
         return $data;
