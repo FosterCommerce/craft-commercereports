@@ -49,8 +49,14 @@ export default {
                 <MiniSparklinePanel
                   title="Total Customers"
                   caption="Customers with orders"
-                  :trend="Math.abs(stats.orders.totalCustomers.percentChange) + '%'"
-                  :positive-trend="stats.orders.totalCustomers.percentChange >= 0"
+                  :trend="
+                    stats.orders.totalCustomers.percentChange === 'INF' ? '∞%' :
+                    Math.abs(stats.orders.totalCustomers.percentChange) + '%'
+                  "
+                  :positive-trend="
+                    stats.orders.totalCustomers.percentChange >= 0 ||
+                    stats.orders.totalCustomers.percentChange === 'INF'
+                  "
                   :value="stats.orders.totalCustomers.total"
                   :data="stats.orders.totalCustomers.series"
                 ></MiniSparklinePanel>
@@ -62,8 +68,14 @@ export default {
                 <MiniSparklinePanel
                   title="New Customers"
                   caption="New customers with orders"
-                  :trend="Math.abs(stats.orders.newCustomers.percentChange) + '%'"
-                  :positive-trend="stats.orders.newCustomers.percentChange >= 0"
+                  :trend="
+                    stats.orders.newCustomers.percentChange === 'INF' ? '∞%' :
+                    Math.abs(stats.orders.newCustomers.percentChange) + '%'
+                  "
+                  :positive-trend="
+                    stats.orders.newCustomers.percentChange >= 0 ||
+                    stats.orders.newCustomers.percentChange === 'INF'
+                  "
                   :value="stats.orders.newCustomers.total"
                   :data="stats.orders.newCustomers.series"
                 ></MiniSparklinePanel>
@@ -75,8 +87,14 @@ export default {
                 <MiniSparklinePanel
                   title="Returning Customers"
                   caption="Returning customers with orders"
-                  :trend="Math.abs(stats.orders.returningCustomers.percentChange) + '%'"
-                  :positive-trend="stats.orders.returningCustomers.percentChange >= 0"
+                  :trend="
+                    stats.orders.returningCustomers.percentChange === 'INF' ? '∞%' :
+                    Math.abs(stats.orders.returningCustomers.percentChange) + '%'
+                  "
+                  :positive-trend="
+                    stats.orders.returningCustomers.percentChange >= 0 ||
+                    stats.orders.returningCustomers.percentChange === 'INF'
+                  "
                   :value="stats.orders.returningCustomers.total"
                   :data="stats.orders.returningCustomers.series"
                 ></MiniSparklinePanel>
