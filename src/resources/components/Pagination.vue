@@ -15,7 +15,7 @@ export default {
   },
   data() {
     return {
-      pageSize: 5,
+      pageSize: 50,
       currentPage: 1,
       numPages: 1,
     }
@@ -47,13 +47,14 @@ export default {
     },
     resetPage() {
       this.currentPage = 1;
+      this.updateNumPages();
       this.changePage();
     },
     changePage() {
       this.$emit('change-page', this.currentPage);
     },
     updateNumPages() {
-      this.numPages = this.numElements ? Math.ceil(this.numElements / this.pageSize) : 0;
+      this.numPages = this.numElements ? Math.ceil(this.numElements / this.pageSize) : 1;
     },
   },
 }

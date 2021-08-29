@@ -127,6 +127,8 @@ export default {
       }
     },
     emitChange() {
+      this.reset_page = true;
+
       this.$emit('filtersChanged', {
         filters: {
           keyword: this.keyword.length > 2 ? this.keyword : '',
@@ -154,14 +156,9 @@ export default {
       this.page_size = pageData.pageSize;
       this.current_page = pageData.currentPage;
     },
-    changePage(currentPage) {
+    changePage(page) {
       this.reset_page = false;
-      this.current_page = currentPage;
-    },
-    resetPage() {
-      if (this.keyword.length > 2) {
-        this.reset_page = true;
-      }
+      this.current_page = page;
     },
   },
   computed: {
@@ -344,7 +341,6 @@ export default {
           ></CustomersTable>
 
           <Pagination
-            v-if="paged_elements.length"
             :num-elements="paged_elements.length"
             :reset="reset_page"
             @pagination-loaded="paginationLoaded"

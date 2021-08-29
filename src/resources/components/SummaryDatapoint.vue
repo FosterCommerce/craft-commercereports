@@ -36,14 +36,14 @@ export default {
       return this.upDown ? 'down by' : 'decreased by';
     },
     getFormattedChangeValue() {
-      let text = this.format === 'percent' ? `${this.getTrendPhrase()} ` : '';
+      let text = this.format === 'percent' ? `${this.getTrendPhrase()} ` : `${this.data.total} `;
 
       if (this.format === 'percent' && this.data.percentChange !== 0) {
-        text += `${Math.abs(this.data.percentChange)}%`;
+        text += `${(this.data.percentChange === 'INF' ? '∞' : Math.abs(this.data.percentChange))}%`;
       }
 
       if (this.format === 'orders') {
-        text += `${this.data.total} ${this.total !== 1 ? 'orders' : 'order'}`;
+        text += `${this.data.total !== 1 ? 'orders' : 'order'}`;
         text += ` (${this.getTrendPhrase()}${this.data.percentChange !== 0 ?
           ' ' + (this.data.percentChange === 'INF' ? '∞' : Math.abs(this.data.percentChange))
           + '%' : ''})`;
@@ -68,6 +68,17 @@ export default {
   >
 		{{ getFormattedChangeValue() }}
 	</span>
+
+  <span
+    v-else-if="format === 'number' && number"
+    :class="{
+      'commerce-insights-up': number > 0 || number === 'INF',
+			'commerce-insights-down': number < 0,
+			'commerce-insights-unchanged': number === 0,
+    }"
+  >
+    {{ number }}
+  </span>
 
   <span
     v-else

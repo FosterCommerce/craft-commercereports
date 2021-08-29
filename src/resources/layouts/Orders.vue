@@ -77,13 +77,12 @@ export default {
           :number="stats.orders.totalOrders.revenue"
           up-down
         ></SummaryDatapoint>
-        for the selected date range compared the previous period. You also have
+        for the selected date range compared to the previous period. You also have
         <SummaryDatapoint
           :data="stats.orders.totalOrders"
           format="orders"
           up-down
-        ></SummaryDatapoint>
-        .
+        ></SummaryDatapoint>.
       </p>
     </div>
 
@@ -100,10 +99,7 @@ export default {
                     computedStats.orders.totalOrders.percentChange === 'INF' ? '∞%' :
                     Math.abs(computedStats.orders.totalOrders.percentChange) + '%'
                   "
-                  :positive-trend="
-                    computedStats.orders.totalOrders.percentChange >= 0 ||
-                    computedStats.orders.totalOrders.percentChange === 'INF'
-                  "
+                  :percent="computedStats.orders.totalOrders.percentChange"
                   :value="computedStats.orders.totalOrders.total"
                   :data="computedStats.orders.totalOrders.series"
                 ></MiniSparklinePanel>
@@ -119,10 +115,7 @@ export default {
                     computedStats.orders.averageValue.percentChange === 'INF' ? '∞%' :
                     Math.abs(computedStats.orders.averageValue.percentChange) + '%'
                   "
-                  :positive-trend="
-                    computedStats.orders.averageValue.percentChange >= 0 ||
-                    computedStats.orders.averageValue.percentChange === 'INF'
-                  "
+                  :percent="computedStats.orders.averageValue.percentChange"
                   :value="computedStats.orders.averageValue.total"
                   :data="computedStats.orders.averageValue.series"
                 ></MiniSparklinePanel>
@@ -138,10 +131,8 @@ export default {
                     computedStats.orders.averageQuantity.percentChange === 'INF' ? '∞%' :
                     Math.abs(computedStats.orders.averageQuantity.percentChange) + '%'
                   "
-                  :positive-trend="
-                    computedStats.orders.averageQuantity.percentChange >= 0 ||
-                    computedStats.orders.averageQuantity.percentChange === 'INF'
-                  "
+                  :percent="computedStats.orders.averageQuantity.percentChange"
+                  :neutral-trend="computedStats.orders.averageQuantity.percentChange === 0"
                   :value="computedStats.orders.averageQuantity.total"
                   :data="computedStats.orders.averageQuantity.series"
                 ></MiniSparklinePanel>

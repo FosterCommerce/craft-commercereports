@@ -131,11 +131,11 @@ class VueController extends Controller
         $startDate  = $rangeStart ?
             DateTime::createFromFormat('Y-m-d H:i:s', $rangeStart)->format('Y-m-d 00:00:00') :
             DateTime::createFromFormat('Y-m-d H:i:s', $weekAgo)->format('Y-m-d 00:00:00');
-        $end      = DateTime::createFromFormat('Y-m-d H:i:s', $endDate);
-        $start    = DateTime::createFromFormat('Y-m-d H:i:s', $startDate);
-        $numDays  = $end->diff($start)->format("%r%a");
+        $end        = DateTime::createFromFormat('Y-m-d H:i:s', $endDate);
+        $start      = DateTime::createFromFormat('Y-m-d H:i:s', $startDate);
+        $numDays    = $end->diff($start)->format("%r%a");
         // get the previous start date based on what the previous period would be
-        $previousStartDate = $start->modify($numDays . ' day')->format('Y-m-d 00:00:00');
+        $previousStartDate          = $start->modify($numDays . ' day')->format('Y-m-d 00:00:00');
         $orders                     = $this->orders;
         $previousOrders             = $orders['previousPeriod'];
         $currentOrders              = $orders['currentPeriod'];
@@ -291,34 +291,34 @@ class VueController extends Controller
                 'totalOrders' => [
                     'total' => $numCurrentOrders,
                     // this is based on the new previous period data
-                    'percentChange' => $numPreviousOrders ? round((($numCurrentOrders - $numPreviousOrders) / $numPreviousOrders) * 100, 2) : 'INF',
-                    'revenue' => $previousRevenue ? round((($currentRevenue - $previousRevenue) / $previousRevenue) * 100, 2) : 'INF',
+                    'percentChange' => $numPreviousOrders ? round((($numCurrentOrders - $numPreviousOrders) / $numPreviousOrders) * 100, 2) : ($numCurrentOrders ? 'INF' : 0),
+                    'revenue' => $previousRevenue ? round((($currentRevenue - $previousRevenue) / $previousRevenue) * 100, 2) : ($currentRevenue ? 'INF' : 0),
                     'series' => $totalOrdersSet
                 ],
                 // averageOrderValue, averageOrderQuantity
                 'averageValue' => [
-                    'total' => $numCurrentOrders ? round($currentRevenue / $numCurrentOrders, 2) : 'INF',
-                    'percentChange' => $previousRevenue ? round((($currentRevenue - $previousRevenue) / $previousRevenue) * 100, 2) : 'INF',
+                    'total' => $numCurrentOrders ? round($currentRevenue / $numCurrentOrders, 2) : ($numCurrentOrders ? 'INF' : 0),
+                    'percentChange' => $previousRevenue ? round((($currentRevenue - $previousRevenue) / $previousRevenue) * 100, 2) : ($currentRevenue ? 'INF' : 0),
                     'series' => $aovSet
                 ],
                 'averageQuantity' => [
                     'total' => round($currentAoq, 2),
-                    'percentChange' => $previousAoq ? round((($currentAoq - $previousAoq) / $previousAoq) * 100, 2) : 'INF',
+                    'percentChange' => $previousAoq ? round((($currentAoq - $previousAoq) / $previousAoq) * 100, 2) : ($currentAoq ? 'INF' : 0),
                     'series' => $aoqSet
                 ],
                 'totalCustomers' => [
                     'total' => $currentCustomers,
-                    'percentChange' => $previousCustomers ? round((($currentCustomers - $previousCustomers) / $previousCustomers) * 100, 2) : 'INF',
+                    'percentChange' => $previousCustomers ? round((($currentCustomers - $previousCustomers) / $previousCustomers) * 100, 2) : ($currentCustomers ? 'INF' : 0),
                     'series' => $totalCustomersSet
                 ],
                 'newCustomers' => [
                     'total' => $currentNewCustomers,
-                    'percentChange' => $previousNewCustomers ? round((($currentNewCustomers - $previousNewCustomers) / $previousNewCustomers) * 100, 2) : 'INF',
+                    'percentChange' => $previousNewCustomers ? round((($currentNewCustomers - $previousNewCustomers) / $previousNewCustomers) * 100, 2) : ($currentNewCustomers ? 'INF' : 0),
                     'series' => $newCustomersSet
                 ],
                 'returningCustomers' => [
                     'total' => $returningCustomers,
-                    'percentChange' => $previousReturningCustomers ? round((($returningCustomers - $previousReturningCustomers) / $previousReturningCustomers) * 100, 2) : 'INF',
+                    'percentChange' => $previousReturningCustomers ? round((($returningCustomers - $previousReturningCustomers) / $previousReturningCustomers) * 100, 2) : ($returningCustomers ? 'INF' : 0),
                     'series' => $returningCustomersSet
                 ]
             ]
@@ -413,6 +413,9 @@ class VueController extends Controller
 
     public function _getCustomers() {
         $orders     = $this->orders['currentPeriod'];
+        $today      = new DateTime(date('Y-m-d'));
+        $start      = DateTime::createFromFormat('Y-m-d H:i:s', $today->format('Y-m-d 00:00:00'));
+        $sixtyDays  = $start->modify('-60 day')->format('Y-m-d 00:00:00');
         $processed  = [];
         $result     = [];
 
@@ -421,9 +424,11 @@ class VueController extends Controller
             $email      = strtolower($order->email);
 
             if(!array_key_exists($email, $processed)) {
+                $customerIsActive = (int)Order::find()->email($email)->dateOrdered('>= ' . $sixtyDays)->count();
+
                 $processed[$email] = [
+                    'customerId'    => $order->customerId,
                     'ordersCount'   => 1,
-                    'itemsQty'      => 0,
                     'aov'           => 0,
                     'amountPaid'    => $order->totalPaid,
                     'email'         => $email,
@@ -431,8 +436,8 @@ class VueController extends Controller
                     'billingName'   => ($order->billingAddress->firstName ?? ' ') . ' ' . ($order->billingAddress->lastName ?? ' '),
                     'shippingName'  => ($order->shippingAddress->firstName ?? ' ') . ' ' . ($order->shippingAddress->lastName ?? ' '),
                     'currency'      => $order->currency,
-                    'firstPurchase' => $order->dateOrdered->format('Y-m-d'),
-                    'lastPurchase'  => $order->dateOrdered->format('Y-m-d')
+                    'lastPurchase'  => $order->dateOrdered->format('Y-m-d'),
+                    'active'        => $customerIsActive
                 ];
             } else {
                 $processed[$email]['ordersCount'] += 1;
@@ -441,30 +446,22 @@ class VueController extends Controller
                 if($order->datePaid < $processed[$email]['lastPurchase']) {
                     $processed[$email]['lastPurchase'] = $order->dateOrdered->format('Y-m-d');
                 }
-
-                if($order->datePaid > $processed[$email]['firstPurchase']) {
-                    $processed[$email]['firstPurchase'] = $order->dateOrdered->format('Y-m-d');
-                }
-            }
-
-            foreach ($line_items as $item) {
-                $processed[$email]['itemsQty'] += $item->qty;
             }
         }
 
         foreach ($processed as $email=> $data) {
             $result[] = [
+                'customerId'    => $processed[$email]['customerId'],
                 'ordersCount'   => $processed[$email]['ordersCount'],
-                'itemsQty'      => $processed[$email]['itemsQty'],
                 'aov'           => self::convertCurrency($data['amountPaid'] / $data['ordersCount'], $data['currency']),
                 'amountPaid'    => self::convertCurrency($data['amountPaid'], $data['currency']),
                 'email'         => $email,
                 'customer'      => $processed[$email]['customer'],
                 'currency'      => $processed[$email]['currency'],
-                'firstPurchase' => $processed[$email]['firstPurchase'],
                 'lastPurchase'  => $processed[$email]['lastPurchase'],
                 'billingName'   => $processed[$email]['billingName'],
-                'shippingName'  => $processed[$email]['shippingName']
+                'shippingName'  => $processed[$email]['shippingName'],
+                'status'        => $processed[$email]['active'] ? 'Active' : 'Inactive'
             ];
         }
 

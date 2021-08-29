@@ -9,7 +9,7 @@ export default {
     // optional text representation of the trend being shown
     trend: String,
     // whether the trend is up (true) or down (false), which determines color and arrow direction
-    positiveTrend: Boolean,
+    percent: Number,
     // add extra padding beneath the title?
     padTitle: {
       type: Boolean,
@@ -47,7 +47,7 @@ export default {
       <div v-if="trend" class="relative" style="top: -2px;">
         <div
           class="commerce-insights-trend"
-          :class="{ 'up': positiveTrend, 'down': ! positiveTrend }"
+          :class="{ 'up': percent > 0 || percent === 'INF', 'down': percent < 0, 'unchanged': percent === 0 }"
         >
           {{ trend }}
         </div>
