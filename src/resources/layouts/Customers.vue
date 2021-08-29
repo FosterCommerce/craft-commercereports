@@ -1,5 +1,6 @@
 <script>
 import Pane from '../components/Pane.vue';
+import SummaryDatapoint from '../components/SummaryDatapoint.vue';
 import MiniSparklinePanel from '../components/MiniSparklinePanel.vue';
 import CombinedSearch from '../components/CombinedSearch.vue';
 
@@ -7,6 +8,7 @@ export default {
   name: 'Customers',
   components: {
     Pane,
+    SummaryDatapoint,
     MiniSparklinePanel,
     CombinedSearch,
   },
@@ -26,8 +28,25 @@ export default {
 
 <template>
   <div>
+    <div class="commerce-insights-summary">
+      <p>
+        You've had
+        <SummaryDatapoint
+          :number="stats.orders.totalCustomers.total"
+          format="number"
+          up-down
+        ></SummaryDatapoint>
+        new customers,
+        <SummaryDatapoint
+          :data="stats.orders.totalCustomers"
+          up-down
+        ></SummaryDatapoint>
+        since the previous period.
+      </p>
+    </div>
+
     <div class="-mx-3">
-      <div class="w-full" style="display: flex;">
+      <div class="w-full commerce-insights-charts" style="display: flex;">
         <div class="w-1/3 p-3">
           <Pane title="Top Shipping Locations">
             <table class="data fullwidth mini-table short-bottom">
@@ -53,10 +72,7 @@ export default {
                     stats.orders.totalCustomers.percentChange === 'INF' ? '∞%' :
                     Math.abs(stats.orders.totalCustomers.percentChange) + '%'
                   "
-                  :positive-trend="
-                    stats.orders.totalCustomers.percentChange >= 0 ||
-                    stats.orders.totalCustomers.percentChange === 'INF'
-                  "
+                  :percent="stats.orders.totalCustomers.percentChange"
                   :value="stats.orders.totalCustomers.total"
                   :data="stats.orders.totalCustomers.series"
                 ></MiniSparklinePanel>
@@ -72,10 +88,7 @@ export default {
                     stats.orders.newCustomers.percentChange === 'INF' ? '∞%' :
                     Math.abs(stats.orders.newCustomers.percentChange) + '%'
                   "
-                  :positive-trend="
-                    stats.orders.newCustomers.percentChange >= 0 ||
-                    stats.orders.newCustomers.percentChange === 'INF'
-                  "
+                  :percent="stats.orders.newCustomers.percentChange"
                   :value="stats.orders.newCustomers.total"
                   :data="stats.orders.newCustomers.series"
                 ></MiniSparklinePanel>
@@ -91,10 +104,7 @@ export default {
                     stats.orders.returningCustomers.percentChange === 'INF' ? '∞%' :
                     Math.abs(stats.orders.returningCustomers.percentChange) + '%'
                   "
-                  :positive-trend="
-                    stats.orders.returningCustomers.percentChange >= 0 ||
-                    stats.orders.returningCustomers.percentChange === 'INF'
-                  "
+                  :percent="stats.orders.returningCustomers.percentChange"
                   :value="stats.orders.returningCustomers.total"
                   :data="stats.orders.returningCustomers.series"
                 ></MiniSparklinePanel>

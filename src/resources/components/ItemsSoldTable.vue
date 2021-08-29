@@ -27,77 +27,79 @@ export default {
 </script>
 
 <template>
-  <table class="data fullwidth">
-    <thead>
-      <tr>
-        <th
-          scope="col"
-          :class="sortBy === 'title' ? 'ordered ' + sortDirection : 'orderable'"
-          @click="sort('title')"
-        >
-          Item
-        </th>
-        <th
-          scope="col"
-          :class="sortBy === 'sku' ? 'ordered ' + sortDirection : 'orderable'"
-          @click="sort('sku')"
-        >
-          SKU
-        </th>
-        <th
-          scope="col"
-          :class="sortBy === 'type' ? 'ordered ' + sortDirection : 'orderable'"
-          @click="sort('type')"
-        >
-          Product Type
-        </th>
-        <th
-          scope="col"
-          :class="sortBy === 'totalSold' ? 'ordered ' + sortDirection : 'orderable'"
-          @click="sort('totalSold')"
-        >
-          Total Sold
-        </th>
-        <th
-          scope="col"
-          :class="sortBy === 'sales' ? 'ordered ' + sortDirection : 'orderable'"
-          @click="sort('sales')"
-        >
-          Total Sales
-        </th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <tr class="commerce-insights-ajax-loader centeralign">
-        <td colspan="9" class="centeralign">
-          <div class="spinner loadingmore"></div>
-        </td>
-      </tr>
-      <tr v-for="element in elements" :key="element.id">
-        <td>
-          <div
-            class="element small"
-            data-site-id="1"
-            :title="element.title"
-            data-editable=""
+  <div class="vue-admin-tablepane">
+    <table class="vuetable data fullwidth">
+      <thead>
+        <tr>
+          <th
+            scope="col"
+            :class="sortBy === 'title' ? 'ordered ' + sortDirection : 'orderable'"
+            @click="sort('title')"
           >
-            <div class="label">
-              <span class="status" :class="element.status"></span>
-              <span class="title">{{ element.title }}</span>
+            Item
+          </th>
+          <th
+            scope="col"
+            :class="sortBy === 'sku' ? 'ordered ' + sortDirection : 'orderable'"
+            @click="sort('sku')"
+          >
+            SKU
+          </th>
+          <th
+            scope="col"
+            :class="sortBy === 'type' ? 'ordered ' + sortDirection : 'orderable'"
+            @click="sort('type')"
+          >
+            Product Type
+          </th>
+          <th
+            scope="col"
+            :class="sortBy === 'totalSold' ? 'ordered ' + sortDirection : 'orderable'"
+            @click="sort('totalSold')"
+          >
+            Total Sold
+          </th>
+          <th
+            scope="col"
+            :class="sortBy === 'sales' ? 'ordered ' + sortDirection : 'orderable'"
+            @click="sort('sales')"
+          >
+            Total Sales
+          </th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr class="commerce-insights-ajax-loader centeralign">
+          <td colspan="9" class="centeralign">
+            <div class="spinner loadingmore"></div>
+          </td>
+        </tr>
+        <tr v-for="element in elements" :key="element.id">
+          <td>
+            <div
+              class="element small"
+              data-site-id="1"
+              :title="element.title"
+              data-editable=""
+            >
+              <div class="label">
+                <span class="status" :class="element.status"></span>
+                <span class="title">{{ element.title }}</span>
+              </div>
             </div>
-          </div>
-        </td>
-        <td>{{ element.sku }}</td>
-        <td>{{ element.type }}</td>
-        <td>
-          {{ element.totalSold }} sold in
-          <a :href="'/admin/commerceinsights/orders/product/' + element.id">
-            {{ element.numOrders }} orders
-          </a>
-        </td>
-        <td>{{ element.sales }}</td>
-      </tr>
-    </tbody>
-  </table>
+          </td>
+          <td>{{ element.sku }}</td>
+          <td>{{ element.type }}</td>
+          <td>
+            {{ element.totalSold }} sold in
+            <a :href="'/admin/commerceinsights/orders/product/' + element.id">
+              {{ element.numOrders }} {{ element.numOrders > 1 ? 'orders' : 'order' }}
+            </a>
+          </td>
+          <td>{{ element.sales }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </template>

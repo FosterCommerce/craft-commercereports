@@ -3,7 +3,7 @@
 }
 
 .commerce-insights-wrapper {
-  min-width: 760px;
+  /* min-width: 760px; */
 }
 
 .commerce-insights-trend {
@@ -73,6 +73,13 @@
   border-right-color: transparent;
 }
 
+.commerce-insights-trend.unchanged::before {
+  top: -2px;
+  border-color: #888;
+  border-top-width: 2px;
+  border-bottom-width: 2px;
+}
+
 .mini-table thead,
 .mini-table tbody {
   font-size: 0.75rem;
@@ -104,6 +111,30 @@
   flex-wrap: wrap;
   margin-left: -0.75rem;
   margin-right: -0.75rem;
+}
+
+@media screen and (max-width: 900px) {
+  .commerce-insights-charts {
+    display: block !important;
+  }
+
+  .commerce-insights-charts > div {
+    max-width: calc(100% - 24px) !important;
+  }
+
+  .mini-sparkline-grid > div,
+  .commerce-insights-charts > div {
+    width: 100%;
+  }
+
+  .mini-sparkline-grid div {
+    max-width: 100% !important;
+  }
+
+  .mini-sparkline-grid canvas {
+    max-width: 100% !important;
+    width: 100%;
+  }
 }
 
 /* utility classes */

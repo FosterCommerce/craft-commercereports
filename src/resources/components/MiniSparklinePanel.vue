@@ -11,7 +11,7 @@ export default {
   props: {
     title: String,
     trend: String,
-    positiveTrend: Boolean,
+    percent: Number,
     value: Number,
     caption: String,
     data: Array,
@@ -36,7 +36,14 @@ export default {
       data: this.getChartData(),
       options: {
         responsive: true,
-        legend: {display: false},
+        plugins: {
+          tooltip: {
+            enabled: false,
+          },
+          legend: {
+            display: false,
+          }
+        },
         elements: {
           line: {
             borderColor: 'rgba(211, 167, 138, 0.2)',
@@ -149,7 +156,7 @@ export default {
   <pane
     :title="title"
     :trend="trend"
-    :positive-trend="positiveTrend"
+    :percent="percent"
     :pad-title="false"
     flex
     class="h-34"
@@ -160,8 +167,7 @@ export default {
         <p class="commerce-insights-mini-sparkline-pane-caption self-end">{{ caption }}</p>
       </div>
       <div class="chart-pane-fill-container">
-        <div v-cloak ref="container"
-             class="commerce-insights-chart-container w-full h-full relative">
+        <div v-cloak ref="container" class="commerce-insights-chart-container w-full h-full relative">
           <canvas ref="chart"></canvas>
         </div>
       </div>

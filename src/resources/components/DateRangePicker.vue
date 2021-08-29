@@ -365,11 +365,16 @@ export default {
 .commerce-insights-date-range-picker {
   padding: 0.5rem 0.5rem 0.5rem 1rem;
   background: #fff;
-  width: 500px;
   position: relative;
   border-radius: 0.125rem;
-  align-items: center;
-  display: flex;
+}
+
+@media screen and (min-width: 600px) {
+  .commerce-insights-date-range-picker {
+    align-items: center;
+    display: flex;
+    width: 500px;
+  }
 }
 
 .commerce-insights-menu {
@@ -381,6 +386,13 @@ export default {
 .commerce-insights-dates {
   align-items: center;
   display: flex;
+  margin-top: 15px;
+}
+
+@media screen and (min-width: 600px) {
+  .commerce-insights-dates {
+    margin-top: 0;
+  }
 }
 
 .commerce-insights-save-modal {

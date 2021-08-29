@@ -3,7 +3,7 @@
 }
 
 .commerce-insights-wrapper {
-  min-width: 760px;
+  /* min-width: 760px; */
 }
 
 .commerce-insights-trend {
@@ -73,6 +73,13 @@
   border-right-color: transparent;
 }
 
+.commerce-insights-trend.unchanged::before {
+  top: -2px;
+  border-color: #888;
+  border-top-width: 2px;
+  border-bottom-width: 2px;
+}
+
 .mini-table thead,
 .mini-table tbody {
   font-size: 0.75rem;
@@ -104,6 +111,30 @@
   flex-wrap: wrap;
   margin-left: -0.75rem;
   margin-right: -0.75rem;
+}
+
+@media screen and (max-width: 900px) {
+  .commerce-insights-charts {
+    display: block !important;
+  }
+
+  .commerce-insights-charts > div {
+    max-width: calc(100% - 24px) !important;
+  }
+
+  .mini-sparkline-grid > div,
+  .commerce-insights-charts > div {
+    width: 100%;
+  }
+
+  .mini-sparkline-grid div {
+    max-width: 100% !important;
+  }
+
+  .mini-sparkline-grid canvas {
+    max-width: 100% !important;
+    width: 100%;
+  }
 }
 
 /* utility classes */
@@ -451,7 +482,20 @@
 }
 
 
-.pagination[data-v-18196b6e] {
+.vue-admin-tablepane {
+  overflow-x: auto;
+}
+
+
+.color-green {
+  color: #27AB83;
+}
+.color-red {
+  color: #CF1124;
+}
+
+
+.pagination[data-v-698467e8] {
   margin-top: 30px
 }
 
@@ -915,11 +959,15 @@
 .commerce-insights-date-range-picker {
   padding: 0.5rem 0.5rem 0.5rem 1rem;
   background: #fff;
-  width: 500px;
   position: relative;
   border-radius: 0.125rem;
-  align-items: center;
-  display: flex;
+}
+@media screen and (min-width: 600px) {
+.commerce-insights-date-range-picker {
+    align-items: center;
+    display: flex;
+    width: 500px;
+}
 }
 .commerce-insights-menu {
   align-items: center;
@@ -929,6 +977,12 @@
 .commerce-insights-dates {
   align-items: center;
   display: flex;
+  margin-top: 15px;
+}
+@media screen and (min-width: 600px) {
+.commerce-insights-dates {
+    margin-top: 0;
+}
 }
 .commerce-insights-save-modal {
   position: absolute;

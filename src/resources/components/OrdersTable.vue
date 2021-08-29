@@ -32,11 +32,13 @@ export default {
 </script>
 
 <template>
-  <table class="data fullwidth">
-    <thead>
+  <div class="vue-admin-tablepane">
+    <table class="vuetable data fullwidth">
+      <thead>
       <tr>
         <th
           scope="col"
+          class="vuetable-th-slot-title"
           :class="sortBy === 'reference' ? 'ordered ' + sortDirection : 'orderable'"
           @click="sort('reference')"
         >
@@ -44,6 +46,7 @@ export default {
         </th>
         <th
           scope="col"
+          class="vuetable-th-slot-title"
           :class="sortBy === 'dateStamp' ? 'ordered ' + sortDirection : 'orderable'"
           @click="sort('dateStamp')"
         >
@@ -51,6 +54,7 @@ export default {
         </th>
         <th
           scope="col"
+          class="vuetable-th-slot-title"
           :class="sortBy === 'status' ? 'ordered ' + sortDirection : 'orderable'"
           @click="sort('status')"
         >
@@ -58,6 +62,7 @@ export default {
         </th>
         <th
           scope="col"
+          class="vuetable-th-slot-title"
           :class="sortBy === 'merchTotal' ? 'ordered ' + sortDirection : 'orderable'"
           @click="sort('merchTotal')"
         >
@@ -65,6 +70,7 @@ export default {
         </th>
         <th
           scope="col"
+          class="vuetable-th-slot-title"
           :class="sortBy === 'tax' ? 'ordered ' + sortDirection : 'orderable'"
           @click="sort('tax')"
         >
@@ -72,6 +78,7 @@ export default {
         </th>
         <th
           scope="col"
+          class="vuetable-th-slot-title"
           :class="sortBy === 'discount' ? 'ordered ' + sortDirection : 'orderable'"
           @click="sort('discount')"
         >
@@ -79,6 +86,7 @@ export default {
         </th>
         <th
           scope="col"
+          class="vuetable-th-slot-title"
           :class="sortBy === 'shipping' ? 'ordered ' + sortDirection : 'orderable'"
           @click="sort('shipping')"
         >
@@ -86,6 +94,7 @@ export default {
         </th>
         <th
           scope="col"
+          class="vuetable-th-slot-title"
           :class="sortBy === 'amountPaid' ? 'ordered ' + sortDirection : 'orderable'"
           @click="sort('amountPaid')"
         >
@@ -94,13 +103,14 @@ export default {
         <th
           v-if="productQuery"
           scope="col"
-          class="orderable"
+          class="orderable vuetable-th-slot-title"
         >
           Email
         </th>
         <th
           scope="col"
           v-else
+          class="vuetable-th-slot-title"
           :class="sortBy === 'numItems' ? 'ordered ' + sortDirection : 'orderable'"
           @click="sort('numItems')"
         >
@@ -110,16 +120,16 @@ export default {
           Payment Status
         </th>
       </tr>
-    </thead>
+      </thead>
 
-    <tbody>
+      <tbody class="vuetable-body">
       <tr class="commerce-insights-ajax-loader centeralign">
-        <td colspan="9" class="centeralign">
+        <td colspan="9" class="vuetable-slot centeralign">
           <div class="spinner loadingmore"></div>
         </td>
       </tr>
       <tr v-for="element in elements" :key="element.id">
-        <td data-title="Order" data-titlecell="">
+        <td class="vuetable-slot" data-title="Order" data-titlecell="">
           <div
             class="element small"
             data-type="craft\commerce\elements\Order"
@@ -133,35 +143,42 @@ export default {
             data-editable=""
           >
             <div class="label">
-                <span class="title">
-                  <a
-                    :href="'/admin/commerce/orders/' + element.orderId"
-                    target="_blank"
-                  >
-                    {{ element.reference }}
-                  </a>
-                </span>
+              <span class="title">
+                <a
+                  :href="'/admin/commerce/orders/' + element.orderId"
+                  target="_blank"
+                >
+                  {{ element.reference }}
+                </a>
+              </span>
             </div>
           </div>
         </td>
-        <td :title="element.fullDate">
+        <td :title="element.fullDate" class="vuetable-slot">
           {{ element.date }}
         </td>
-        <td>
+        <td class="vuetable-slot">
           <span class="status" :class="element.color"></span>{{ element.status }}
         </td>
-        <td>{{ element.merchTotal }}</td>
-        <td>{{ element.tax }}</td>
-        <td>{{ element.discount }}</td>
-        <td>{{ element.shipping }}</td>
-        <td>{{ element.amountPaid }}</td>
-        <td v-if="productQuery">{{ element.email }}</td>
-        <td v-else>{{ element.numItems }}</td>
-        <td>
+        <td class="vuetable-slot">{{ element.merchTotal }}</td>
+        <td class="vuetable-slot">{{ element.tax }}</td>
+        <td class="vuetable-slot">{{ element.discount }}</td>
+        <td class="vuetable-slot">{{ element.shipping }}</td>
+        <td class="vuetable-slot">{{ element.amountPaid }}</td>
+        <td v-if="productQuery" class="vuetable-slot">{{ element.email }}</td>
+        <td v-else class="vuetable-slot">{{ element.numItems }}</td>
+        <td class="vuetable-slot">
           <span class="status" :class="element.paidColor"></span>
           {{ element.paymentStatus }}
         </td>
       </tr>
-    </tbody>
-  </table>
+      </tbody>
+    </table>
+  </div>
 </template>
+
+<style>
+  .vue-admin-tablepane {
+    overflow-x: auto;
+  }
+</style>
