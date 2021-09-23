@@ -104,8 +104,6 @@ const app = new Vue({
 
       page = page.substring(0, idx !== -1 ? idx : page.length);
 
-      this.fetchStats();
-
       switch (page) {
         case 'orders':
           this.fetchOrders();
@@ -130,33 +128,20 @@ const app = new Vue({
           }
       }
     },
-    fetchStats() {
-      const self = this;
-      const data = {
-        range_start: self.dateRange.start,
-        range_end: self.dateRange.end,
-      };
-
-      data[Craft.csrfTokenName] = Craft.csrfTokenValue;
-
-      axios.post('/actions/commerceinsights/vue/get-stats', qs.stringify(data)).then(response => {
-        self.stats = response.data;
-      }).catch(error => {
-        console.log(error);
-      });
-    },
     fetchOrders() {
       const self = this;
       const data = {
         range_start: self.dateRange.start,
         range_end: self.dateRange.end,
       };
-      let url = '/actions/commerceinsights/vue/get-orders';
+      let url = '/actions/commerceinsights/orders/get-orders';
 
       data[Craft.csrfTokenName] = Craft.csrfTokenValue;
 
       axios.post(url, qs.stringify(data)).then(response => {
-        self.orders = response.data;
+        console.log(response.data);
+        self.stats = response.data.stats;
+        self.orders = response.data.orders;
       }).catch(error => {
         console.log(error);
       });
@@ -203,7 +188,6 @@ const app = new Vue({
       data['id'] = item;
 
       axios.post(url, qs.stringify(data)).then(response => {
-        console.log(response);
         self.orders = response.data;
       }).catch(error => {
         console.log(error);
