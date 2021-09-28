@@ -11,13 +11,58 @@ declare(strict_types = 1);
 
 namespace fostercommerce\commerceinsights\helpers;
 
+use DateTime;
 use NumberFormatter;
 use Money\Money;
 use Money\Currency;
 use Money\Currencies\ISOCurrencies;
 use Money\Formatter\IntlMoneyFormatter;
 
+use Craft;
+
 class Helpers {
+    public static function getDateRangeData(): array {
+        $result = [];
+
+        // Query params if they exist in the URL
+        $startQuery = Craft::$app->request->getQueryParam('startDate') ?? null;
+        $endQuery   = Craft::$app->request->getQueryParam('endDate') ?? null;
+
+        // URL decode the query params if they are present
+        // TODO: This might override the selected range? Or vice versa. Not implemented yet.
+        $result['startQuery'] = $startQuery ? urldecode($startQuery) : null;
+        $result['endQuery']   = $endQuery ? urldecode($endQuery) : null;
+
+        // All the formatted dates for the selected range (currently selected period)
+        // If none is selected, we just do a week
+        $result['today']      = new DateTime(date('Y-m-d 23:59:59'));
+        $result['weekAgo']    = $result['today']->modify('-7 day')->format('Y-m-d 00:00:00');
+        $result['rangeStart'] = Craft::$app->request->getBodyParam('range_start') ?? null;
+
+        // Either the selected end date, or today
+        $result['rangeEnd'] = Craft::$app->request->getBodyParam('range_end') ?? $result['today']->format('Y-m-d 23:59:59');
+
+        // This will be either the selected start date, or a week ago if none is selected
+        $result['originalStart'] = $result['rangeStart'] ?
+            DateTime::createFromFormat('Y-m-d H:i:s', $result['rangeStart'])->format('Y-m-d 00:00:00') :
+            DateTime::createFromFormat('Y-m-d H:i:s', $result['weekAgo'])->format('Y-m-d 00:00:00');
+
+        // This is either the selected end date or today
+        $result['originalEnd'] = DateTime::createFromFormat('Y-m-d H:i:s', $result['rangeEnd'])->format('Y-m-d 23:59:59');
+
+        // Set up the new dates based on the full range and the previous period of the same number of days
+        $start = DateTime::createFromFormat('Y-m-d H:i:s', $result['originalStart']);
+        $end   = DateTime::createFromFormat('Y-m-d H:i:s', $result['originalEnd']);
+
+        // Number of days in the range
+        $numDays = $end->diff($start)->format("%r%a");
+
+        // TThe start date for the previous period
+        $result['previousStart'] = $start->modify($numDays . ' day')->format('Y-m-d 00:00:00');
+
+        return $result;
+    }
+
     /**
      * Converts a number into a string with the proper currency symbol
      *
@@ -37,6 +82,13 @@ class Helpers {
         return $moneyFormatter->format($money);
     }
 
+    /**
+     * Tells you the state from a zip code.
+     *
+     * @param string $zipcode - The zip code to convert to a state
+     *
+     * @return string
+     */
     public static function zipToState($zipcode) {
         /* 000 to 999 */
         $zipByState = [

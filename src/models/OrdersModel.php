@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Commerce Insights Components Orders Model
+ * Commerce Insights Orders Model
  *
  * @link      https://fostercommerce.com
  * @copyright Copyright (c) 2021 Foster Commerce

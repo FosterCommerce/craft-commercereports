@@ -1,6 +1,6 @@
 <?php
 /**
- * Commerce Insights Components plugin for Craft CMS 3.x
+ * Commerce Insights plugin for Craft CMS 3.x
  *
  * @link      https://fostercommerce.com
  * @copyright Copyright (c) 2021 Foster Commerce

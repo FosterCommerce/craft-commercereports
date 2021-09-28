@@ -12,6 +12,7 @@ namespace fostercommerce\commerceinsights;
 
 use fostercommerce\commerceinsights\services\OrdersService;
 use fostercommerce\commerceinsights\services\StatsService;
+use fostercommerce\commerceinsights\services\ItemsSoldService;
 
 use Craft;
 use craft\base\Plugin;
@@ -31,8 +32,9 @@ class CommerceInsights extends Plugin
 
     public function __construct($id, $parent = null, array $config = []) {
         $config['components'] = [
-            'orders' => OrdersService::class,
-            'stats'  => StatsService::class
+            'stats'     => StatsService::class,
+            'orders'    => OrdersService::class,
+            'itemsSold' => ItemsSoldService::class
         ];
 
         parent::__construct($id, $parent, $config);
@@ -48,6 +50,7 @@ class CommerceInsights extends Plugin
                  * Vue templates
                  */
                 $event->rules['commerceinsights/view/orders'] = 'commerceinsights/orders/index';
+                $event->rules['commerceinsights/view/items-sold'] = 'commerceinsights/items-sold/index';
             });
     }
 
@@ -62,7 +65,7 @@ class CommerceInsights extends Plugin
             ],
             'sales'     => [
                 'label' => Craft::t('commerceinsights', 'Items Sold'),
-                'url'   => 'commerceinsights/view/sales'
+                'url'   => 'commerceinsights/view/items-sold'
             ],
             'customers' => [
                 'label' => Craft::t('commerceinsights', 'Customers'),

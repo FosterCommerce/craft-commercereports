@@ -108,11 +108,8 @@ const app = new Vue({
         case 'orders':
           this.fetchOrders();
           break;
-        case 'sales':
+        case 'items-sold':
           this.fetchItemsSold();
-          break;
-        case 'products':
-          this.fetchProducts();
           break;
         case 'customers':
           this.fetchCustomers();
@@ -121,7 +118,6 @@ const app = new Vue({
           if (isNaN(page)) {
             this.fetchOrders();
             this.fetchItemsSold();
-            this.fetchProducts();
             this.fetchCustomers();
           } else {
             this.fetchItemOrders(page);
@@ -193,23 +189,6 @@ const app = new Vue({
         console.log(error);
       });
     },
-    fetchProducts() {
-      const self = this;
-      const data = {
-        range_start: self.dateRange.start,
-        range_end: self.dateRange.end,
-      };
-
-      data[Craft.csrfTokenName] = Craft.csrfTokenValue;
-
-      axios.post('/actions/commerceinsights/vue/get-products', qs.stringify(data)).
-        then(response => {
-          self.products = response.data;
-        }).
-        catch(error => {
-          console.log(error);
-        });
-    },
     fetchItemsSold() {
       const self = this;
       const data = {
@@ -219,7 +198,7 @@ const app = new Vue({
 
       data[Craft.csrfTokenName] = Craft.csrfTokenValue;
 
-      axios.post('/actions/commerceinsights/vue/get-items-sold', qs.stringify(data))
+      axios.post('/actions/commerceinsights/items-sold/get-items-sold', qs.stringify(data))
       .then(response => {
         self.sales = response.data;
       })
@@ -236,7 +215,7 @@ const app = new Vue({
 
       data[Craft.csrfTokenName] = Craft.csrfTokenValue;
 
-      axios.post('/actions/commerceinsights/vue/get-customers', qs.stringify(data)).
+      axios.post('/actions/commerceinsights/customers/get-customers', qs.stringify(data)).
         then(response => {
           self.customers = response.data;
         }).
