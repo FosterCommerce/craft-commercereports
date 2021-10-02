@@ -57,7 +57,7 @@ class OrdersService extends Component
      *
      * @return array
      */
-    private function fetchOrders(): array {
+    public function fetchOrders(): array {
         $orders = Order::find()->distinct()->orderBy('dateOrdered desc');
 
         if ($this->keyword) {
@@ -83,7 +83,7 @@ class OrdersService extends Component
      *
      * @return array
      */
-    public function getOrders(): array {
+    public function getOrders(bool $withStats = true): array {
         $model = new OrdersModel();
         $statsData = [
             'type'   => 'orders',

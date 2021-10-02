@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Commerce Insights Orders Service
+ * Commerce Insights Items Sold Service
  *
  * @link      https://fostercommerce.com
  * @copyright Copyright (c) 2021 Foster Commerce
@@ -12,9 +12,6 @@ declare(strict_types = 1);
 namespace fostercommerce\commerceinsights\services;
 
 use fostercommerce\commerceinsights\CommerceInsights;
-use fostercommerce\commerceinsights\controllers\StatsController;
-
-use DateTime;
 
 use Craft;
 use craft\base\Component;
@@ -22,29 +19,14 @@ use fostercommerce\commerceinsights\helpers\Helpers;
 
 class ItemsSoldService extends Component
 {
-    private $dates;
-    // filters
-    private $keyword;
-    private $orderType;
-    private $paymentType;
-    // misc
     private $itemsSold = [];
 
     /**
-     * Constructor. Sets up all of the properties for this class based on $_GET and
-     * $_POST data, and fetches the orders when the class is intantiated.
+     * Constructor. Fetches the items sold data when the class is intantiated.
      *
      * @return void
      */
     public function __construct($id, $module, $config = []) {
-        $this->dates = Helpers::getDateRangeData();
-
-        // Filters that may be set
-        $this->keyword     = Craft::$app->request->getBodyParam('keyword');
-        $this->orderType   = Craft::$app->request->getBodyParam('orderType');
-        $this->paymentType = Craft::$app->request->getBodyParam('paymentType');
-
-        // Go get 'em, tiger
         $this->itemsSold = $this->fetchItemsSold();
 
         parent::__construct($id, $module, $config);
@@ -56,7 +38,53 @@ class ItemsSoldService extends Component
      * @return array
      */
     private function fetchItemsSold(): array {
-        return [];
+        $currency = 'USD';
+        $orders   = CommerceInsights::$plugin->orders->fetchOrders();
+        $orders   = $orders['currentPeriod'];
+        $result   = [];
+
+        foreach ($orders as $order) {
+            foreach ($order->lineItems as $item) {
+                $variant = $item->purchasable;
+
+                if ($variant) {
+                    $product = $variant->product;
+                    $sku     = $variant->sku;
+
+                    $result[$sku] = [
+                        'id'          => $variant->id,
+                        'title'       => $variant->title,
+                        'status'      => $variant->status,
+                        'sku'         => $sku ?: 'No known SKU',
+                        'productId'   => $product->id,
+                        'type'        => $product->type->name,
+                        'typeHandle'  => $product->type->handle,
+                        'lastOrderId' => $result[$sku]['lastOrderId'] ?? 0,
+                        'numOrders'   => $result[$sku]['numOrders'] ?? 0,
+                        'totalSold'   => $result[$sku]['totalSold'] ?? 0,
+                        'sales'       => $result[$sku]['sales'] ?? 0
+                    ];
+
+                    if ($result[$sku]['lastOrderId'] !== $order->id) {
+                        $result[$sku]['numOrders'] += 1;
+                    }
+
+                    $result[$sku]['lastOrderId'] = $order->id;
+                    $result[$sku]['totalSold'] += $item->qty;
+                    $result[$sku]['sales'] += $item->salePrice * $item->qty;
+                }
+            }
+        }
+
+        foreach ($result as $sku => $item) {
+            $result[$sku]['sales'] = Helpers::convertCurrency($result[$sku]['sales'], $currency);
+        }
+
+        usort($result, function($a, $b) {
+            return $b['totalSold'] <=> $a['totalSold'];
+        });
+
+        return $result;
     }
 
     /**
@@ -65,6 +93,6 @@ class ItemsSoldService extends Component
      * @return array
      */
     public function getItemsSold(): array {
-       return [];
+        return $this->itemsSold;
     }
 }

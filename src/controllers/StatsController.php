@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Commerce Insights Components Stats Controller
+ * Commerce Insights Stats Controller
  *
  * @link      https://fostercommerce.com
  * @copyright Copyright (c) 2021 Foster Commerce

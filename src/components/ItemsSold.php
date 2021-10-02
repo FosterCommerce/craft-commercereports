@@ -24,7 +24,7 @@ abstract class ItemsSold extends Controller implements ItemsSoldInterface
      * @return string The display name of this class.
      */
     public static function displayName(): string {
-        return Craft::t('commerce-insights', 'Orders');
+        return Craft::t('commerce-insights', 'Items Sold');
     }
 
     /**

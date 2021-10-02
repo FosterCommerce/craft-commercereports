@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Commerce Insights Components Items Sold Controller
+ * Commerce Insights Items Sold Controller
  *
  * @link      https://fostercommerce.com
  * @copyright Copyright (c) 2021 Foster Commerce
