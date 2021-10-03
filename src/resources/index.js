@@ -135,7 +135,6 @@ const app = new Vue({
       data[Craft.csrfTokenName] = Craft.csrfTokenValue;
 
       axios.post(url, qs.stringify(data)).then(response => {
-        console.log(response.data);
         self.stats = response.data.stats;
         self.orders = response.data.orders;
       }).catch(error => {
@@ -200,6 +199,7 @@ const app = new Vue({
 
       axios.post('/actions/commerceinsights/items-sold/get-items-sold', qs.stringify(data))
       .then(response => {
+        console.log(response);
         self.sales = response.data;
       })
       .catch(error => {
@@ -217,7 +217,8 @@ const app = new Vue({
 
       axios.post('/actions/commerceinsights/customers/get-customers', qs.stringify(data)).
         then(response => {
-          self.customers = response.data;
+          self.stats = response.data.stats;
+          self.customers = response.data.customers;
         }).
         catch(error => {
           console.log(error);

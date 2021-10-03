@@ -159,7 +159,8 @@ class StatsService extends Component
     }
 
     /**
-     * Calculate the data for the items sold stats.
+     * Calculate the data for the items sold stats. There currently are no
+     * stats on that page, so this is a placeholder in case it's added later.
      *
      * @param array $data
      *
@@ -177,7 +178,115 @@ class StatsService extends Component
      * @return array
      */
     private static function calculateCustomersStats(array $data): array {
-        return [];
+        $orders                     = $data['data'];
+        $previousOrders             = $orders['previousPeriod'];
+        $currentOrders              = $orders['currentPeriod'];
+        $dateRange                  = Helpers::getDateRangeData();
+        $startDate                  = $dateRange['originalStart'];
+        $previousStartDate          = $dateRange['previousStart'];
+        $previousCustomers          = 0;
+        $currentCustomers           = 0;
+        $currentNewCustomers        = 0;
+        $previousNewCustomers       = 0;
+        $returningCustomers         = 0;
+        $previousReturningCustomers = 0;
+        $previousCustomersArr       = [];
+        $currentCustomersArr        = [];
+        $customerDatesArr           = [];
+        $newCustomersArr            = [];
+        $returningCustomersArr      = [];
+        $totalCustomersSet          = [];
+        $newCustomersSet            = [];
+        $returningCustomersSet      = [];
+        $datePeriod = new DatePeriod(
+            new DateTime($startDate),
+            new DateInterval('P1D'),
+            new DateTime($dateRange['originalEnd'])
+        );
+
+        // Build the total customers, new customers, and returning customers arrs
+        foreach ($datePeriod as $key => $value) {
+            $day = $value->format('Y-m-d');
+
+            $customerDatesArr[$day]      = 0;
+            $newCustomersArr[$day]       = 0;
+            $returningCustomersArr[$day] = 0;
+        }
+
+        // Calculate the new and returning customers in the previous period
+        foreach ($previousOrders as $order) {
+            $customerEmail = strtolower($order->email);
+
+            if(!in_array($customerEmail, $previousCustomersArr)) {
+                $customerOrderCount     = (int)Order::find()->email($customerEmail)->dateOrdered('< ' . $previousStartDate)->count();
+                $previousCustomersArr[] = $customerEmail;
+                $previousCustomers += 1;
+
+                if ($customerOrderCount === 0) {
+                    $previousNewCustomers += 1;
+                } else {
+                    $previousReturningCustomers += 1;
+                }
+            }
+        }
+
+        // Calculate the new and returning customers in the current period
+        foreach ($currentOrders as $order) {
+            $customerEmail = strtolower($order->email);
+            $dateOrdered   = $order->dateOrdered->format('Y-m-d');
+
+            if(!in_array($customerEmail, $currentCustomersArr)) {
+                $customerOrderCount    = (int)Order::find()->email($customerEmail)->dateOrdered('< ' . $startDate)->count();
+                $currentCustomersArr[] = $customerEmail;
+                $currentCustomers += 1;
+
+                $customerDatesArr[$dateOrdered] += 1;
+
+                if ($customerOrderCount === 0) {
+                    $newCustomersArr[$dateOrdered] += 1;
+                    $currentNewCustomers += 1;
+                } else {
+                    $returningCustomersArr[$dateOrdered] += 1;
+                    $returningCustomers += 1;
+                }
+            }
+        }
+
+        // build the total customers set
+        foreach ($customerDatesArr as $date => $val) {
+            $totalCustomersSet[] = $val;
+        }
+
+        // build the new customers set
+        foreach ($newCustomersArr as $date => $val) {
+            $newCustomersSet[] = $val;
+        }
+
+        // build the returning customers set
+        foreach ($returningCustomersArr as $date => $val) {
+            $returningCustomersSet[] = $val;
+        }
+
+        return [
+            'orders' => [
+                'topLocations' => self::getTopLocations($currentOrders),
+                'totalCustomers' => [
+                    'total' => $currentCustomers,
+                    'percentChange' => $previousCustomers ? round((($currentCustomers - $previousCustomers) / $previousCustomers) * 100, 2) : ($currentCustomers ? 'INF' : 0),
+                    'series' => $totalCustomersSet
+                ],
+                'newCustomers' => [
+                    'total' => $currentNewCustomers,
+                    'percentChange' => $previousNewCustomers ? round((($currentNewCustomers - $previousNewCustomers) / $previousNewCustomers) * 100, 2) : ($currentNewCustomers ? 'INF' : 0),
+                    'series' => $newCustomersSet
+                ],
+                'returningCustomers' => [
+                    'total' => $returningCustomers,
+                    'percentChange' => $previousReturningCustomers ? round((($returningCustomers - $previousReturningCustomers) / $previousReturningCustomers) * 100, 2) : ($returningCustomers ? 'INF' : 0),
+                    'series' => $returningCustomersSet
+                ]
+            ]
+        ];
     }
 
     /**

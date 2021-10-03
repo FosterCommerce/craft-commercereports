@@ -12,17 +12,18 @@ declare(strict_types = 1);
 namespace fostercommerce\commerceinsights\services;
 
 use fostercommerce\commerceinsights\CommerceInsights;
+use fostercommerce\commerceinsights\helpers\Helpers;
 use fostercommerce\commerceinsights\controllers\StatsController;
 
 use DateTime;
 
 use Craft;
 use craft\base\Component;
-use fostercommerce\commerceinsights\helpers\Helpers;
+use craft\elements\User;
+use craft\commerce\elements\Order;
 
 class CustomersService extends Component
 {
-    private $dates;
     // filters
     private $keyword;
     // misc
@@ -35,8 +36,6 @@ class CustomersService extends Component
      * @return void
      */
     public function __construct($id, $module, $config = []) {
-        $this->dates = Helpers::getDateRangeData();
-
         // Filters that may be set
         $this->keyword = Craft::$app->request->getBodyParam('keyword');
 
@@ -52,7 +51,65 @@ class CustomersService extends Component
      * @return array
      */
     private function fetchCustomers(): array {
-        $result = [];
+        $orders        = CommerceInsights::$plugin->orders->fetchOrders();
+        $currentPeriod = $orders['currentPeriod'];
+        $today         = new DateTime(date('Y-m-d'));
+        $start         = DateTime::createFromFormat('Y-m-d H:i:s', $today->format('Y-m-d 00:00:00'));
+        $sixtyDays     = $start->modify('-60 day')->format('Y-m-d 00:00:00');
+        $processed     = [];
+        $result        = [ 'customers' => [], 'stats' => [] ];
+        $statsData     = [
+            'type' => 'customers',
+            'data' => $orders
+        ];
+
+        foreach ($currentPeriod as $order) {
+            $line_items = $order->lineItems;
+            $email      = strtolower($order->email);
+
+            if(!array_key_exists($email, $processed)) {
+                $customerIsActive = (int)Order::find()->email($email)->dateOrdered('>= ' . $sixtyDays)->count();
+
+                $processed[$email] = [
+                    'customerId'    => $order->customerId,
+                    'ordersCount'   => 1,
+                    'aov'           => 0,
+                    'amountPaid'    => $order->totalPaid,
+                    'email'         => $email,
+                    'customer'      => User::find()->email($email)->one(),
+                    'billingName'   => ($order->billingAddress->firstName ?? ' ') . ' ' . ($order->billingAddress->lastName ?? ' '),
+                    'shippingName'  => ($order->shippingAddress->firstName ?? ' ') . ' ' . ($order->shippingAddress->lastName ?? ' '),
+                    'currency'      => $order->currency,
+                    'lastPurchase'  => $order->dateOrdered->format('Y-m-d'),
+                    'active'        => $customerIsActive
+                ];
+            } else {
+                $processed[$email]['ordersCount'] += 1;
+                $processed[$email]['amountPaid']  += $order->totalPaid;
+
+                if($order->datePaid < $processed[$email]['lastPurchase']) {
+                    $processed[$email]['lastPurchase'] = $order->dateOrdered->format('Y-m-d');
+                }
+            }
+        }
+
+        foreach ($processed as $email=> $data) {
+            $result['customers'][] = [
+                'customerId'    => $processed[$email]['customerId'],
+                'ordersCount'   => $processed[$email]['ordersCount'],
+                'aov'           => Helpers::convertCurrency($data['amountPaid'] / $data['ordersCount'], $data['currency']),
+                'amountPaid'    => Helpers::convertCurrency($data['amountPaid'], $data['currency']),
+                'email'         => $email,
+                'customer'      => $processed[$email]['customer'],
+                'currency'      => $processed[$email]['currency'],
+                'lastPurchase'  => $processed[$email]['lastPurchase'],
+                'billingName'   => $processed[$email]['billingName'],
+                'shippingName'  => $processed[$email]['shippingName'],
+                'status'        => $processed[$email]['active'] ? 'Active' : 'Inactive'
+            ];
+        }
+
+        $result['stats'] = CommerceInsights::$plugin->stats->getStats($statsData);
 
         return $result;
     }
@@ -63,8 +120,6 @@ class CustomersService extends Component
      * @return array
      */
     public function getCustomers(): array {
-        $result = [];
-
-        return $result;
+        return $this->customers;
     }
 }
