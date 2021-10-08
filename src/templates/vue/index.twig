@@ -1,5 +1,4 @@
-{# {% extends "_layouts/cp" %} #}
-{# {%- from "_includes/forms" import text -%} #}
+{% extends "_layouts/cp" %}
 
 {% do view.registerAssetBundle("fostercommerce\\commerceinsights\\bundles\\WidgetBundle") %}
 
@@ -15,8 +14,6 @@
 {% endif %}
 
 {% set selectedSubnavItem = navItem %}
-
-{% extends "_layouts/cp" %}
 
 {% block header %}
   {% block pageTitle %}

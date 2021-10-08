@@ -152,9 +152,9 @@ const app = new Vue({
         range_start: self.dateRange.start,
         range_end: self.dateRange.end,
       };
-      let url = '/admin/commerceinsights/orders/product/' + item;
+      let url = '/actions/commerceinsights/product/get-product?id=' + item;
 
-      if (variant || variant_type || color || start || end) url += '?';
+      if (variant || variant_type || color || start || end) url += '&';
 
       if (start) {
         url += `startDate=${start}`;

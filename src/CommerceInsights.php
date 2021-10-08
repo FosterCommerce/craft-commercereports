@@ -11,6 +11,7 @@ declare(strict_types = 1);
 namespace fostercommerce\commerceinsights;
 
 use fostercommerce\commerceinsights\services\OrdersService;
+use fostercommerce\commerceinsights\services\ProductService;
 use fostercommerce\commerceinsights\services\StatsService;
 use fostercommerce\commerceinsights\services\ItemsSoldService;
 use fostercommerce\commerceinsights\services\CustomersService;
@@ -35,6 +36,7 @@ class CommerceInsights extends Plugin
         $config['components'] = [
             'stats'     => StatsService::class,
             'orders'    => OrdersService::class,
+            'product'   => ProductService::class,
             'itemsSold' => ItemsSoldService::class,
             'customers' => CustomersService::class
         ];
@@ -51,10 +53,12 @@ class CommerceInsights extends Plugin
                 /*
                  * Vue templates
                  */
-                $event->rules['commerceinsights/view/orders']     = 'commerceinsights/orders/index';
-                $event->rules['commerceinsights/view/items-sold'] = 'commerceinsights/items-sold/index';
-                $event->rules['commerceinsights/view/customers']  = 'commerceinsights/customers/index';
-            });
+                $event->rules['commerceinsights/view/orders']                  = 'commerceinsights/orders/index';
+                $event->rules['commerceinsights/orders/product/<id:([0-9])+>'] = 'commerceinsights/product/index';
+                $event->rules['commerceinsights/view/items-sold']              = 'commerceinsights/items-sold/index';
+                $event->rules['commerceinsights/view/customers']               = 'commerceinsights/customers/index';
+            }
+        );
     }
 
     public function getCpNavItem() {

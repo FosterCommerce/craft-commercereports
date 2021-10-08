@@ -16,11 +16,10 @@ use fostercommerce\commerceinsights\helpers\Helpers;
 use fostercommerce\commerceinsights\models\OrdersModel;
 use fostercommerce\commerceinsights\controllers\StatsController;
 
-use DateTime;
-
 use Craft;
 use craft\base\Component;
 use craft\commerce\elements\Order;
+use craft\commerce\elements\Variant;
 
 class OrdersService extends Component
 {
@@ -55,10 +54,17 @@ class OrdersService extends Component
     /**
      * Fetches the orders based on the given criteria established in the constructor.
      *
+     * @param int $productId - If you want to fetch all the orders for a product
+     *
      * @return array
      */
-    public function fetchOrders(): array {
+    public function fetchOrders(?int $productId = null): array {
         $orders = Order::find()->distinct()->orderBy('dateOrdered desc');
+
+        if ($productId) {
+            $product = Variant::find()->id($productId)->one();
+            $orders->hasPurchasables([$product]);
+        }
 
         if ($this->keyword) {
             $orders->search($this->keyword);
@@ -83,13 +89,13 @@ class OrdersService extends Component
      *
      * @return array
      */
-    public function getOrders(bool $withStats = true): array {
+    public function getOrders(): array {
         $model = new OrdersModel();
         $statsData = [
-            'type'   => 'orders',
-            'data'   => $this->orders,
-            'start'  => $this->dates['previousStart'],
-            'end'    => $this->dates['originalEnd']
+            'type'  => 'orders',
+            'data'  => $this->orders,
+            'start' => $this->dates['previousStart'],
+            'end'   => $this->dates['originalEnd']
         ];
         $result = [
             'orders' => $model->getOrderData($this->orders),
