@@ -1,5 +1,5 @@
 import Orders from './layouts/Orders.vue';
-import Sales from './layouts/Sales.vue';
+import ItemsSold from './layouts/ItemsSold.vue';
 import Customers from './layouts/Customers.vue';
 import BarChartPanel from './components/BarChartPanel.vue';
 import Chart from './components/Chart.vue';
@@ -23,7 +23,7 @@ const app = new Vue({
   delimiters: ['${', '}'],
   components: {
     Orders,
-    Sales,
+    ItemsSold,
     Customers,
     BarChartPanel,
     CombinedSearch,
@@ -55,18 +55,12 @@ const app = new Vue({
           'newCustomers': {},
           'returningCustomers': {},
         },
-        'products': {
-          'summary': {},
-          'mostPurchased': {},
-          'mostProfitable': [],
-        },
         'customers': {
           'summary': {},
         },
       },
       orders: [],
-      products: [],
-      sales: [],
+      itemsSold: [],
       customers: [],
     };
   },
@@ -199,8 +193,7 @@ const app = new Vue({
 
       axios.post('/actions/commerceinsights/items-sold/get-items-sold', qs.stringify(data))
       .then(response => {
-        console.log(response);
-        self.sales = response.data;
+        self.itemsSold = response.data;
       })
       .catch(error => {
         console.log(error);

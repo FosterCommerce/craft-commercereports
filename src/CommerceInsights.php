@@ -70,9 +70,9 @@ class CommerceInsights extends Plugin
                 'label' => Craft::t('commerceinsights', 'Orders'),
                 'url'   => 'commerceinsights/view/orders'
             ],
-            'sales'     => [
-                'label' => Craft::t('commerceinsights', 'Items Sold'),
-                'url'   => 'commerceinsights/view/items-sold'
+            'items-sold' => [
+                'label'  => Craft::t('commerceinsights', 'Items Sold'),
+                'url'    => 'commerceinsights/view/items-sold'
             ],
             'customers' => [
                 'label' => Craft::t('commerceinsights', 'Customers'),

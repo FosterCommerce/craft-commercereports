@@ -94,7 +94,7 @@ class OrdersService extends Component
         $statsData = [
             'type'  => 'orders',
             'data'  => $this->orders,
-            'start' => $this->dates['previousStart'],
+            'start' => $this->dates['originalStart'],
             'end'   => $this->dates['originalEnd']
         ];
         $result = [

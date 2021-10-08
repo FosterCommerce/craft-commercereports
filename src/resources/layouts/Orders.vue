@@ -44,27 +44,6 @@ export default {
       return Object.keys(this.filteredStats).length ? this.filteredStats : this.stats;
     },
   },
-  methods: {
-    handleFilterChange(data) {
-      const self = this;
-      const postData = {
-        range_start: this.dateStart,
-        range_end: this.dateEnd,
-      };
-
-      postData[Craft.csrfTokenName] = Craft.csrfTokenValue;
-
-      for (const filter in data.filters) {
-        postData[filter] = data.filters[filter];
-      }
-
-      axios.post('/actions/commerceinsights/vue/get-stats', qs.stringify(postData)).then(response => {
-        self.filteredStats = response.data;
-      }).catch(error => {
-        console.log(error);
-      });
-    },
-  },
 }
 </script>
 
@@ -147,7 +126,6 @@ export default {
       :elements="elements"
       :type-options="typeOptions"
       element-type="Orders"
-      @filtersChanged="handleFilterChange"
     />
   </div>
 </template>

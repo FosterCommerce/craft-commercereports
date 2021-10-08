@@ -2,7 +2,7 @@
 import CombinedSearch from '../components/CombinedSearch.vue';
 
 export default {
-  name: 'Sales',
+  name: 'ItemsSold',
   components: {
     CombinedSearch,
   },
