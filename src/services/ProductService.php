@@ -35,9 +35,6 @@ class ProductService extends Component
         $this->dates = Helpers::getDateRangeData();
         $this->id    = (int)Craft::$app->request->getQueryParam('id');
 
-        // Go get 'em, tiger
-        $this->orders = $this->fetchProduct();
-
         parent::__construct($id, $module, $config);
     }
 
@@ -47,11 +44,11 @@ class ProductService extends Component
      * @return array
      */
     public function fetchProduct(): array {
-        $orders    = CommerceInsights::$plugin->orders->fetchOrders($this->id);
+        $orders    = CommerceInsights::$plugin->orders->fetchOrders(['productId' => $this->id]);
         $model     = new OrdersModel();
         $statsData = [
             'type'  => 'orders',
-            'data'  => $this->orders,
+            'data'  => $orders,
             'start' => $this->dates['previousStart'],
             'end'   => $this->dates['originalEnd']
         ];

@@ -28,8 +28,6 @@ class OrdersService extends Component
     private $keyword;
     private $orderType;
     private $paymentType;
-    // misc
-    private $orders = [];
 
     /**
      * Constructor. Sets up all of the properties for this class based on $_GET and
@@ -45,21 +43,24 @@ class OrdersService extends Component
         $this->orderType   = Craft::$app->request->getBodyParam('orderType');
         $this->paymentType = Craft::$app->request->getBodyParam('paymentType');
 
-        // Go get 'em, tiger
-        $this->orders = $this->fetchOrders();
-
         parent::__construct($id, $module, $config);
     }
 
     /**
      * Fetches the orders based on the given criteria established in the constructor.
      *
-     * @param int $productId - If you want to fetch all the orders for a product
+     * @param array $opts - [
+     *   int  'id'           - Product ID if you want to fetch all the orders for a product
+     *   bool 'withPrevious' - Whether or not you want to fetch the previous period's orders
+     * ]
      *
      * @return array
      */
-    public function fetchOrders(?int $productId = null): array {
-        $orders = Order::find()->distinct()->orderBy('dateOrdered desc');
+    public function fetchOrders(array $opts = []): array {
+        $productId    = $opts['productId'] ?? null;
+        $withPrevious = $opts['withPrevious'] ?? true;
+        $orders       = Order::find()->distinct()->orderBy('dateOrdered desc');
+        $result       = [];
 
         if ($productId) {
             $product = Variant::find()->id($productId)->one();
@@ -78,10 +79,16 @@ class OrdersService extends Component
             $orders->where(['paidStatus' => strtolower($paymentType)]);
         }
 
-        return [
-            'previousPeriod' => $orders->dateOrdered(['and', ">= {$this->dates['previousStart']}", "< {$this->dates['originalStart']}"])->all(),
-            'currentPeriod'  => $orders->dateOrdered(['and', ">= {$this->dates['originalStart']}", "< {$this->dates['originalEnd']}"])->all()
-        ];
+        $result = $orders->dateOrdered(['and', ">= {$this->dates['originalStart']}", "< {$this->dates['originalEnd']}"])->all();
+
+        if ($withPrevious) {
+            $result = [
+                'previousPeriod' => $orders->dateOrdered(['and', ">= {$this->dates['previousStart']}", "< {$this->dates['originalStart']}"])->all(),
+                'currentPeriod'  => $result
+            ];
+        }
+
+        return $result;
     }
 
     /**
@@ -90,15 +97,16 @@ class OrdersService extends Component
      * @return array
      */
     public function getOrders(): array {
-        $model = new OrdersModel();
+        $model     = new OrdersModel();
+        $orders    = $this->fetchOrders();
         $statsData = [
             'type'  => 'orders',
-            'data'  => $this->orders,
+            'data'  => $orders,
             'start' => $this->dates['originalStart'],
             'end'   => $this->dates['originalEnd']
         ];
         $result = [
-            'orders' => $model->getOrderData($this->orders),
+            'orders' => $model->getOrderData($orders),
             'stats'  => CommerceInsights::$plugin->stats->getStats($statsData)
         ];
 

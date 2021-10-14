@@ -39,8 +39,7 @@ class ItemsSoldService extends Component
      */
     private function fetchItemsSold(): array {
         $currency = 'USD';
-        $orders   = CommerceInsights::$plugin->orders->fetchOrders();
-        $orders   = $orders['currentPeriod'];
+        $orders   = CommerceInsights::$plugin->orders->fetchOrders(['withPrevious' => false]);
         $result   = [];
 
         foreach ($orders as $order) {
