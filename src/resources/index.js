@@ -124,7 +124,7 @@ const app = new Vue({
         range_start: self.dateRange.start,
         range_end: self.dateRange.end,
       };
-      let url = '/actions/commerceinsights/orders/get-orders';
+      let url = '/get-ci-orders';
 
       data[Craft.csrfTokenName] = Craft.csrfTokenValue;
 
@@ -146,7 +146,7 @@ const app = new Vue({
         range_start: self.dateRange.start,
         range_end: self.dateRange.end,
       };
-      let url = '/actions/commerceinsights/product/get-product?id=' + item;
+      let url = '/get-ci-product?id=' + item;
 
       if (variant || variant_type || color || start || end) url += '&';
 
@@ -191,7 +191,7 @@ const app = new Vue({
 
       data[Craft.csrfTokenName] = Craft.csrfTokenValue;
 
-      axios.post('/actions/commerceinsights/items-sold/get-items-sold', qs.stringify(data))
+      axios.post('/get-ci-items-sold', qs.stringify(data))
       .then(response => {
         self.itemsSold = response.data;
       })
@@ -208,7 +208,7 @@ const app = new Vue({
 
       data[Craft.csrfTokenName] = Craft.csrfTokenValue;
 
-      axios.post('/actions/commerceinsights/customers/get-customers', qs.stringify(data)).
+      axios.post('/get-ci-customers', qs.stringify(data)).
         then(response => {
           self.stats = response.data.stats;
           self.customers = response.data.customers;

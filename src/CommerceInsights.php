@@ -59,6 +59,18 @@ class CommerceInsights extends Plugin
                 $event->rules['commerceinsights/view/customers']               = 'commerceinsights/customers/index';
             }
         );
+
+        Event::on(UrlManager::class, UrlManager::EVENT_REGISTER_SITE_URL_RULES,
+            function (RegisterUrlRulesEvent $event) {
+                /*
+                 * AJAX routes
+                 */
+                $event->rules['get-ci-orders']     = 'commerceinsights/orders/get-orders';
+                $event->rules['get-ci-items-sold'] = 'commerceinsights/items-sold/get-items-sold';
+                $event->rules['get-ci-product']    = 'commerceinsights/product/get-product';
+                $event->rules['get-ci-customers']  = 'commerceinsights/customers/get-customers';
+            }
+        );
     }
 
     public function getCpNavItem() {
