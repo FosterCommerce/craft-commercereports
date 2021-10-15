@@ -34,7 +34,7 @@ class Helpers {
         $result['endQuery']   = $endQuery ? urldecode($endQuery) : null;
 
         // All the formatted dates for the selected range (currently selected period)
-        // If none is selected, we just do a week
+        // If none is selected, we default to a week
         $result['today']      = new DateTime(date('Y-m-d 23:59:59'));
         $result['weekAgo']    = $result['today']->modify('-7 day')->format('Y-m-d 00:00:00');
         $result['rangeStart'] = Craft::$app->request->getBodyParam('range_start') ?? null;
