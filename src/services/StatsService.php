@@ -304,7 +304,7 @@ class StatsService extends Component
             $address     = $order->shippingAddress;
             $city        = $address->city;
             $cityLower   = preg_replace('/\s/', '', strtolower($address->city));
-            $state       = $address->state->abbreviation ?? Helpers::zipToState($address->zipCode);
+            $state       = $address->state->abbreviation ?? Helpers::zipToUsState($address->zipCode);
             $country     = $address->country->iso;
             $orderCount  = $topCities[$country . $cityLower . $state]['total'] ?? 0;
 

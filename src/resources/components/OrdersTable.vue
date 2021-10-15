@@ -47,8 +47,8 @@ export default {
         <th
           scope="col"
           class="vuetable-th-slot-title"
-          :class="sortBy === 'dateStamp' ? 'ordered ' + sortDirection : 'orderable'"
-          @click="sort('dateStamp')"
+          :class="sortBy === 'timeStamp' ? 'ordered ' + sortDirection : 'orderable'"
+          @click="sort('timeStamp')"
         >
           Date Ordered
         </th>

@@ -13,7 +13,7 @@ namespace fostercommerce\commerceinsights\services;
 
 use fostercommerce\commerceinsights\CommerceInsights;
 use fostercommerce\commerceinsights\helpers\Helpers;
-use fostercommerce\commerceinsights\models\OrdersModel;
+use fostercommerce\commerceinsights\models\OrderModel;
 
 use Craft;
 use craft\base\Component;
@@ -45,7 +45,6 @@ class ProductService extends Component
      */
     public function fetchProduct(): array {
         $orders    = CommerceInsights::$plugin->orders->fetchOrders(['productId' => $this->id]);
-        $model     = new OrdersModel();
         $statsData = [
             'type'  => 'orders',
             'data'  => $orders,
@@ -53,7 +52,7 @@ class ProductService extends Component
             'end'   => $this->dates['originalEnd']
         ];
         
-        return $model->getOrderData($orders);
+        return OrderModel::fromOrders($orders);
     }
 
     /**

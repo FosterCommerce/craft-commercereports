@@ -89,7 +89,7 @@ class Helpers {
      *
      * @return string
      */
-    public static function zipToState($zipcode) {
+    public static function zipToUsState($zipcode) {
         /* 000 to 999 */
         $zipByState = [
             '--', '--', '--', '--', '--', 'NY', 'PR', 'PR', 'VI', 'PR', 'MA', 'MA', 'MA',
