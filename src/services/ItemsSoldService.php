@@ -27,8 +27,6 @@ class ItemsSoldService extends Component
      * @return void
      */
     public function __construct($id, $module, $config = []) {
-        $this->itemsSold = $this->fetchItemsSold();
-
         parent::__construct($id, $module, $config);
     }
 
@@ -54,6 +52,6 @@ class ItemsSoldService extends Component
      * @return array
      */
     public function getItemsSold(): array {
-        return $this->itemsSold;
+        return $this->fetchItemsSold();
     }
 }

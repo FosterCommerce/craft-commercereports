@@ -39,9 +39,6 @@ class CustomersService extends Component
         // Filters that may be set
         $this->keyword = Craft::$app->request->getBodyParam('keyword');
 
-        // Go get 'em, tiger
-        $this->customers = $this->fetchCustomers();
-
         parent::__construct($id, $module, $config);
     }
 
@@ -120,6 +117,6 @@ class CustomersService extends Component
      * @return array
      */
     public function getCustomers(): array {
-        return $this->customers;
+        return $this->fetchCustomers();
     }
 }
