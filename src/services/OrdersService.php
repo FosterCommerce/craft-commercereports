@@ -76,7 +76,7 @@ class OrdersService extends Component
         }
 
         if ($this->paymentType) {
-            $orders->where(['paidStatus' => strtolower($paymentType)]);
+            $orders->where(['paidStatus' => strtolower($this->paymentType)]);
         }
 
         $result = $orders->dateOrdered(['and', ">= {$this->dates['originalStart']}", "< {$this->dates['originalEnd']}"])->all();

@@ -30,6 +30,8 @@
   <div class="commerce-insights-wrapper">
     {% if not id is defined %}
       {% include "commerceinsights/vue/_" ~ lastSegment %}
+    {% else %}
+      {% include "commerceinsights/vue/_product" %}
     {% endif %}
   </div>
 {% endblock %}
