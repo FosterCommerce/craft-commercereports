@@ -72,6 +72,7 @@ class CommerceInsights extends Plugin
 
                 if (Craft::$app->plugins->isPluginEnabled('commerce-insights-extensions')) {
                     $event->rules['get-ci-items-sold'] = 'commerce-insights-extensions/items-sold-extension/get-items-sold';
+                    $event->rules['get-ci-product']    = 'commerce-insights-extensions/product-extension/get-product';
                 }
             }
         );

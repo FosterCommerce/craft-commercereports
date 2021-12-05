@@ -23,11 +23,11 @@ use craft\commerce\elements\Variant;
 
 class OrdersService extends Component
 {
-    private $dates;
+    protected $dates;
     // filters
-    private $keyword;
-    private $orderType;
-    private $paymentType;
+    protected $keyword;
+    protected $orderType;
+    protected $paymentType;
 
     /**
      * Constructor. Sets up all of the properties for this class based on $_GET and

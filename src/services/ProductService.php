@@ -21,9 +21,9 @@ use craft\commerce\elements\Order;
 
 class ProductService extends Component
 {
-    private $dates;
-    private $id;
-    private $orders = [];
+    protected $dates;
+    protected $id;
+    protected $orders = [];
 
     /**
      * Constructor. Sets up all of the properties for this class based on $_GET and
