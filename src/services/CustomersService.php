@@ -90,11 +90,11 @@ class CustomersService extends Component
             }
         }
 
-        foreach ($processed as $email=> $data) {
+        foreach ($processed as $email => $data) {
             $result['customers'][] = [
                 'customerId'    => $processed[$email]['customerId'],
                 'ordersCount'   => $processed[$email]['ordersCount'],
-                'aov'           => Helpers::convertCurrency($data['amountPaid'] / $data['ordersCount'], $data['currency']),
+                'aov'           => Helpers::convertCurrency(($data['amountPaid'] / $data['ordersCount']), $data['currency']),
                 'amountPaid'    => Helpers::convertCurrency($data['amountPaid'], $data['currency']),
                 'email'         => $email,
                 'customer'      => $processed[$email]['customer'],

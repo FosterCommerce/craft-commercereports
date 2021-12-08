@@ -72,8 +72,7 @@ class Helpers {
      * @return string
      */
     public static function convertCurrency(float $amount, string $currency) : string {
-        $amount          = strpos($amount . '', '.') ? str_replace('.', '', $amount) : $amount . '00';
-        $amount          = $amount === '000' ? 0 : preg_replace('/^0/', '', $amount);
+        $amount          = (int)(number_format($amount, 2) * 100);
         $money           = new Money($amount, new Currency($currency));
         $currencies      = new ISOCurrencies();
         $numberFormatter = new NumberFormatter('en_US', NumberFormatter::CURRENCY);
