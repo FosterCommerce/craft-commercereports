@@ -18,7 +18,7 @@ export default {
       default: () => [],
     },
   },
-  methods: {
+	methods: {
     sort(column) {
       this.$emit('sort-table', column);
     },
@@ -93,9 +93,16 @@ export default {
           <td>{{ element.type }}</td>
           <td>
             {{ element.totalSold }} sold in
-            <a :href="'/admin/commerceinsights/orders/product/' + element.id">
-              {{ element.numOrders }} {{ element.numOrders > 1 ? 'orders' : 'order' }}
-            </a>
+
+						<span v-if="!element.hideOrders">
+							<a :href="'/admin/commerceinsights/orders/product/' + element.id">
+								{{ element.numOrders }} {{ element.numOrders > 1 ? 'orders' : 'order' }}
+							</a>
+						</span>
+
+						<span v-else>
+							{{ element.numOrders }} {{ element.numOrders > 1 ? 'orders' : 'order' }}
+						</span>
           </td>
           <td>{{ element.sales }}</td>
         </tr>

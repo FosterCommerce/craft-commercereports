@@ -32,13 +32,13 @@ export default {
       <p>
         You've had
         <SummaryDatapoint
-          :number="stats.orders.totalCustomers.total"
+          :number="stats.orders.newCustomers.total"
           format="number"
           up-down
         ></SummaryDatapoint>
         new customers,
         <SummaryDatapoint
-          :data="stats.orders.totalCustomers"
+          :data="stats.orders.newCustomers"
           up-down
         ></SummaryDatapoint>
         since the previous period.

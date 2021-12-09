@@ -71,7 +71,7 @@ export default {
     getSortBy() {
       switch (this.elementType) {
         case 'Orders':
-          this.sortBy = 'dateStamp';
+          this.sortBy = 'timeStamp';
           break;
         case 'ItemsSold':
           this.sortBy = 'totalSold';

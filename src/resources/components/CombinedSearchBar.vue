@@ -74,9 +74,13 @@ export default {
     },
     getSelectedLabel() {
       if (Object.keys(this.selectedTypeOption).length === 0) {
-        if (this.elementType === 'Orders') {
-          return 'All Order Statuses';
-        }
+				if (this.elementType === 'Orders') {
+					return 'All Order Statuses';
+				}
+
+				if (this.elementType === 'ItemsSold') {
+					return 'All Items Sold';
+				}
 
         return this.allTypesLabel;
       }
@@ -88,7 +92,7 @@ export default {
       let results = [];
       let filteredElements = self.elements;
 
-      if (this.elementType === 'Products' || this.elementType === 'ItemsSold') {
+      if (this.elementType === 'ItemsSold') {
         if (this.keyword.length) {
           // match title and sku against keyword
           filteredElements = filteredElements.filter(function(element) {

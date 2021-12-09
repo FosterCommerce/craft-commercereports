@@ -1,5 +1,4 @@
-{# {% extends "_layouts/cp" %} #}
-{# {%- from "_includes/forms" import text -%} #}
+{% extends "_layouts/cp" %}
 
 {% do view.registerAssetBundle("fostercommerce\\commerceinsights\\bundles\\WidgetBundle") %}
 
@@ -8,17 +7,13 @@
 
 {% if lastSegment == 'orders' %}
   {% set title = "Orders"|t('commerceinsights') %}
-{% elseif lastSegment == 'sales' %}
+{% elseif lastSegment == 'items-sold' %}
   {% set title = "Items Sold"|t('commerceinsights') %}
-{% elseif lastSegment == 'products' %}
-  {% set title = "Product Insights"|t('commerceinsights') %}
 {% elseif lastSegment == 'customers' %}
   {% set title = "Customers"|t('commerceinsights') %}
 {% endif %}
 
 {% set selectedSubnavItem = navItem %}
-
-{% extends "_layouts/cp" %}
 
 {% block header %}
   {% block pageTitle %}

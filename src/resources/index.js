@@ -1,5 +1,5 @@
 import Orders from './layouts/Orders.vue';
-import Sales from './layouts/Sales.vue';
+import ItemsSold from './layouts/ItemsSold.vue';
 import Customers from './layouts/Customers.vue';
 import BarChartPanel from './components/BarChartPanel.vue';
 import Chart from './components/Chart.vue';
@@ -23,7 +23,7 @@ const app = new Vue({
   delimiters: ['${', '}'],
   components: {
     Orders,
-    Sales,
+    ItemsSold,
     Customers,
     BarChartPanel,
     CombinedSearch,
@@ -55,18 +55,12 @@ const app = new Vue({
           'newCustomers': {},
           'returningCustomers': {},
         },
-        'products': {
-          'summary': {},
-          'mostPurchased': {},
-          'mostProfitable': [],
-        },
         'customers': {
           'summary': {},
         },
       },
       orders: [],
-      products: [],
-      sales: [],
+      itemsSold: [],
       customers: [],
     };
   },
@@ -104,17 +98,12 @@ const app = new Vue({
 
       page = page.substring(0, idx !== -1 ? idx : page.length);
 
-      this.fetchStats();
-
       switch (page) {
         case 'orders':
           this.fetchOrders();
           break;
-        case 'sales':
+        case 'items-sold':
           this.fetchItemsSold();
-          break;
-        case 'products':
-          this.fetchProducts();
           break;
         case 'customers':
           this.fetchCustomers();
@@ -123,27 +112,11 @@ const app = new Vue({
           if (isNaN(page)) {
             this.fetchOrders();
             this.fetchItemsSold();
-            this.fetchProducts();
             this.fetchCustomers();
           } else {
             this.fetchItemOrders(page);
           }
       }
-    },
-    fetchStats() {
-      const self = this;
-      const data = {
-        range_start: self.dateRange.start,
-        range_end: self.dateRange.end,
-      };
-
-      data[Craft.csrfTokenName] = Craft.csrfTokenValue;
-
-      axios.post('/actions/commerceinsights/vue/get-stats', qs.stringify(data)).then(response => {
-        self.stats = response.data;
-      }).catch(error => {
-        console.log(error);
-      });
     },
     fetchOrders() {
       const self = this;
@@ -151,12 +124,13 @@ const app = new Vue({
         range_start: self.dateRange.start,
         range_end: self.dateRange.end,
       };
-      let url = '/actions/commerceinsights/vue/get-orders';
+      let url = '/get-ci-orders';
 
       data[Craft.csrfTokenName] = Craft.csrfTokenValue;
 
       axios.post(url, qs.stringify(data)).then(response => {
-        self.orders = response.data;
+        self.stats = response.data.stats;
+        self.orders = response.data.orders;
       }).catch(error => {
         console.log(error);
       });
@@ -172,9 +146,9 @@ const app = new Vue({
         range_start: self.dateRange.start,
         range_end: self.dateRange.end,
       };
-      let url = '/admin/commerceinsights/orders/product/' + item;
+      let url = '/get-ci-product?id=' + item;
 
-      if (variant || variant_type || color || start || end) url += '?';
+      if (variant || variant_type || color || start || end) url += '&';
 
       if (start) {
         url += `startDate=${start}`;
@@ -203,28 +177,10 @@ const app = new Vue({
       data['id'] = item;
 
       axios.post(url, qs.stringify(data)).then(response => {
-        console.log(response);
         self.orders = response.data;
       }).catch(error => {
         console.log(error);
       });
-    },
-    fetchProducts() {
-      const self = this;
-      const data = {
-        range_start: self.dateRange.start,
-        range_end: self.dateRange.end,
-      };
-
-      data[Craft.csrfTokenName] = Craft.csrfTokenValue;
-
-      axios.post('/actions/commerceinsights/vue/get-products', qs.stringify(data)).
-        then(response => {
-          self.products = response.data;
-        }).
-        catch(error => {
-          console.log(error);
-        });
     },
     fetchItemsSold() {
       const self = this;
@@ -235,9 +191,9 @@ const app = new Vue({
 
       data[Craft.csrfTokenName] = Craft.csrfTokenValue;
 
-      axios.post('/actions/commerceinsights/vue/get-items-sold', qs.stringify(data))
+      axios.post('/get-ci-items-sold', qs.stringify(data))
       .then(response => {
-        self.sales = response.data;
+        self.itemsSold = response.data;
       })
       .catch(error => {
         console.log(error);
@@ -252,9 +208,10 @@ const app = new Vue({
 
       data[Craft.csrfTokenName] = Craft.csrfTokenValue;
 
-      axios.post('/actions/commerceinsights/vue/get-customers', qs.stringify(data)).
+      axios.post('/get-ci-customers', qs.stringify(data)).
         then(response => {
-          self.customers = response.data;
+          self.stats = response.data.stats;
+          self.customers = response.data.customers;
         }).
         catch(error => {
           console.log(error);

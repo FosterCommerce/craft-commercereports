@@ -1,14 +1,20 @@
 <?php
 /**
- * Commerce Insights Components plugin for Craft CMS 3.x
- *
- * Throwaway demo / integration project.
+ * Commerce Insights plugin for Craft CMS 3.x
  *
  * @link      https://fostercommerce.com
- * @copyright Copyright (c) 2019 Foster Commerce
+ * @copyright Copyright (c) 2021 Foster Commerce
  */
 
+declare(strict_types = 1);
+
 namespace fostercommerce\commerceinsights;
+
+use fostercommerce\commerceinsights\services\OrdersService;
+use fostercommerce\commerceinsights\services\ProductService;
+use fostercommerce\commerceinsights\services\StatsService;
+use fostercommerce\commerceinsights\services\ItemsSoldService;
+use fostercommerce\commerceinsights\services\CustomersService;
 
 use Craft;
 use craft\base\Plugin;
@@ -19,11 +25,24 @@ use craft\web\UrlManager;
 
 use yii\base\Event;
 
-class CommerceInsights extends Plugin {
+class CommerceInsights extends Plugin
+{
     public static $plugin;
 
     public $hasCpSection = true;
     public $schemaVersion = '1.0.0';
+
+    public function __construct($id, $parent = null, array $config = []) {
+        $config['components'] = [
+            'stats'     => StatsService::class,
+            'orders'    => OrdersService::class,
+            'product'   => ProductService::class,
+            'itemsSold' => ItemsSoldService::class,
+            'customers' => CustomersService::class
+        ];
+
+        parent::__construct($id, $parent, $config);
+    }
 
     public function init() {
         parent::init();
@@ -32,45 +51,31 @@ class CommerceInsights extends Plugin {
         Event::on(UrlManager::class, UrlManager::EVENT_REGISTER_CP_URL_RULES,
             function (RegisterUrlRulesEvent $event) {
                 /*
-                 * Orders
+                 * Vue templates
                  */
-                $event->rules['commerceinsights/orders']                       = 'commerceinsights/order/order-index';
-                $event->rules['commerceinsights/orders/<format:json>']         = 'commerceinsights/order/order-index';
-                $event->rules['commerceinsights/orders/<format:csv>']          = 'commerceinsights/order/order-index';
-                $event->rules['commerceinsights/orders/product/<id:([0-9])+>'] = 'commerceinsights/order/product';
+                $event->rules['commerceinsights/view/orders']                  = 'commerceinsights/orders/index';
+                $event->rules['commerceinsights/orders/product/<id:([0-9])+>'] = 'commerceinsights/product/index';
+                $event->rules['commerceinsights/view/items-sold']              = 'commerceinsights/items-sold/index';
+                $event->rules['commerceinsights/view/customers']               = 'commerceinsights/customers/index';
+            }
+        );
 
+        Event::on(UrlManager::class, UrlManager::EVENT_REGISTER_SITE_URL_RULES,
+            function (RegisterUrlRulesEvent $event) {
                 /*
-                 * Products
+                 * AJAX routes
                  */
-                $event->rules['commerceinsights/products']               = 'commerceinsights/product/product-index';
-                $event->rules['commerceinsights/products/<format:json>'] = 'commerceinsights/product/product-index';
-                $event->rules['commerceinsights/products/<format:csv>']  = 'commerceinsights/product/product-index';
+                $event->rules['get-ci-orders']     = 'commerceinsights/orders/get-orders';
+                $event->rules['get-ci-items-sold'] = 'commerceinsights/items-sold/get-items-sold';
+                $event->rules['get-ci-product']    = 'commerceinsights/product/get-product';
+                $event->rules['get-ci-customers']  = 'commerceinsights/customers/get-customers';
 
-                /*
-                 * Sales
-                 */
-                $event->rules['commerceinsights/sales']               = 'commerceinsights/sales/sales-index';
-                $event->rules['commerceinsights/sales/<format:json>'] = 'commerceinsights/sales/sales-index';
-                $event->rules['commerceinsights/sales/<format:csv>']  = 'commerceinsights/sales/sales-index';
-
-                /*
-                 * Customers
-                 */
-                $event->rules['commerceinsights/customers']               = 'commerceinsights/customer/customer-index';
-                $event->rules['commerceinsights/customers/<format:json>'] = 'commerceinsights/customer/customer-index';
-                $event->rules['commerceinsights/customers/<format:csv>']  = 'commerceinsights/customer/customer-index';
-
-                /*
-                 * Saved
-                 */
-                $event->rules['commerceinsights/saved']             = 'commerceinsights/saved/list';
-                $event->rules['commerceinsights/saved/save']        = 'commerceinsights/saved/save-report';
-                $event->rules['commerceinsights/saved/<id>']        = 'commerceinsights/saved/get-report';
-                $event->rules['commerceinsights/saved/delete/<id>'] = 'commerceinsights/saved/delete-report';
-
-                // new vue stuff
-                $event->rules['commerceinsights/view/<view>'] = 'commerceinsights/vue/index';
-            });
+                if (Craft::$app->plugins->isPluginEnabled('commerce-insights-extensions')) {
+                    $event->rules['get-ci-items-sold'] = 'commerce-insights-extensions/items-sold-extension/get-items-sold';
+                    $event->rules['get-ci-product']    = 'commerce-insights-extensions/product-extension/get-product';
+                }
+            }
+        );
     }
 
     public function getCpNavItem() {
@@ -82,21 +87,13 @@ class CommerceInsights extends Plugin {
                 'label' => Craft::t('commerceinsights', 'Orders'),
                 'url'   => 'commerceinsights/view/orders'
             ],
-            'sales'     => [
-                'label' => Craft::t('commerceinsights', 'Items Sold'),
-                'url'   => 'commerceinsights/view/sales'
+            'items-sold' => [
+                'label'  => Craft::t('commerceinsights', 'Items Sold'),
+                'url'    => 'commerceinsights/view/items-sold'
             ],
-            /*'products'  => [
-                'label' => Craft::t('commerceinsights', 'Product Insights'),
-                'url'   => 'commerceinsights/view/products'
-            ],*/
             'customers' => [
                 'label' => Craft::t('commerceinsights', 'Customers'),
                 'url'   => 'commerceinsights/view/customers'
-            ],
-            'saved'     => [
-                'label' => Craft::t('commerceinsights', 'Saved'),
-                'url'   => 'commerceinsights/view/saved'
             ]
         ];
 
