@@ -14,7 +14,7 @@
     "chart.js": "^3.4.1",
     "daterangepicker": "^3.1.0",
     "lodash": "^4.17.21",
-    "moment": "^2.29.1",
+    "moment": "^2.29.4",
     "qs": "^6.10.1",
     "vue": "^2.6.14",
     "vue-json-csv": "^1.2.12",
