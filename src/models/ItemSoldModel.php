@@ -43,8 +43,8 @@ class ItemSoldModel extends Model
                         'status'      => $item['snapshot']['status'],
                         'sku'         => $item['snapshot']['sku'] ?: 'No known SKU',
                         'productId'   => $product['id'],
-                        'type'        => $product->type->name,
-                        'typeHandle'  => $product->type->handle,
+                        'type'        => $product->type->name, // can't get this from lineitem snapshot
+                        'typeHandle'  => $product->type->handle, // can't get this from lineitem snapshot
                         'lastOrderId' => $results[$sku]['lastOrderId'] ?? 0,
                         'numOrders'   => $results[$sku]['numOrders'] ?? 0,
                         'totalSold'   => $results[$sku]['totalSold'] ?? 0,
