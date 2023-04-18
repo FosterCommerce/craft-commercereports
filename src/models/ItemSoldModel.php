@@ -13,6 +13,7 @@ namespace fostercommerce\commerceinsights\models;
 
 use fostercommerce\commerceinsights\helpers\Helpers;
 
+use Craft;
 use craft\base\Model;
 
 class ItemSoldModel extends Model
@@ -27,19 +28,21 @@ class ItemSoldModel extends Model
         $results  = [];
 
         foreach ($orders as $order) {
+            
             foreach ($order->lineItems as $item) {
+            
                 $variant = $item->purchasable;
 
                 if ($variant) {
                     $product = $variant->product;
-                    $sku     = $variant->sku;
+                    $sku     = $item['snapshot']['sku'];
 
                     $results[$sku] = [
-                        'id'          => $variant->id,
-                        'title'       => $variant->title,
-                        'status'      => $variant->status,
-                        'sku'         => $sku ?: 'No known SKU',
-                        'productId'   => $product->id,
+                        'id'          => $item['snapshot']['id'],
+                        'title'       => $item['snapshot']['title'],
+                        'status'      => $item['snapshot']['status'],
+                        'sku'         => $item['snapshot']['sku'] ?: 'No known SKU',
+                        'productId'   => $product['id'],
                         'type'        => $product->type->name,
                         'typeHandle'  => $product->type->handle,
                         'lastOrderId' => $results[$sku]['lastOrderId'] ?? 0,
