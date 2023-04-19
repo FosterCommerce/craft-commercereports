@@ -14,7 +14,6 @@ namespace fostercommerce\commerceinsights\models;
 use fostercommerce\commerceinsights\helpers\Helpers;
 
 use craft\base\Model;
-use craft\commerce\elements\Order;
 
 class OrderModel extends Model
 {
@@ -30,8 +29,6 @@ class OrderModel extends Model
         $results = [];
 
         foreach ($currentPeriod as $idx => $order) {
-            $order = Order::find()->id($order['id'])->one();
-           
             $lineItems = $order->lineItems;
             $results[] = self::fromOrder($order);
 
