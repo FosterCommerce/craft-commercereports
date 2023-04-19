@@ -98,6 +98,7 @@ class StatsService extends Component
         // Add orders to their dates in the total orders arr, and calculate
         // revenue, AOV, AOQ, and customers for current period.
         foreach ($currentOrders as $order) {
+            $order = Order::find()->id($order['id'])->one();
             $lineItems   = $order->lineItems;
             $dateOrdered = $order->dateOrdered->format('Y-m-d');
 
