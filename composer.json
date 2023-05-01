@@ -1,40 +1,41 @@
 {
-    "name": "fostercommerce/commerce-insights",
-    "description": "Sales and purchase insights for Craft Commerce.",
-    "type": "craft-plugin",
-    "version": "1.0.0-beta.4",
-    "keywords": [
-        "craft",
-        "cms",
-        "craftcms",
-        "craft-plugin",
-        "commerce insights"
-    ],
-    "support": {
-        "docs": "https://github.com/workingconcept/commerce-insights/blob/master/README.md",
-        "issues": "https://github.com/workingconcept/commerce-insights/issues"
-    },
-    "license": "proprietary",
-    "authors": [
-        {
-            "name": "Foster Commerce",
-            "homepage": "https://fostercommerce.com"
-        }
-    ],
-    "require": {
-        "craftcms/cms": "^3.0.0"
-    },
-    "autoload": {
-        "psr-4": {
-          "fostercommerce\\commerceinsights\\": "src/"
-        }
-    },
-    "extra": {
-        "name": "Commerce Insights",
-        "handle": "commerceinsights",
-        "hasCpSettings": false,
-        "hasCpSection": true,
-        "changelogUrl": "https://raw.githubusercontent.com/workingconcept/commerce-insights/master/CHANGELOG.md",
-        "class": "fostercommerce\\commerceinsights\\CommerceInsights"
+  "name": "fostercommerce/commerce-insights",
+  "description": "Sales and purchase insights for Craft Commerce.",
+  "type": "craft-plugin",
+  "version": "1.0.0-beta.10",
+  "keywords": [
+    "craft",
+    "cms",
+    "craftcms",
+    "craft-plugin",
+    "commerce insights"
+  ],
+  "support": {
+    "docs": "https://github.com/fostercommerce/commerce-insights/blob/master/README.md",
+    "issues": "https://github.com/fostercommerce/commerce-insights/issues"
+  },
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Foster Commerce",
+      "homepage": "https://fostercommerce.com"
     }
+  ],
+  "require": {
+    "craftcms/cms": "^3.0.0",
+    "moneyphp/money": "^3.2.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "fostercommerce\\commerceinsights\\": "src/"
+    }
+  },
+  "extra": {
+    "name": "Commerce Insights",
+    "handle": "commerceinsights",
+    "hasCpSettings": false,
+    "hasCpSection": true,
+    "changelogUrl": "https://raw.githubusercontent.com/workingconcept/commerce-insights/master/CHANGELOG.md",
+    "class": "fostercommerce\\commerceinsights\\CommerceInsights"
+  }
 }
