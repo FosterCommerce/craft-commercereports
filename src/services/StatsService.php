@@ -302,10 +302,10 @@ class StatsService extends Component
 
         foreach ($orders as $order) {
             $address     = $order->shippingAddress;
-            $city        = $address->city;
-            $cityLower   = preg_replace('/\s/', '', strtolower($address->city));
-            $state       = $address->state->abbreviation ?? Helpers::zipToUsState($address->zipCode);
-            $country     = $address->countryIso;
+            $city        = $address->city ?? '';
+            $cityLower   = preg_replace('/\s/', '', strtolower($address->city ?? ''));
+            $state       = $address->state->abbreviation ?? Helpers::zipToUsState($address->zipCode ?? '');
+            $country     = $address->countryIso ?? '';
             $orderCount  = $topCities[$country . $cityLower . $state]['total'] ?? 0;
 
             $topCities[$country . $cityLower . $state] = [
