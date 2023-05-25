@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Commerce Insights Stats Controller
+ * Commerce Reports Stats Controller
  *
  * @link      https://fostercommerce.com
  * @copyright Copyright (c) 2021 Foster Commerce
@@ -9,10 +9,10 @@
 
 declare(strict_types = 1);
 
-namespace fostercommerce\commerceinsights\controllers;
+namespace fostercommerce\commercereports\controllers;
 
-use fostercommerce\commerceinsights\CommerceInsights;
-use fostercommerce\commerceinsights\components\Stats;
+use fostercommerce\commercereports\CommerceReports;
+use fostercommerce\commercereports\components\Stats;
 
 use craft\web\Response;
 use yii\web\Response as YiiResponse;
@@ -25,6 +25,6 @@ class StatsController extends Stats
      * @return craft\web\Response
      */
     public function getStats(array $orders): Response {
-        return $this->asJson(CommerceInsights::$plugin->stats->getStats($orders));
+        return $this->asJson(CommerceReports::$plugin->stats->getStats($orders));
     }
 }

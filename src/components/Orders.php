@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Commerce Insights Orders Component
+ * Commerce Reports Orders Component
  *
  * @link      https://fostercommerce.com
  * @copyright Copyright (c) 2021 Foster Commerce
@@ -9,9 +9,9 @@
 
 declare(strict_types = 1);
 
-namespace fostercommerce\commerceinsights\components;
+namespace fostercommerce\commercereports\components;
 
-use fostercommerce\commerceinsights\interfaces\OrdersInterface;
+use fostercommerce\commercereports\interfaces\OrdersInterface;
 
 use Craft;
 use craft\web\Controller;
@@ -24,7 +24,7 @@ abstract class Orders extends Controller implements OrdersInterface
      * @return string The display name of this class.
      */
     public static function displayName(): string {
-        return Craft::t('commerce-insights', 'Orders');
+        return Craft::t('commerce-reports', 'Orders');
     }
 
     /**

@@ -70,13 +70,13 @@ export default {
 <template>
   <pane :title="title">
     <div
-      class="commerce-insights-donut-pane"
+      class="commerce-reports-donut-pane"
       :style="{ 'min-width: 240px;': isVertical, 'min-width: 320px;': ! isVertical }"
     >
       <div v-if="isVertical">
         <div
           ref="chartWrapper"
-          class="commerce-insights-donut-chart-wrapper w-64 max-h-64 max-w-full"
+          class="commerce-reports-donut-chart-wrapper w-64 max-h-64 max-w-full"
         >
           <chart type="donut"
                  :chartData="chartData"
@@ -132,11 +132,11 @@ export default {
 </template>
 
 <style>
-.commerce-insights-donut-pane {
+.commerce-reports-donut-pane {
   width: 100%;
 }
 
-.commerce-insights-donut-chart-wrapper {
+.commerce-reports-donut-chart-wrapper {
   margin-left: auto;
   margin-right: auto;
   position: relative;

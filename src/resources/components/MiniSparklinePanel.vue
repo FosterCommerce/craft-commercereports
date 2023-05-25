@@ -161,13 +161,13 @@ export default {
     flex
     class="h-34"
   >
-    <div class="commerce-insights-mini-sparkline-pane flex-grow">
-      <div class="commerce-insights-mini-sparkline-pane-content flex-col justify-end flex-grow">
-        <h4 class="commerce-insights-mini-sparkline-pane-value flex-grow">{{ value }}</h4>
-        <p class="commerce-insights-mini-sparkline-pane-caption self-end">{{ caption }}</p>
+    <div class="commerce-reports-mini-sparkline-pane flex-grow">
+      <div class="commerce-reports-mini-sparkline-pane-content flex-col justify-end flex-grow">
+        <h4 class="commerce-reports-mini-sparkline-pane-value flex-grow">{{ value }}</h4>
+        <p class="commerce-reports-mini-sparkline-pane-caption self-end">{{ caption }}</p>
       </div>
       <div class="chart-pane-fill-container">
-        <div v-cloak ref="container" class="commerce-insights-chart-container w-full h-full relative">
+        <div v-cloak ref="container" class="commerce-reports-chart-container w-full h-full relative">
           <canvas ref="chart"></canvas>
         </div>
       </div>
@@ -176,18 +176,18 @@ export default {
 </template>
 
 <style>
-.commerce-insights-mini-sparkline-pane {
+.commerce-reports-mini-sparkline-pane {
   display: flex;
   width: 100%;
   position: relative;
 }
 
-.commerce-insights-mini-sparkline-pane-content {
+.commerce-reports-mini-sparkline-pane-content {
   display: flex;
   width: 100%;
 }
 
-.commerce-insights-mini-sparkline-pane-value {
+.commerce-reports-mini-sparkline-pane-value {
   color: #d3a87a;
   font-weight: 300;
   font-size: 1.5rem;
@@ -196,7 +196,7 @@ export default {
   width: 100%;
 }
 
-.commerce-insights-mini-sparkline-pane-caption {
+.commerce-reports-mini-sparkline-pane-caption {
   width: 100%;
   margin: 0;
   padding: 0;

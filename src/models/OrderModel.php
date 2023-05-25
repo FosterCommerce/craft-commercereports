@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Commerce Insights Order Model
+ * Commerce Reports Order Model
  *
  * @link      https://fostercommerce.com
  * @copyright Copyright (c) 2021 Foster Commerce
@@ -9,9 +9,9 @@
 
 declare(strict_types = 1);
 
-namespace fostercommerce\commerceinsights\models;
+namespace fostercommerce\commercereports\models;
 
-use fostercommerce\commerceinsights\helpers\Helpers;
+use fostercommerce\commercereports\helpers\Helpers;
 
 use craft\base\Model;
 

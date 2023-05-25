@@ -205,7 +205,7 @@ export default {
 </script>
 
 <template>
-  <div class="commerce-insights-combined-search-bar toolbar layout-flex">
+  <div class="commerce-reports-combined-search-bar toolbar layout-flex">
     <div class="flex w-1/2">
       <div class="">
         <div class="btn menubtn">
@@ -270,7 +270,7 @@ export default {
 </template>
 
 <style>
-.commerce-insights-combined-search-bar {
+.commerce-reports-combined-search-bar {
   background-color: #f1f5f8;
   border-radius: 5px;
   padding: 0.75rem 0.75rem 0.4rem 0.75rem;

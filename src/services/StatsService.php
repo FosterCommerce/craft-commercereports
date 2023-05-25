@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Commerce Insights Stats Service
+ * Commerce Reports Stats Service
  *
  * @link      https://fostercommerce.com
  * @copyright Copyright (c) 2021 Foster Commerce
@@ -9,9 +9,9 @@
 
 declare(strict_types = 1);
 
-namespace fostercommerce\commerceinsights\services;
+namespace fostercommerce\commercereports\services;
 
-use fostercommerce\commerceinsights\helpers\Helpers;
+use fostercommerce\commercereports\helpers\Helpers;
 
 use DateTime;
 use DatePeriod;

@@ -123,7 +123,7 @@ export default {
       </thead>
 
       <tbody class="vuetable-body">
-      <tr class="commerce-insights-ajax-loader centeralign">
+      <tr class="commerce-reports-ajax-loader centeralign">
         <td colspan="9" class="vuetable-slot centeralign">
           <div class="spinner loadingmore"></div>
         </td>

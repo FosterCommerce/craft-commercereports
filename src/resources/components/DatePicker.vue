@@ -69,6 +69,6 @@ export default {
     ref="daterange"
     name="datefilter"
     :value="formattedResult"
-    class="commerce-insights-date-range-field"
+    class="commerce-reports-date-range-field"
   />
 </template>

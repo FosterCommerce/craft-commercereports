@@ -1,5 +1,5 @@
 {
-  "name": "fostercommerce/commerce-insights",
+  "name": "fostercommerce/commerce-reports",
   "description": "Sales and purchase insights for Craft Commerce.",
   "type": "craft-plugin",
   "version": "1.0.0-beta.12",
@@ -8,11 +8,11 @@
     "cms",
     "craftcms",
     "craft-plugin",
-    "commerce insights"
+    "commerce reports"
   ],
   "support": {
-    "docs": "https://github.com/fostercommerce/commerce-insights/blob/master/README.md",
-    "issues": "https://github.com/fostercommerce/commerce-insights/issues"
+    "docs": "https://github.com/fostercommerce/commerce-reports/blob/master/README.md",
+    "issues": "https://github.com/fostercommerce/commerce-reports/issues"
   },
   "license": "proprietary",
   "authors": [
@@ -27,15 +27,15 @@
   },
   "autoload": {
     "psr-4": {
-      "fostercommerce\\commerceinsights\\": "src/"
+      "fostercommerce\\commercereports\\": "src/"
     }
   },
   "extra": {
-    "name": "Commerce Insights",
-    "handle": "commerceinsights",
+    "name": "Commerce Reports",
+    "handle": "commercereports",
     "hasCpSettings": false,
     "hasCpSection": true,
-    "changelogUrl": "https://raw.githubusercontent.com/workingconcept/commerce-insights/master/CHANGELOG.md",
-    "class": "fostercommerce\\commerceinsights\\CommerceInsights"
+    "changelogUrl": "https://raw.githubusercontent.com/workingconcept/commerce-reports/master/CHANGELOG.md",
+    "class": "fostercommerce\\commercereports\\CommerceReports"
   }
 }

@@ -70,7 +70,7 @@ export default {
       </thead>
 
       <tbody>
-        <tr class="commerce-insights-ajax-loader centeralign">
+        <tr class="commerce-reports-ajax-loader centeralign">
           <td colspan="9" class="centeralign">
             <div class="spinner loadingmore"></div>
           </td>
@@ -95,7 +95,7 @@ export default {
             {{ element.totalSold }} sold in
 
 						<span v-if="!element.hideOrders">
-							<a :href="'/admin/commerceinsights/orders/product/' + element.id">
+							<a :href="'/admin/commercereports/orders/product/' + element.id">
 								{{ element.numOrders }} {{ element.numOrders > 1 ? 'orders' : 'order' }}
 							</a>
 						</span>

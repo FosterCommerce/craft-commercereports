@@ -1,6 +1,6 @@
 <?php
 /**
- * Commerce Insights plugin for Craft CMS 3.x
+ * Commerce Reports plugin for Craft CMS 3.x
  *
  * @link      https://fostercommerce.com
  * @copyright Copyright (c) 2021 Foster Commerce
@@ -8,7 +8,7 @@
 
 declare(strict_types = 1);
 
-namespace fostercommerce\commerceinsights\interfaces;
+namespace fostercommerce\commercereports\interfaces;
 
 use craft\base\ComponentInterface;
 use craft\web\Response;
@@ -16,7 +16,7 @@ use yii\web\Response as YiiResponse;
 
 /**
  * @author    Foster Commerce
- * @package   Commerce Insights
+ * @package   Commerce Reports
  * @since     1.0.0
  */
 interface ItemsSoldInterface extends ComponentInterface

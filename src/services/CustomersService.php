@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Commerce Insights Customers Service
+ * Commerce Reports Customers Service
  *
  * @link      https://fostercommerce.com
  * @copyright Copyright (c) 2021 Foster Commerce
@@ -9,11 +9,11 @@
 
 declare(strict_types = 1);
 
-namespace fostercommerce\commerceinsights\services;
+namespace fostercommerce\commercereports\services;
 
-use fostercommerce\commerceinsights\CommerceInsights;
-use fostercommerce\commerceinsights\helpers\Helpers;
-use fostercommerce\commerceinsights\controllers\StatsController;
+use fostercommerce\commercereports\CommerceReports;
+use fostercommerce\commercereports\helpers\Helpers;
+use fostercommerce\commercereports\controllers\StatsController;
 
 use DateTime;
 
@@ -48,7 +48,7 @@ class CustomersService extends Component
      * @return array
      */
     private function fetchCustomers(): array {
-        $orders        = CommerceInsights::$plugin->orders->fetchOrders();
+        $orders        = CommerceReports::$plugin->orders->fetchOrders();
         $currentPeriod = $orders['currentPeriod'];
         $today         = new DateTime(date('Y-m-d'));
         $start         = DateTime::createFromFormat('Y-m-d H:i:s', $today->format('Y-m-d 00:00:00'));
@@ -106,7 +106,7 @@ class CustomersService extends Component
             ];
         }
 
-        $result['stats'] = CommerceInsights::$plugin->stats->getStats($statsData);
+        $result['stats'] = CommerceReports::$plugin->stats->getStats($statsData);
 
         return $result;
     }

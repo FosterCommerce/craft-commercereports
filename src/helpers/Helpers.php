@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Commerce Insights Components Helpers class
+ * Commerce Reports Components Helpers class
  *
  * @link      https://fostercommerce.com
  * @copyright Copyright (c) 2021 Foster Commerce
@@ -9,7 +9,7 @@
 
 declare(strict_types = 1);
 
-namespace fostercommerce\commerceinsights\helpers;
+namespace fostercommerce\commercereports\helpers;
 
 use DateTime;
 use NumberFormatter;

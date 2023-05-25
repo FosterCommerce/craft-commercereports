@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Commerce Insights Product Service
+ * Commerce Reports Product Service
  *
  * @link      https://fostercommerce.com
  * @copyright Copyright (c) 2021 Foster Commerce
@@ -9,11 +9,11 @@
 
 declare(strict_types = 1);
 
-namespace fostercommerce\commerceinsights\services;
+namespace fostercommerce\commercereports\services;
 
-use fostercommerce\commerceinsights\CommerceInsights;
-use fostercommerce\commerceinsights\helpers\Helpers;
-use fostercommerce\commerceinsights\models\OrderModel;
+use fostercommerce\commercereports\CommerceReports;
+use fostercommerce\commercereports\helpers\Helpers;
+use fostercommerce\commercereports\models\OrderModel;
 
 use Craft;
 use craft\base\Component;
@@ -44,7 +44,7 @@ class ProductService extends Component
      * @return array
      */
     public function fetchProduct(): array {
-        $orders    = CommerceInsights::$plugin->orders->fetchOrders(['productId' => $this->id]);
+        $orders    = CommerceReports::$plugin->orders->fetchOrders(['productId' => $this->id]);
         $statsData = [
             'type'  => 'orders',
             'data'  => $orders,
