@@ -78,7 +78,7 @@ const app = new Vue({
     handleDateChange(dates) {
       const start = moment(dates.start).format('YYYY-MM-DD 00:00:00');
       const end = moment(dates.end).format('YYYY-MM-DD 23:59:59');
-      const loaders = document.getElementsByClassName('commerce-insights-ajax-loader');
+      const loaders = document.getElementsByClassName('commerce-reports-ajax-loader');
 
       if (loaders.length) {
         for (let loader of loaders) {

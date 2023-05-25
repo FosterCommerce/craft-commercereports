@@ -266,8 +266,8 @@ export default {
 </script>
 
 <template>
-  <div class="commerce-insights-date-range-picker" v-click-outside="closeAll">
-    <div class="commerce-insights-menu">
+  <div class="commerce-reports-date-range-picker" v-click-outside="closeAll">
+    <div class="commerce-reports-menu">
       <div class="inline-block w-4 h-4">
         <svg
           class="w-full h-auto"
@@ -296,8 +296,8 @@ export default {
       >
         {{ saveLabel }}
       </a>
-      <div v-if="saveDialogOpen" id="save-menu" class="modal commerce-insights-save-modal">
-        <div class="commerce-insights-save-modal-content">
+      <div v-if="saveDialogOpen" id="save-menu" class="modal commerce-reports-save-modal">
+        <div class="commerce-reports-save-modal-content">
           <label for="label" class="text-sm font-bold block mb-2">
             {{ presetFormLabel }}
           </label>
@@ -313,7 +313,7 @@ export default {
           />
         </div>
 
-        <div class="commerce-insights-save-modal-footer">
+        <div class="commerce-reports-save-modal-footer">
           <a
             class="btn"
             v-on:click="saveDialogOpen = false"
@@ -334,12 +334,12 @@ export default {
             <path d="M7.41 7.84L12 12.42l4.59-4.58L18 9.25l-6 6-6-6z"/>
           </svg>
         </div>
-        <div v-if="menuOpen" class="menu commerce-insights-presets" style="display: block;">
+        <div v-if="menuOpen" class="menu commerce-reports-presets" style="display: block;">
           <ul role="listbox" aria-hidden="true">
             <li
               v-for="(settings, key) in defaultPresets"
               :key="key"
-              class="commerce-insights-preset"
+              class="commerce-reports-preset"
             >
               <a @click="selectPreset(key)">{{ settings.label }}</a>
             </li>
@@ -347,7 +347,7 @@ export default {
         </div>
       </div>
     </div>
-    <div class="commerce-insights-dates">
+    <div class="commerce-reports-dates">
       <date-picker
         @change="handleRangeUpdate"
         @show="handleRangeShown"
@@ -362,7 +362,7 @@ export default {
 </template>
 
 <style>
-.commerce-insights-date-range-picker {
+.commerce-reports-date-range-picker {
   padding: 0.5rem 0.5rem 0.5rem 1rem;
   background: #fff;
   position: relative;
@@ -370,32 +370,32 @@ export default {
 }
 
 @media screen and (min-width: 600px) {
-  .commerce-insights-date-range-picker {
+  .commerce-reports-date-range-picker {
     align-items: center;
     display: flex;
     width: 500px;
   }
 }
 
-.commerce-insights-menu {
+.commerce-reports-menu {
   align-items: center;
   width: 100%;
   display: flex;
 }
 
-.commerce-insights-dates {
+.commerce-reports-dates {
   align-items: center;
   display: flex;
   margin-top: 15px;
 }
 
 @media screen and (min-width: 600px) {
-  .commerce-insights-dates {
+  .commerce-reports-dates {
     margin-top: 0;
   }
 }
 
-.commerce-insights-save-modal {
+.commerce-reports-save-modal {
   position: absolute;
   display: block;
   z-index: 30;
@@ -406,11 +406,11 @@ export default {
   min-width: 300px;
 }
 
-.commerce-insights-save-modal-content {
+.commerce-reports-save-modal-content {
   padding: 0.75rem;
 }
 
-.commerce-insights-save-modal-footer {
+.commerce-reports-save-modal-footer {
   padding: 0.5rem;
   display: block;
   text-align: right;
@@ -421,7 +421,7 @@ export default {
   box-shadow: inset 0 2px 1px -2px rgba(0, 0, 0, 0.2);
 }
 
-.commerce-insights-date-range-field {
+.commerce-reports-date-range-field {
   width: 165px;
   border: 0;
   display: inline-block;

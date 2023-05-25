@@ -37,16 +37,16 @@ export default {
 <template>
   <div
     v-cloak
-    class="commerce-insights-pane"
+    class="commerce-reports-pane"
     :class="{ 'flush-top': flushTop, 'vertical-center': centerVertically, 'is-flex': flex }"
   >
-    <div v-if="title" class="commerce-insights-pane-title">
+    <div v-if="title" class="commerce-reports-pane-title">
       <div :class="{ 'flex-grow': trend, 'pb-4': padTitle }">
         <h3 :class="{ 'pr-3': trend }">{{ title }}</h3>
       </div>
       <div v-if="trend" class="relative" style="top: -2px;">
         <div
-          class="commerce-insights-trend"
+          class="commerce-reports-trend"
           :class="{ 'up': percent > 0 || percent === 'INF', 'down': percent < 0, 'unchanged': percent === 0 }"
         >
           {{ trend }}
@@ -58,7 +58,7 @@ export default {
 </template>
 
 <style>
-.commerce-insights-pane {
+.commerce-reports-pane {
   position: relative;
   background: white;
   box-shadow: 0 0 0 1px #e3e5e8;
@@ -69,22 +69,22 @@ export default {
   box-sizing: border-box;
 }
 
-.commerce-insights-pane.is-flex {
+.commerce-reports-pane.is-flex {
   display: flex;
   flex-direction: column;
 }
 
-.commerce-insights-pane.vertical-center {
+.commerce-reports-pane.vertical-center {
   display: flex;
   align-items: center;
 }
 
-.commerce-insights-pane-title {
+.commerce-reports-pane-title {
   display: flex;
 }
 
 /* switch from a box-shadow "border" to a real one and remove it only on top */
-.commerce-insights-pane.flush-top {
+.commerce-reports-pane.flush-top {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   margin-top: 0;

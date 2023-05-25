@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Commerce Insights Product Component
+ * Commerce Reports Product Component
  *
  * @link      https://fostercommerce.com
  * @copyright Copyright (c) 2021 Foster Commerce
@@ -9,9 +9,9 @@
 
 declare(strict_types = 1);
 
-namespace fostercommerce\commerceinsights\components;
+namespace fostercommerce\commercereports\components;
 
-use fostercommerce\commerceinsights\interfaces\ProductInterface;
+use fostercommerce\commercereports\interfaces\ProductInterface;
 
 use Craft;
 use craft\web\Controller;
@@ -24,7 +24,7 @@ abstract class Product extends Controller implements ProductInterface
      * @return string The display name of this class.
      */
     public static function displayName(): string {
-        return Craft::t('commerce-insights', 'Product');
+        return Craft::t('commerce-reports', 'Product');
     }
 
     /**

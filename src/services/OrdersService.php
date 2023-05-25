@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Commerce Insights Orders Service
+ * Commerce Reports Orders Service
  *
  * @link      https://fostercommerce.com
  * @copyright Copyright (c) 2021 Foster Commerce
@@ -9,12 +9,12 @@
 
 declare(strict_types = 1);
 
-namespace fostercommerce\commerceinsights\services;
+namespace fostercommerce\commercereports\services;
 
-use fostercommerce\commerceinsights\CommerceInsights;
-use fostercommerce\commerceinsights\helpers\Helpers;
-use fostercommerce\commerceinsights\models\OrderModel;
-use fostercommerce\commerceinsights\controllers\StatsController;
+use fostercommerce\commercereports\CommerceReports;
+use fostercommerce\commercereports\helpers\Helpers;
+use fostercommerce\commercereports\models\OrderModel;
+use fostercommerce\commercereports\controllers\StatsController;
 
 use Craft;
 use craft\base\Component;
@@ -106,7 +106,7 @@ class OrdersService extends Component
         ];
         $result = [
             'orders' => OrderModel::fromOrders($orders),
-            'stats'  => CommerceInsights::$plugin->stats->getStats($statsData)
+            'stats'  => CommerceReports::$plugin->stats->getStats($statsData)
         ];
 
         return $result;

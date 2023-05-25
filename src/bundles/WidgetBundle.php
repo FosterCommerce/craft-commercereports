@@ -1,6 +1,6 @@
 <?php
 
-namespace fostercommerce\commerceinsights\bundles;
+namespace fostercommerce\commercereports\bundles;
 
 use craft\web\AssetBundle;
 use craft\web\assets\cp\CpAsset;

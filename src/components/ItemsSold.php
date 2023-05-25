@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Commerce Insights Items Sold Component
+ * Commerce Reports Items Sold Component
  *
  * @link      https://fostercommerce.com
  * @copyright Copyright (c) 2021 Foster Commerce
@@ -9,9 +9,9 @@
 
 declare(strict_types = 1);
 
-namespace fostercommerce\commerceinsights\components;
+namespace fostercommerce\commercereports\components;
 
-use fostercommerce\commerceinsights\interfaces\ItemsSoldInterface;
+use fostercommerce\commercereports\interfaces\ItemsSoldInterface;
 
 use Craft;
 use craft\web\Controller;
@@ -24,7 +24,7 @@ abstract class ItemsSold extends Controller implements ItemsSoldInterface
      * @return string The display name of this class.
      */
     public static function displayName(): string {
-        return Craft::t('commerce-insights', 'Items Sold');
+        return Craft::t('commerce-reports', 'Items Sold');
     }
 
     /**

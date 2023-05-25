@@ -654,7 +654,7 @@ export default {
 </script>
 
 <template>
-  <div v-cloak ref="container" class="commerce-insights-chart-container w-full h-full relative">
+  <div v-cloak ref="container" class="commerce-reports-chart-container w-full h-full relative">
     <canvas ref="chart"></canvas>
   </div>
 </template>

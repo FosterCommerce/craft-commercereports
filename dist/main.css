@@ -1,16 +1,19 @@
+/*!********************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./src/resources/css/common.css ***!
+  \********************************************************************************/
 [v-cloak] {
   display: none;
 }
 
-.commerce-insights-wrapper {
+.commerce-reports-wrapper {
   /* min-width: 760px; */
 }
 
-.commerce-insights-trend {
+.commerce-reports-trend {
   position: relative;
 }
 
-.commerce-insights-summary {
+.commerce-reports-summary {
   font-size: 1.25rem;
   margin-bottom: 1.5rem;
   font-weight: 400;
@@ -18,31 +21,31 @@
   padding-top: 0.5rem;
 }
 
-.commerce-insights-up {
+.commerce-reports-up {
   color: #27ae60;
 }
 
-.commerce-insights-down {
+.commerce-reports-down {
   color: #da5a47;
 }
 
-.commerce-insights-unchanged {
+.commerce-reports-unchanged {
   color: #888;
 }
 
-.commerce-insights-trend.up {
+.commerce-reports-trend.up {
   color: #27ae60;
 }
 
-.commerce-insights-trend.down {
+.commerce-reports-trend.down {
   color: #da5a47;
 }
 
-.commerce-insights-trend.unchanged {
+.commerce-reports-trend.unchanged {
   color: #888;
 }
 
-.commerce-insights-trend::before {
+.commerce-reports-trend::before {
   box-sizing: inherit;
   border-style: solid;
   position: relative;
@@ -56,7 +59,7 @@
   top: 3px;
 }
 
-.commerce-insights-trend.up::before {
+.commerce-reports-trend.up::before {
   top: 0;
   border-color: #27ae60;
   border-bottom-width: 10px;
@@ -65,7 +68,7 @@
   border-right-color: transparent;
 }
 
-.commerce-insights-trend.down::before {
+.commerce-reports-trend.down::before {
   border-color: #da5a47;
   border-top-width: 10px;
   border-bottom-color: transparent;
@@ -73,7 +76,7 @@
   border-right-color: transparent;
 }
 
-.commerce-insights-trend.unchanged::before {
+.commerce-reports-trend.unchanged::before {
   top: -2px;
   border-color: #888;
   border-top-width: 2px;
@@ -114,16 +117,16 @@
 }
 
 @media screen and (max-width: 900px) {
-  .commerce-insights-charts {
+  .commerce-reports-charts {
     display: block !important;
   }
 
-  .commerce-insights-charts > div {
+  .commerce-reports-charts > div {
     max-width: calc(100% - 24px) !important;
   }
 
   .mini-sparkline-grid > div,
-  .commerce-insights-charts > div {
+  .commerce-reports-charts > div {
     width: 100%;
   }
 
@@ -393,8 +396,11 @@
 }
 
 
+/*!******************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/resources/components/SummaryDatapoint.vue?vue&type=style&index=0&lang=css& ***!
+  \******************************************************************************************************************************************************************************************************************************************************/
 
-.commerce-insights-summary-datapoint {
+.commerce-reports-summary-datapoint {
   transition: width 0.5s linear;
   display: inline-block;
 }
@@ -405,8 +411,11 @@
   border-radius: 3px;
 }
 
+/*!******************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/resources/components/Pane.vue?vue&type=style&index=0&lang=css& ***!
+  \******************************************************************************************************************************************************************************************************************************************/
 
-.commerce-insights-pane {
+.commerce-reports-pane {
   position: relative;
   background: white;
   box-shadow: 0 0 0 1px #e3e5e8;
@@ -416,20 +425,20 @@
   word-wrap: break-word;
   box-sizing: border-box;
 }
-.commerce-insights-pane.is-flex {
+.commerce-reports-pane.is-flex {
   display: flex;
   flex-direction: column;
 }
-.commerce-insights-pane.vertical-center {
+.commerce-reports-pane.vertical-center {
   display: flex;
   align-items: center;
 }
-.commerce-insights-pane-title {
+.commerce-reports-pane-title {
   display: flex;
 }
 
 /* switch from a box-shadow "border" to a real one and remove it only on top */
-.commerce-insights-pane.flush-top {
+.commerce-reports-pane.flush-top {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   margin-top: 0;
@@ -438,17 +447,20 @@
   border-top: 0;
 }
 
+/*!********************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/resources/components/MiniSparklinePanel.vue?vue&type=style&index=0&lang=css& ***!
+  \********************************************************************************************************************************************************************************************************************************************************/
 
-.commerce-insights-mini-sparkline-pane {
+.commerce-reports-mini-sparkline-pane {
   display: flex;
   width: 100%;
   position: relative;
 }
-.commerce-insights-mini-sparkline-pane-content {
+.commerce-reports-mini-sparkline-pane-content {
   display: flex;
   width: 100%;
 }
-.commerce-insights-mini-sparkline-pane-value {
+.commerce-reports-mini-sparkline-pane-value {
   color: #d3a87a;
   font-weight: 300;
   font-size: 1.5rem;
@@ -456,7 +468,7 @@
   padding: 0;
   width: 100%;
 }
-.commerce-insights-mini-sparkline-pane-caption {
+.commerce-reports-mini-sparkline-pane-caption {
   width: 100%;
   margin: 0;
   padding: 0;
@@ -474,18 +486,27 @@
   margin: -16px;
 }
 
+/*!*******************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/resources/components/CombinedSearchBar.vue?vue&type=style&index=0&lang=css& ***!
+  \*******************************************************************************************************************************************************************************************************************************************************/
 
-.commerce-insights-combined-search-bar {
+.commerce-reports-combined-search-bar {
   background-color: #f1f5f8;
   border-radius: 5px;
   padding: 0.75rem 0.75rem 0.4rem 0.75rem;
 }
 
+/*!*************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/resources/components/OrdersTable.vue?vue&type=style&index=0&lang=css& ***!
+  \*************************************************************************************************************************************************************************************************************************************************/
 
 .vue-admin-tablepane {
   overflow-x: auto;
 }
 
+/*!****************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/resources/components/CustomersTable.vue?vue&type=style&index=0&lang=css& ***!
+  \****************************************************************************************************************************************************************************************************************************************************/
 
 .color-green {
   color: #27AB83;
@@ -494,11 +515,17 @@
   color: #CF1124;
 }
 
+/*!************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/resources/components/Pagination.vue?vue&type=style&index=0&id=abff12c0&scoped=true&lang=css& ***!
+  \************************************************************************************************************************************************************************************************************************************************************************/
 
-.pagination[data-v-698467e8] {
+.pagination[data-v-abff12c0] {
   margin-top: 30px
 }
 
+/*!***************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/resources/components/BarChartPanel.vue?vue&type=style&index=0&lang=css& ***!
+  \***************************************************************************************************************************************************************************************************************************************************/
 
 .bar-chart-wrapper {
   display: flex;
@@ -518,6 +545,9 @@
   display: flex;
 }
 
+/*!*****************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./src/resources/css/daterangepicker.css ***!
+  \*****************************************************************************************/
 /* modified from daterangepicker.css in daterangepicker package */
 .daterangepicker {
   position: absolute;
@@ -955,36 +985,39 @@
   }
 }
 
+/*!*****************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/resources/components/DateRangePicker.vue?vue&type=style&index=0&lang=css& ***!
+  \*****************************************************************************************************************************************************************************************************************************************************/
 
-.commerce-insights-date-range-picker {
+.commerce-reports-date-range-picker {
   padding: 0.5rem 0.5rem 0.5rem 1rem;
   background: #fff;
   position: relative;
   border-radius: 0.125rem;
 }
 @media screen and (min-width: 600px) {
-.commerce-insights-date-range-picker {
+.commerce-reports-date-range-picker {
     align-items: center;
     display: flex;
     width: 500px;
 }
 }
-.commerce-insights-menu {
+.commerce-reports-menu {
   align-items: center;
   width: 100%;
   display: flex;
 }
-.commerce-insights-dates {
+.commerce-reports-dates {
   align-items: center;
   display: flex;
   margin-top: 15px;
 }
 @media screen and (min-width: 600px) {
-.commerce-insights-dates {
+.commerce-reports-dates {
     margin-top: 0;
 }
 }
-.commerce-insights-save-modal {
+.commerce-reports-save-modal {
   position: absolute;
   display: block;
   z-index: 30;
@@ -994,10 +1027,10 @@
   width: auto;
   min-width: 300px;
 }
-.commerce-insights-save-modal-content {
+.commerce-reports-save-modal-content {
   padding: 0.75rem;
 }
-.commerce-insights-save-modal-footer {
+.commerce-reports-save-modal-footer {
   padding: 0.5rem;
   display: block;
   text-align: right;
@@ -1007,7 +1040,7 @@
   -webkit-box-shadow: inset 0 2px 1px -2px rgba(0, 0, 0, 0.2);
   box-shadow: inset 0 2px 1px -2px rgba(0, 0, 0, 0.2);
 }
-.commerce-insights-date-range-field {
+.commerce-reports-date-range-field {
   width: 165px;
   border: 0;
   display: inline-block;
@@ -1033,11 +1066,14 @@
   top: 3rem;
 }
 
+/*!************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/resources/components/DonutPanel.vue?vue&type=style&index=0&lang=css& ***!
+  \************************************************************************************************************************************************************************************************************************************************/
 
-.commerce-insights-donut-pane {
+.commerce-reports-donut-pane {
   width: 100%;
 }
-.commerce-insights-donut-chart-wrapper {
+.commerce-reports-donut-chart-wrapper {
   margin-left: auto;
   margin-right: auto;
   position: relative;
@@ -1049,6 +1085,9 @@
   border-radius: 9999px;
 }
 
+/*!****************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/resources/components/LineChartPanel.vue?vue&type=style&index=0&lang=css& ***!
+  \****************************************************************************************************************************************************************************************************************************************************/
 
 .period-summary {
   display: flex;
@@ -1056,16 +1095,19 @@
   padding-bottom: 0.5rem;
 }
 
+/*!****************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/resources/components/SparklinePanel.vue?vue&type=style&index=0&lang=css& ***!
+  \****************************************************************************************************************************************************************************************************************************************************/
 
-.commerce-insights-sparkline-pane {
+.commerce-reports-sparkline-pane {
   display: flex;
   width: 100%;
 }
-.commerce-insights-sparkline-pane .sparkline-pane-left {
+.commerce-reports-sparkline-pane .sparkline-pane-left {
   display: flex;
   width: 50%;
 }
-.commerce-insights-sparkline-pane .sparkline-pane-right {
+.commerce-reports-sparkline-pane .sparkline-pane-right {
   display: flex;
   height: 100%;
   width: 47%;
@@ -1073,8 +1115,11 @@
   margin-bottom: 0.5rem;
 }
 
+/*!*************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./src/resources/components/TabbedPanes.vue?vue&type=style&index=0&lang=css& ***!
+  \*************************************************************************************************************************************************************************************************************************************************/
 
-.commerce-insights-tab {
+.commerce-reports-tab {
   flex: 1 1 0%;
   cursor: pointer;
   user-select: none;
@@ -1087,17 +1132,17 @@
   border-left-color: transparent;
   border-collapse: collapse;
 }
-.commerce-insights-tab:first-child {
+.commerce-reports-tab:first-child {
   border-top-left-radius: 0.25rem;
   border-left-color: #e3e5e8;
 }
-.commerce-insights-tab:last-child {
+.commerce-reports-tab:last-child {
   border-top-right-radius: 0.25rem;
 }
-.commerce-insights-tab.active {
+.commerce-reports-tab.active {
   border-bottom-color: transparent;
 }
-.commerce-insights-tab-pane {
+.commerce-reports-tab-pane {
 @apply rounded-b;
   border: 1px solid #e3e5e8;
   border-top: 0;

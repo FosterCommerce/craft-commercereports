@@ -50,7 +50,7 @@ export default {
     :positive-trend="positiveTrend"
     :pad-title="false"
   >
-    <div class="commerce-insights-sparkline-pane">
+    <div class="commerce-reports-sparkline-pane">
       <div class="sparkline-pane-left flex-grow flex-col justify-end">
         <h4 class="font-light text-tan text-2xl m-0 p-0">{{ value }}</h4>
         <p class="text-gray-500 text-xs m-0 p-0 w-full">{{ caption }}</p>
@@ -65,17 +65,17 @@ export default {
 </template>
 
 <style>
-.commerce-insights-sparkline-pane {
+.commerce-reports-sparkline-pane {
   display: flex;
   width: 100%;
 }
 
-.commerce-insights-sparkline-pane .sparkline-pane-left {
+.commerce-reports-sparkline-pane .sparkline-pane-left {
   display: flex;
   width: 50%;
 }
 
-.commerce-insights-sparkline-pane .sparkline-pane-right {
+.commerce-reports-sparkline-pane .sparkline-pane-right {
   display: flex;
   height: 100%;
   width: 47%;

@@ -1,16 +1,16 @@
 {% extends "_layouts/cp" %}
 
-{% do view.registerAssetBundle("fostercommerce\\commerceinsights\\bundles\\WidgetBundle") %}
+{% do view.registerAssetBundle("fostercommerce\\commercereports\\bundles\\WidgetBundle") %}
 
-{% set title = "Commerce Insights"|t('commerceinsights') %}
+{% set title = "Commerce Reports"|t('commercereports') %}
 {% set lastSegment = craft.app.request.segments | last %}
 
 {% if lastSegment == 'orders' %}
-  {% set title = "Orders"|t('commerceinsights') %}
+  {% set title = "Orders"|t('commercereports') %}
 {% elseif lastSegment == 'items-sold' %}
-  {% set title = "Items Sold"|t('commerceinsights') %}
+  {% set title = "Items Sold"|t('commercereports') %}
 {% elseif lastSegment == 'customers' %}
-  {% set title = "Customers"|t('commerceinsights') %}
+  {% set title = "Customers"|t('commercereports') %}
 {% endif %}
 
 {% set selectedSubnavItem = navItem %}
@@ -27,11 +27,11 @@
 {% endblock %}
 
 {% block content %}
-  <div class="commerce-insights-wrapper">
+  <div class="commerce-reports-wrapper">
     {% if not id is defined %}
-      {% include "commerceinsights/vue/_" ~ lastSegment %}
+      {% include "commercereports/vue/_" ~ lastSegment %}
     {% else %}
-      {% include "commerceinsights/vue/_product" %}
+      {% include "commercereports/vue/_product" %}
     {% endif %}
   </div>
 {% endblock %}

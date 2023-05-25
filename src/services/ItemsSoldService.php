@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Commerce Insights Items Sold Service
+ * Commerce Reports Items Sold Service
  *
  * @link      https://fostercommerce.com
  * @copyright Copyright (c) 2021 Foster Commerce
@@ -9,10 +9,10 @@
 
 declare(strict_types = 1);
 
-namespace fostercommerce\commerceinsights\services;
+namespace fostercommerce\commercereports\services;
 
-use fostercommerce\commerceinsights\CommerceInsights;
-use fostercommerce\commerceinsights\models\ItemSoldModel;
+use fostercommerce\commercereports\CommerceReports;
+use fostercommerce\commercereports\models\ItemSoldModel;
 
 use Craft;
 use craft\base\Component;
@@ -36,7 +36,7 @@ class ItemsSoldService extends Component
      * @return array
      */
     private function fetchItemsSold(): array {
-        $orders  = CommerceInsights::$plugin->orders->fetchOrders(['withPrevious' => false]);
+        $orders  = CommerceReports::$plugin->orders->fetchOrders(['withPrevious' => false]);
         $results = ItemSoldModel::fromOrders($orders);
 
         usort($results, function($a, $b) {

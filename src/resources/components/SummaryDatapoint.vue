@@ -60,11 +60,11 @@ export default {
     v-if="data"
     :class="{
 			'placeholder-summary-text': data.percentChange === undefined || data.percentChange === NaN,
-			'commerce-insights-up': data.percentChange > 0 || data.percentChange === 'INF',
-			'commerce-insights-down': data.percentChange < 0,
-			'commerce-insights-unchanged': data.percentChange === 0,
+			'commerce-reports-up': data.percentChange > 0 || data.percentChange === 'INF',
+			'commerce-reports-down': data.percentChange < 0,
+			'commerce-reports-unchanged': data.percentChange === 0,
 		}"
-    class="commerce-insights-summary-datapoint"
+    class="commerce-reports-summary-datapoint"
   >
 		{{ getFormattedChangeValue() }}
 	</span>
@@ -72,9 +72,9 @@ export default {
   <span
     v-else-if="format === 'number' && number"
     :class="{
-      'commerce-insights-up': number > 0 || number === 'INF',
-			'commerce-insights-down': number < 0,
-			'commerce-insights-unchanged': number === 0,
+      'commerce-reports-up': number > 0 || number === 'INF',
+			'commerce-reports-down': number < 0,
+			'commerce-reports-unchanged': number === 0,
     }"
   >
     {{ number }}
@@ -83,9 +83,9 @@ export default {
   <span
     v-else
     :class="{
-      'commerce-insights-up': number > 0 || number === 'INF',
-			'commerce-insights-down': number < 0,
-			'commerce-insights-unchanged': number === 0,
+      'commerce-reports-up': number > 0 || number === 'INF',
+			'commerce-reports-down': number < 0,
+			'commerce-reports-unchanged': number === 0,
     }"
   >
     <span v-if="number > 0 || number === 'INF'">up</span>
@@ -96,7 +96,7 @@ export default {
 </template>
 
 <style>
-.commerce-insights-summary-datapoint {
+.commerce-reports-summary-datapoint {
   transition: width 0.5s linear;
   display: inline-block;
 }

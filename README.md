@@ -1,4 +1,4 @@
-# Commerce Insights plugin for Craft CMS 3.x
+# Commerce Reports plugin for Craft CMS 3.x
 
 Better stats for Craft Commerce.
 
@@ -18,9 +18,9 @@ Add a symbolic link to that path in `composer.json`:
 ]
 ```
 
-Require with `fostercommerce/commerce-insights`.
+Require with `fostercommerce/commerce-reports`.
 
-Install via command line with `./craft install/plugin commerceinsights` or from the Craft CMS control panel.
+Install via command line with `./craft install/plugin commercereports` or from the Craft CMS control panel.
 
 ## Twig Templates
 

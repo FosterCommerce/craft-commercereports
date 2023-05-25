@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Commerce Insights Product Controller
+ * Commerce Reports Product Controller
  *
  * @link      https://fostercommerce.com
  * @copyright Copyright (c) 2021 Foster Commerce
@@ -9,10 +9,10 @@
 
 declare(strict_types = 1);
 
-namespace fostercommerce\commerceinsights\controllers;
+namespace fostercommerce\commercereports\controllers;
 
-use fostercommerce\commerceinsights\CommerceInsights;
-use fostercommerce\commerceinsights\components\Product;
+use fostercommerce\commercereports\CommerceReports;
+use fostercommerce\commercereports\components\Product;
 
 use Craft;
 use craft\web\Response;
@@ -30,7 +30,7 @@ class ProductController extends Product
      * @return yii\web\Response
      */
     public function actionIndex(): YiiResponse {
-        return $this->renderTemplate('commerceinsights/vue/index', [
+        return $this->renderTemplate('commercereports/vue/index', [
             'navItem' => 'orders',
             'id'      => Craft::$app->request->getQueryParam('id')
         ]);
@@ -42,6 +42,6 @@ class ProductController extends Product
      * @return craft\web\Response
      */
     public function actionGetProduct(): Response {
-        return $this->asJson(CommerceInsights::$plugin->product->getProduct());
+        return $this->asJson(CommerceReports::$plugin->product->getProduct());
     }
 }

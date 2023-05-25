@@ -49,7 +49,7 @@ export default {
 
 <template>
   <div>
-    <div class="commerce-insights-summary">
+    <div class="commerce-reports-summary">
       <p>
         Revenue is
         <SummaryDatapoint

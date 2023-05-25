@@ -1,10 +1,10 @@
 [v-cloak] { display: none; }
 
-.commerce-insights-wrapper { min-width: 760px; }
+.commerce-reports-wrapper { min-width: 760px; }
 
-.commerce-insights-trend { position: relative; }
+.commerce-reports-trend { position: relative; }
 
-.commerce-insights-summary {
+.commerce-reports-summary {
     font-size: 1.25rem;
     margin-bottom: 1.5rem;
     font-weight: 400;
@@ -12,14 +12,14 @@
     padding-top: 0.5rem;
 }
 
-.commerce-insights-up { color: #27ae60; }
-.commerce-insights-down { color: #da5a47; }
-.commerce-insights-unchanged { color: #888; }
-.commerce-insights-trend.up { color: #27ae60; }
-.commerce-insights-trend.down { color: #da5a47; }
-.commerce-insights-trend.unchanged { color: #888; }
+.commerce-reports-up { color: #27ae60; }
+.commerce-reports-down { color: #da5a47; }
+.commerce-reports-unchanged { color: #888; }
+.commerce-reports-trend.up { color: #27ae60; }
+.commerce-reports-trend.down { color: #da5a47; }
+.commerce-reports-trend.unchanged { color: #888; }
 
-.commerce-insights-trend::before {
+.commerce-reports-trend::before {
     box-sizing: inherit;
     border-style: solid;
     position: relative;
@@ -33,7 +33,7 @@
     top: 3px;
 }
 
-.commerce-insights-trend.up::before {
+.commerce-reports-trend.up::before {
     top: 0;
     border-color: #27ae60;
     border-bottom-width: 10px;
@@ -42,7 +42,7 @@
     border-right-color: transparent;
 }
 
-.commerce-insights-trend.down::before {
+.commerce-reports-trend.down::before {
     border-color: #da5a47;
     border-top-width: 10px;
     border-bottom-color: transparent;

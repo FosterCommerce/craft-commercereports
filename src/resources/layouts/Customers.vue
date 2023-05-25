@@ -28,7 +28,7 @@ export default {
 
 <template>
   <div>
-    <div class="commerce-insights-summary">
+    <div class="commerce-reports-summary">
       <p>
         You've had
         <SummaryDatapoint
@@ -46,7 +46,7 @@ export default {
     </div>
 
     <div class="-mx-3">
-      <div class="w-full commerce-insights-charts" style="display: flex;">
+      <div class="w-full commerce-reports-charts" style="display: flex;">
         <div class="w-1/3 p-3">
           <Pane title="Top Shipping Locations">
             <table class="data fullwidth mini-table short-bottom">

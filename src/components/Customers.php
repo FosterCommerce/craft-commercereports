@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Commerce Insights Customers Component
+ * Commerce Reports Customers Component
  *
  * @link      https://fostercommerce.com
  * @copyright Copyright (c) 2021 Foster Commerce
@@ -9,9 +9,9 @@
 
 declare(strict_types = 1);
 
-namespace fostercommerce\commerceinsights\components;
+namespace fostercommerce\commercereports\components;
 
-use fostercommerce\commerceinsights\interfaces\CustomersInterface;
+use fostercommerce\commercereports\interfaces\CustomersInterface;
 
 use Craft;
 use craft\web\Controller;
@@ -24,7 +24,7 @@ abstract class Customers extends Controller implements CustomersInterface
      * @return string The display name of this class.
      */
     public static function displayName(): string {
-        return Craft::t('commerce-insights', 'Customers');
+        return Craft::t('commerce-reports', 'Customers');
     }
 
     /**

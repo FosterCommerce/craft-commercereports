@@ -75,7 +75,7 @@ export default {
       </thead>
 
       <tbody>
-        <tr class="commerce-insights-ajax-loader centeralign">
+        <tr class="commerce-reports-ajax-loader centeralign">
           <td colspan="9" class="centeralign">
             <div class="spinner loadingmore"></div>
           </td>

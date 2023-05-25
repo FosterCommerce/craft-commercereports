@@ -109,7 +109,7 @@ export default {
       this.sortBy = col;
     },
     showLoader() {
-      const loaders = document.getElementsByClassName('commerce-insights-ajax-loader');
+      const loaders = document.getElementsByClassName('commerce-reports-ajax-loader');
 
       if (loaders.length) {
         for (let loader of loaders) {
@@ -118,7 +118,7 @@ export default {
       }
     },
     hideLoader() {
-      const loaders = document.getElementsByClassName('commerce-insights-ajax-loader');
+      const loaders = document.getElementsByClassName('commerce-reports-ajax-loader');
 
       if (loaders.length) {
         for (let loader of loaders) {
@@ -298,7 +298,7 @@ export default {
 </script>
 
 <template>
-  <div class="commerce-insights-combined-search w-full mt-6">
+  <div class="commerce-reports-combined-search w-full mt-6">
     <div>
       <CombinedSearchBar
         :element-type="elementType"

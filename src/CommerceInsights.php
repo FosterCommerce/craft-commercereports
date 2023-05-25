@@ -1,6 +1,6 @@
 <?php
 /**
- * Commerce Insights plugin for Craft CMS 3.x
+ * Commerce Reports plugin for Craft CMS 3.x
  *
  * @link      https://fostercommerce.com
  * @copyright Copyright (c) 2021 Foster Commerce
@@ -8,13 +8,13 @@
 
 declare(strict_types = 1);
 
-namespace fostercommerce\commerceinsights;
+namespace fostercommerce\commercereports;
 
-use fostercommerce\commerceinsights\services\OrdersService;
-use fostercommerce\commerceinsights\services\ProductService;
-use fostercommerce\commerceinsights\services\StatsService;
-use fostercommerce\commerceinsights\services\ItemsSoldService;
-use fostercommerce\commerceinsights\services\CustomersService;
+use fostercommerce\commercereports\services\OrdersService;
+use fostercommerce\commercereports\services\ProductService;
+use fostercommerce\commercereports\services\StatsService;
+use fostercommerce\commercereports\services\ItemsSoldService;
+use fostercommerce\commercereports\services\CustomersService;
 
 use Craft;
 use craft\base\Plugin;
@@ -25,7 +25,7 @@ use craft\web\UrlManager;
 
 use yii\base\Event;
 
-class CommerceInsights extends Plugin
+class CommerceReports extends Plugin
 {
     public static $plugin;
 
@@ -53,10 +53,10 @@ class CommerceInsights extends Plugin
                 /*
                  * Vue templates
                  */
-                $event->rules['commerceinsights/view/orders']                  = 'commerceinsights/orders/index';
-                $event->rules['commerceinsights/orders/product/<id:([0-9])+>'] = 'commerceinsights/product/index';
-                $event->rules['commerceinsights/view/items-sold']              = 'commerceinsights/items-sold/index';
-                $event->rules['commerceinsights/view/customers']               = 'commerceinsights/customers/index';
+                $event->rules['commercereports/view/orders']                  = 'commercereports/orders/index';
+                $event->rules['commercereports/orders/product/<id:([0-9])+>'] = 'commercereports/product/index';
+                $event->rules['commercereports/view/items-sold']              = 'commercereports/items-sold/index';
+                $event->rules['commercereports/view/customers']               = 'commercereports/customers/index';
             }
         );
 
@@ -65,14 +65,14 @@ class CommerceInsights extends Plugin
                 /*
                  * AJAX routes
                  */
-                $event->rules['get-ci-orders']     = 'commerceinsights/orders/get-orders';
-                $event->rules['get-ci-items-sold'] = 'commerceinsights/items-sold/get-items-sold';
-                $event->rules['get-ci-product']    = 'commerceinsights/product/get-product';
-                $event->rules['get-ci-customers']  = 'commerceinsights/customers/get-customers';
+                $event->rules['get-ci-orders']     = 'commercereports/orders/get-orders';
+                $event->rules['get-ci-items-sold'] = 'commercereports/items-sold/get-items-sold';
+                $event->rules['get-ci-product']    = 'commercereports/product/get-product';
+                $event->rules['get-ci-customers']  = 'commercereports/customers/get-customers';
 
-                if (Craft::$app->plugins->isPluginEnabled('commerce-insights-extensions')) {
-                    $event->rules['get-ci-items-sold'] = 'commerce-insights-extensions/items-sold-extension/get-items-sold';
-                    $event->rules['get-ci-product']    = 'commerce-insights-extensions/product-extension/get-product';
+                if (Craft::$app->plugins->isPluginEnabled('commerce-reports-extensions')) {
+                    $event->rules['get-ci-items-sold'] = 'commerce-reports-extensions/items-sold-extension/get-items-sold';
+                    $event->rules['get-ci-product']    = 'commerce-reports-extensions/product-extension/get-product';
                 }
             }
         );
@@ -80,20 +80,20 @@ class CommerceInsights extends Plugin
 
     public function getCpNavItem() {
         $item               = parent::getCpNavItem();
-        $item['label']      = Craft::t('commerceinsights', 'Commerce Insights');
+        $item['label']      = Craft::t('commercereports', 'Commerce Reports');
         $item['badgeCount'] = 0;
         $item['subnav']     = [
             'orders'    => [
-                'label' => Craft::t('commerceinsights', 'Orders'),
-                'url'   => 'commerceinsights/view/orders'
+                'label' => Craft::t('commercereports', 'Orders'),
+                'url'   => 'commercereports/view/orders'
             ],
             'items-sold' => [
-                'label'  => Craft::t('commerceinsights', 'Items Sold'),
-                'url'    => 'commerceinsights/view/items-sold'
+                'label'  => Craft::t('commercereports', 'Items Sold'),
+                'url'    => 'commercereports/view/items-sold'
             ],
             'customers' => [
-                'label' => Craft::t('commerceinsights', 'Customers'),
-                'url'   => 'commerceinsights/view/customers'
+                'label' => Craft::t('commercereports', 'Customers'),
+                'url'   => 'commercereports/view/customers'
             ]
         ];
 
