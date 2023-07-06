@@ -29,8 +29,8 @@ class CommerceReports extends Plugin
 {
     public static $plugin;
 
-    public $hasCpSection = true;
-    public $schemaVersion = '1.0.1';
+    public bool $hasCpSection = true;
+    public string $schemaVersion = '1.0.1';
 
     public function __construct($id, $parent = null, array $config = []) {
         $config['components'] = [
@@ -78,7 +78,7 @@ class CommerceReports extends Plugin
         );
     }
 
-    public function getCpNavItem() {
+    public function getCpNavItem(): ?array {
         $item               = parent::getCpNavItem();
         $item['label']      = Craft::t('commercereports', 'Commerce Reports');
         $item['badgeCount'] = 0;
