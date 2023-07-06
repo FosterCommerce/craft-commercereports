@@ -34,17 +34,31 @@ class ItemSoldModel extends Model
                 $variant = $item->purchasable;
 
                 if ($variant) {
-                    $product = $variant->product;
-                    $sku     = $item['snapshot']['sku'];
+
+                    $sku = $item['snapshot']['sku'];
+
+                    if (array_key_exists('product', $item['snapshot'])) {
+
+                        $productId = $item['snapshot']['productId'];
+                        $productType = Craft::$app->plugins->getPlugin('commerce')
+                            ->productTypes->getProductTypeById($item['snapshot']['product']['typeId']);
+
+                    } else if (array_key_exists('event', $item['snapshot'])) {
+                        
+                        $productId = $item['snapshot']['eventId'];
+                        $productType = Craft::$app->plugins->getPlugin('events')
+                            ->eventTypes->getEventTypeById($item['snapshot']['event']['typeId']);
+
+                    }
 
                     $results[$sku] = [
                         'id'          => $item['snapshot']['id'],
                         'title'       => $item['snapshot']['title'],
                         'status'      => $item['snapshot']['status'],
                         'sku'         => $item['snapshot']['sku'] ?: 'No known SKU',
-                        'productId'   => $product['id'],
-                        'type'        => $product->type->name, // can't get this from lineitem snapshot
-                        'typeHandle'  => $product->type->handle, // can't get this from lineitem snapshot
+                        'productId'   => $productId,
+                        'type'        => $productType->name,
+                        'typeHandle'  => $productType->handle,
                         'lastOrderId' => $results[$sku]['lastOrderId'] ?? 0,
                         'numOrders'   => $results[$sku]['numOrders'] ?? 0,
                         'totalSold'   => $results[$sku]['totalSold'] ?? 0,
