@@ -35,11 +35,11 @@ class CustomersService extends Component
      *
      * @return void
      */
-    public function __construct($id, $module, $config = []) {
+    public function __construct($config = []) {
         // Filters that may be set
         $this->keyword = Craft::$app->request->getBodyParam('keyword');
 
-        parent::__construct($id, $module, $config);
+        parent::__construct($config);
     }
 
     /**

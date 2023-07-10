@@ -26,8 +26,8 @@ class ItemsSoldService extends Component
      *
      * @return void
      */
-    public function __construct($id, $module, $config = []) {
-        parent::__construct($id, $module, $config);
+    public function __construct($config = []) {
+        parent::__construct($config);
     }
 
     /**

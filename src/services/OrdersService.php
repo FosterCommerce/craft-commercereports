@@ -35,7 +35,7 @@ class OrdersService extends Component
      *
      * @return void
      */
-    public function __construct($id, $module, $config = []) {
+    public function __construct($config = []) {
         $this->dates = Helpers::getDateRangeData();
 
         // Filters that may be set
@@ -43,7 +43,7 @@ class OrdersService extends Component
         $this->orderType   = Craft::$app->request->getBodyParam('orderType');
         $this->paymentType = Craft::$app->request->getBodyParam('paymentType');
 
-        parent::__construct($id, $module, $config);
+        parent::__construct($config);
     }
 
     /**

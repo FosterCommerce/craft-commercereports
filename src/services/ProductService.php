@@ -31,11 +31,11 @@ class ProductService extends Component
      *
      * @return void
      */
-    public function __construct($id, $module, $config = []) {
+    public function __construct($config = []) {
         $this->dates = Helpers::getDateRangeData();
         $this->id    = (int)Craft::$app->request->getQueryParam('id');
 
-        parent::__construct($id, $module, $config);
+        parent::__construct($config);
     }
 
     /**

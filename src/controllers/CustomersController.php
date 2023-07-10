@@ -22,9 +22,9 @@ class CustomersController extends Customers
     /**
      * Renders the customers Twig template
      *
-     * @return yii\web\Response
+     * @return \yii\web\Response
      */
-    public function actionIndex(): YiiResponse {
+    public function actionIndex(): \yii\web\Response {
         return $this->renderTemplate('commercereports/vue/index', [
             'navItem' => 'customers',
         ]);
@@ -33,9 +33,9 @@ class CustomersController extends Customers
     /**
      * Return all customers for a given date range
      *
-     * @return craft\web\Response
+     * @return \yii\web\Response
      */
-    public function actionGetCustomers(): Response {
+    public function actionGetCustomers(): \yii\web\Response {
         return $this->asJson(CommerceReports::$plugin->customers->getCustomers());
     }
 }

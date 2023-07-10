@@ -24,14 +24,14 @@ interface CustomersInterface extends ComponentInterface
     /**
      * Renders the customers Twig template
      *
-     * @return yii\web\Response
+     * @return \yii\web\Response
      */
-    public function actionIndex(): YiiResponse;
+    public function actionIndex(): \yii\web\Response;
 
     /**
      * Return all customers for a given date range
      *
-     * @return craft\web\Response
+     * @return \yii\web\Response
      */
-    public function actionGetCustomers(): Response;
+    public function actionGetCustomers(): \yii\web\Response;
 }
