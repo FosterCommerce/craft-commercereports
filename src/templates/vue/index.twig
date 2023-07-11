@@ -1,6 +1,7 @@
 {% extends "_layouts/cp" %}
 
 {% do view.registerAssetBundle("fostercommerce\\commercereports\\bundles\\WidgetBundle") %}
+{% do view.registerAssetBundle("fostercommerce\\commercereports\\bundles\\PetiteVueAssetBundle") %}
 
 {% set title = "Commerce Reports"|t('commercereports') %}
 {% set lastSegment = craft.app.request.segments | last %}
