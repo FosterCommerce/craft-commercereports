@@ -14,9 +14,6 @@ namespace fostercommerce\commercereports\controllers;
 use fostercommerce\commercereports\CommerceReports;
 use fostercommerce\commercereports\components\Customers;
 
-use craft\web\Response;
-use yii\web\Response as YiiResponse;
-
 class CustomersController extends Customers
 {
     /**

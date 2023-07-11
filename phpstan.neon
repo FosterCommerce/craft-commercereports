@@ -5,3 +5,6 @@ parameters:
     level: 5
     paths:
         - src
+    ignoreErrors:
+        - '#^Access to an undefined property craft\\base\\PluginInterface\:\:\$productTypes\.$#'
+        - '#^Access to an undefined property craft\\base\\PluginInterface\:\:\$eventTypes\.$#'

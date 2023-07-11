@@ -24,10 +24,6 @@ use craft\commerce\elements\Order;
 
 class CustomersService extends Component
 {
-    // filters
-    private $keyword;
-    // misc
-    private $customers = [];
 
     /**
      * Constructor. Sets up all of the properties for this class based on $_GET and
@@ -36,10 +32,9 @@ class CustomersService extends Component
      * @return void
      */
     public function __construct($config = []) {
-        // Filters that may be set
-        $this->keyword = Craft::$app->request->getBodyParam('keyword');
 
         parent::__construct($config);
+        
     }
 
     /**

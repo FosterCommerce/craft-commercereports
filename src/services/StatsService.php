@@ -145,7 +145,7 @@ class StatsService extends Component
                 ],
                 // averageOrderValue, averageOrderQuantity
                 'averageValue' => [
-                    'total' => $numCurrentOrders ? round($currentRevenue / $numCurrentOrders, 2) : ($numCurrentOrders ? 'INF' : 0),
+                    'total' => $numCurrentOrders ? round($currentRevenue / $numCurrentOrders, 2) : 0,
                     'percentChange' => $previousRevenue ? round((($currentRevenue - $previousRevenue) / $previousRevenue) * 100, 2) : ($currentRevenue ? 'INF' : 0),
                     'series' => $aovSet
                 ],

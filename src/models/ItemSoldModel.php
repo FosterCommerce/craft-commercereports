@@ -37,17 +37,17 @@ class ItemSoldModel extends Model
 
                     $sku = $item['snapshot']['sku'];
 
-                    if (array_key_exists('product', $item['snapshot'])) {
-
-                        $productId = $item['snapshot']['productId'];
-                        $productType = Craft::$app->plugins->getPlugin('commerce')
-                            ->productTypes->getProductTypeById($item['snapshot']['product']['typeId']);
-
-                    } else if (array_key_exists('event', $item['snapshot'])) {
+                    if (array_key_exists('event', $item['snapshot'])) {
                         
                         $productId = $item['snapshot']['eventId'];
                         $productType = Craft::$app->plugins->getPlugin('events')
                             ->eventTypes->getEventTypeById($item['snapshot']['event']['typeId']);
+
+                    } else {
+
+                        $productId = $item['snapshot']['productId'];
+                        $productType = Craft::$app->plugins->getPlugin('commerce')
+                            ->productTypes->getProductTypeById($item['snapshot']['product']['typeId']);
 
                     }
 

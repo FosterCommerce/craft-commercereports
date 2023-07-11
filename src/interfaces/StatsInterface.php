@@ -11,19 +11,18 @@ declare(strict_types = 1);
 namespace fostercommerce\commercereports\interfaces;
 
 use craft\base\ComponentInterface;
-use craft\web\Response;
 
 /**
  * @author    Foster Commerce
  * @package   Commerce Reports
  * @since     1.0.0
  */
-interface StatsInterface extends ComponentInterface
+interface StatsInterface
 {
     /**
      * Return stats for a given date range
      *
-     * @return craft\web\Response
+     * @return \yii\web\Response
      */
-    public function getStats(array $orders): Response;
+    public function getStats(array $orders): \yii\web\Response;
 }

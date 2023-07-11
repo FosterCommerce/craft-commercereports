@@ -66,14 +66,14 @@ class Helpers {
     /**
      * Converts a number into a string with the proper currency symbol
      *
-     * @param int    $amount   - The amount to convert
+     * @param float    $amount   - The amount to convert
      * @param string $currency - The currency
      *
      * @return string
      */
     public static function convertCurrency(float $amount, string $currency) : string {
         $amount          = number_format($amount, 2, '.', '') * 100;
-        $money           = new Money($amount, new Currency($currency));
+        $money           = new Money("$amount", new Currency($currency));
         $currencies      = new ISOCurrencies();
         $numberFormatter = new NumberFormatter('en_US', NumberFormatter::CURRENCY);
         $moneyFormatter  = new IntlMoneyFormatter($numberFormatter, $currencies);

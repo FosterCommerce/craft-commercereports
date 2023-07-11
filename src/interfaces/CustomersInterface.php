@@ -11,15 +11,13 @@ declare(strict_types = 1);
 namespace fostercommerce\commercereports\interfaces;
 
 use craft\base\ComponentInterface;
-use craft\web\Response;
-use yii\web\Response as YiiResponse;
 
 /**
  * @author    Foster Commerce
  * @package   Commerce Reports
  * @since     1.0.0
  */
-interface CustomersInterface extends ComponentInterface
+interface CustomersInterface
 {
     /**
      * Renders the customers Twig template

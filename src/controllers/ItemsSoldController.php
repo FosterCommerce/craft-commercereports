@@ -14,17 +14,14 @@ namespace fostercommerce\commercereports\controllers;
 use fostercommerce\commercereports\CommerceReports;
 use fostercommerce\commercereports\components\ItemsSold;
 
-use craft\web\Response;
-use yii\web\Response as YiiResponse;
-
 class ItemsSoldController extends ItemsSold
 {
     /**
      * Renders the items sold Twig template
      *
-     * @return yii\web\Response
+     * @return \yii\web\Response
      */
-    public function actionIndex(): YiiResponse {
+    public function actionIndex(): \yii\web\Response {
         return $this->renderTemplate('commercereports/vue/index', [
             'navItem' => 'items-sold',
         ]);
@@ -33,9 +30,9 @@ class ItemsSoldController extends ItemsSold
     /**
      * Return all items sold for a given date range
      *
-     * @return craft\web\Response
+     * @return \yii\web\Response
      */
-    public function actionGetItemsSold(): Response {
+    public function actionGetItemsSold(): \yii\web\Response {
         return $this->asJson(CommerceReports::$plugin->itemsSold->getItemsSold());
     }
 }

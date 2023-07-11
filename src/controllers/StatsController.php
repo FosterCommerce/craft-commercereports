@@ -14,17 +14,14 @@ namespace fostercommerce\commercereports\controllers;
 use fostercommerce\commercereports\CommerceReports;
 use fostercommerce\commercereports\components\Stats;
 
-use craft\web\Response;
-use yii\web\Response as YiiResponse;
-
 class StatsController extends Stats
 {
     /**
      * Return all stats for a given date range
      *
-     * @return craft\web\Response
+     * @return \yii\web\Response
      */
-    public function getStats(array $orders): Response {
+    public function getStats(array $orders): \yii\web\Response {
         return $this->asJson(CommerceReports::$plugin->stats->getStats($orders));
     }
 }

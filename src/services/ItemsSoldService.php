@@ -19,7 +19,6 @@ use craft\base\Component;
 
 class ItemsSoldService extends Component
 {
-    private $itemsSold = [];
 
     /**
      * Constructor. Fetches the items sold data when the class is instantiated.

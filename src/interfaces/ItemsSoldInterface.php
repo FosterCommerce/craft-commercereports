@@ -11,27 +11,25 @@ declare(strict_types = 1);
 namespace fostercommerce\commercereports\interfaces;
 
 use craft\base\ComponentInterface;
-use craft\web\Response;
-use yii\web\Response as YiiResponse;
 
 /**
  * @author    Foster Commerce
  * @package   Commerce Reports
  * @since     1.0.0
  */
-interface ItemsSoldInterface extends ComponentInterface
+interface ItemsSoldInterface
 {
     /**
      * Renders the items sold Twig template
      *
-     * @return yii\web\Response
+     * @return \yii\web\Response
      */
-    public function actionIndex(): YiiResponse;
+    public function actionIndex(): \yii\web\Response;
 
     /**
      * Return all items sold for a given date range
      *
-     * @return craft\web\Response
+     * @return \yii\web\Response
      */
-    public function actionGetItemsSold(): Response;
+    public function actionGetItemsSold(): \yii\web\Response;
 }
