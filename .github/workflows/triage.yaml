@@ -111,5 +111,6 @@ jobs:
       - name: Validate ECS Linting
         uses: pietrzakadrian/easy-coding-standard-github-action@v2.0.5
         with:
+          config: ecs.php
           args: --ansi --clear-cache
 
