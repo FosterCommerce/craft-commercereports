@@ -15,7 +15,7 @@ namespace fostercommerce\commercereports\interfaces;
  * @package   Commerce Reports
  * @since     1.0.0
  */
-interface CustomersInterface extends ComponentInterface
+interface CustomersInterface
 {
     /**
      * Renders the customers Twig template
