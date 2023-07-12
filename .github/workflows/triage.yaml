@@ -100,7 +100,7 @@ jobs:
       - name: Install Composer Dependencies
 
         run: |
-          composer install --prefer-dist --no-dev --classmap-authoritative
+          composer install --prefer-dist --classmap-authoritative
 
       - name: Validate PHPStan
         uses: php-actions/phpstan@v3
