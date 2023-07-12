@@ -102,15 +102,14 @@ jobs:
         run: |
           composer install --prefer-dist --classmap-authoritative
 
-      - name: Validate PHPStan
-        uses: php-actions/phpstan@v3
-
-        with:
-          memory_limit: 512M
-
       - name: Validate ECS Linting
         uses: pietrzakadrian/easy-coding-standard-github-action@v2.0.5
         with:
           config: ecs.php
           args: --ansi --clear-cache
 
+      - name: Validate PHPStan
+        uses: php-actions/phpstan@v3
+
+        with:
+          memory_limit: 512M
