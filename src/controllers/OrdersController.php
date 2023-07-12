@@ -7,7 +7,7 @@
  * @copyright Copyright (c) 2021 Foster Commerce
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace fostercommerce\commercereports\controllers;
 
@@ -21,7 +21,8 @@ class OrdersController extends Orders
      *
      * @return \yii\web\Response
      */
-    public function actionIndex(): \yii\web\Response {
+    public function actionIndex(): \yii\web\Response
+    {
         return $this->renderTemplate('commercereports/vue/index', [
             'navItem' => 'orders',
         ]);
@@ -32,7 +33,8 @@ class OrdersController extends Orders
      *
      * @return \yii\web\Response
      */
-    public function actionGetOrders(): \yii\web\Response {
+    public function actionGetOrders(): \yii\web\Response
+    {
         return $this->asJson(CommerceReports::$plugin->orders->getOrders());
     }
 }

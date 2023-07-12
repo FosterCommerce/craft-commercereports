@@ -7,17 +7,16 @@
  * @copyright Copyright (c) 2021 Foster Commerce
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace fostercommerce\commercereports\services;
 
-use fostercommerce\commercereports\CommerceReports;
-use fostercommerce\commercereports\helpers\Helpers;
-use fostercommerce\commercereports\models\OrderModel;
-
 use Craft;
 use craft\base\Component;
-use craft\commerce\elements\Order;
+use fostercommerce\commercereports\CommerceReports;
+
+use fostercommerce\commercereports\helpers\Helpers;
+use fostercommerce\commercereports\models\OrderModel;
 
 class ProductService extends Component
 {
@@ -31,9 +30,10 @@ class ProductService extends Component
      *
      * @return void
      */
-    public function __construct($config = []) {
+    public function __construct($config = [])
+    {
         $this->dates = Helpers::getDateRangeData();
-        $this->id    = (int)Craft::$app->request->getQueryParam('id');
+        $this->id = (int)Craft::$app->request->getQueryParam('id');
 
         parent::__construct($config);
     }
@@ -43,13 +43,14 @@ class ProductService extends Component
      *
      * @return array
      */
-    public function fetchProduct(): array {
-        $orders    = CommerceReports::$plugin->orders->fetchOrders(['productId' => $this->id]);
+    public function fetchProduct(): array
+    {
+        $orders = CommerceReports::$plugin->orders->fetchOrders(['productId' => $this->id]);
         $statsData = [
-            'type'  => 'orders',
-            'data'  => $orders,
+            'type' => 'orders',
+            'data' => $orders,
             'start' => $this->dates['previousStart'],
-            'end'   => $this->dates['originalEnd']
+            'end' => $this->dates['originalEnd'],
         ];
         
         return OrderModel::fromOrders($orders);
@@ -60,7 +61,8 @@ class ProductService extends Component
      *
      * @return array
      */
-    public function getProduct(): array {
+    public function getProduct(): array
+    {
         return $this->fetchProduct();
     }
 }

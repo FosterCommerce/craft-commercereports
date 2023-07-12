@@ -7,19 +7,18 @@
  * @copyright Copyright (c) 2021 Foster Commerce
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace fostercommerce\commercereports\services;
-
-use fostercommerce\commercereports\CommerceReports;
-use fostercommerce\commercereports\helpers\Helpers;
-use fostercommerce\commercereports\models\OrderModel;
-use fostercommerce\commercereports\controllers\StatsController;
 
 use Craft;
 use craft\base\Component;
 use craft\commerce\elements\Order;
+
 use craft\commerce\elements\Variant;
+use fostercommerce\commercereports\CommerceReports;
+use fostercommerce\commercereports\helpers\Helpers;
+use fostercommerce\commercereports\models\OrderModel;
 
 class OrdersService extends Component
 {
@@ -35,12 +34,13 @@ class OrdersService extends Component
      *
      * @return void
      */
-    public function __construct($config = []) {
+    public function __construct($config = [])
+    {
         $this->dates = Helpers::getDateRangeData();
 
         // Filters that may be set
-        $this->keyword     = Craft::$app->request->getBodyParam('keyword');
-        $this->orderType   = Craft::$app->request->getBodyParam('orderType');
+        $this->keyword = Craft::$app->request->getBodyParam('keyword');
+        $this->orderType = Craft::$app->request->getBodyParam('orderType');
         $this->paymentType = Craft::$app->request->getBodyParam('paymentType');
 
         parent::__construct($config);
@@ -56,11 +56,12 @@ class OrdersService extends Component
      *
      * @return array
      */
-    public function fetchOrders(array $opts = []): array {
-        $productId    = $opts['productId'] ?? null;
+    public function fetchOrders(array $opts = []): array
+    {
+        $productId = $opts['productId'] ?? null;
         $withPrevious = $opts['withPrevious'] ?? true;
-        $orders       = Order::find()->distinct()->orderBy('dateOrdered desc');
-        $result       = [];
+        $orders = Order::find()->distinct()->orderBy('dateOrdered desc');
+        $result = [];
 
         if ($productId) {
             $product = Variant::find()->id($productId)->one();
@@ -84,7 +85,7 @@ class OrdersService extends Component
         if ($withPrevious) {
             $result = [
                 'previousPeriod' => $orders->dateOrdered(['and', ">= {$this->dates['previousStart']}", "< {$this->dates['originalStart']}"])->all(),
-                'currentPeriod'  => $result
+                'currentPeriod' => $result,
             ];
         }
 
@@ -96,17 +97,18 @@ class OrdersService extends Component
      *
      * @return array
      */
-    public function getOrders(): array {
-        $orders    = $this->fetchOrders();
+    public function getOrders(): array
+    {
+        $orders = $this->fetchOrders();
         $statsData = [
-            'type'  => 'orders',
-            'data'  => $orders,
+            'type' => 'orders',
+            'data' => $orders,
             'start' => $this->dates['originalStart'],
-            'end'   => $this->dates['originalEnd']
+            'end' => $this->dates['originalEnd'],
         ];
         $result = [
             'orders' => OrderModel::fromOrders($orders),
-            'stats'  => CommerceReports::$plugin->stats->getStats($statsData)
+            'stats' => CommerceReports::$plugin->stats->getStats($statsData),
         ];
 
         return $result;

@@ -7,18 +7,19 @@
  * @copyright Copyright (c) 2021 Foster Commerce
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace fostercommerce\commercereports\controllers;
 
-use fostercommerce\commercereports\CommerceReports;
-use fostercommerce\commercereports\components\Product;
-
 use Craft;
+use fostercommerce\commercereports\CommerceReports;
+
+use fostercommerce\commercereports\components\Product;
 
 class ProductController extends Product
 {
-    public function __construct($id, $module, $config = []) {
+    public function __construct($id, $module, $config = [])
+    {
         parent::__construct($id, $module, $config);
     }
 
@@ -27,10 +28,11 @@ class ProductController extends Product
      *
      * @return \yii\web\Response
      */
-    public function actionIndex(): \yii\web\Response {
+    public function actionIndex(): \yii\web\Response
+    {
         return $this->renderTemplate('commercereports/vue/index', [
             'navItem' => 'orders',
-            'id'      => Craft::$app->request->getQueryParam('id')
+            'id' => Craft::$app->request->getQueryParam('id'),
         ]);
     }
 
@@ -39,7 +41,8 @@ class ProductController extends Product
      *
      * @return \yii\web\Response
      */
-    public function actionGetProduct(): \yii\web\Response {
+    public function actionGetProduct(): \yii\web\Response
+    {
         return $this->asJson(CommerceReports::$plugin->product->getProduct());
     }
 }

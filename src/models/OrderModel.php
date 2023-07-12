@@ -7,13 +7,13 @@
  * @copyright Copyright (c) 2021 Foster Commerce
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace fostercommerce\commercereports\models;
 
-use fostercommerce\commercereports\helpers\Helpers;
-
 use craft\base\Model;
+
+use fostercommerce\commercereports\helpers\Helpers;
 
 class OrderModel extends Model
 {
@@ -24,7 +24,8 @@ class OrderModel extends Model
      *
      * @return array
      */
-    public static function fromOrders(array $orders): array {
+    public static function fromOrders(array $orders): array
+    {
         $currentPeriod = $orders['currentPeriod'] ?? $orders;
         $results = [];
 
@@ -47,29 +48,30 @@ class OrderModel extends Model
      *
      * @return array
      */
-    public static function fromOrder(object $order): array {
+    public static function fromOrder(object $order): array
+    {
         $currency = $order->currency;
 
         return [
-            'orderId'       => $order->id,
-            'reference'     => $order->friendlyOrderNumber ?? $order->reference,
-            'date'          => $order->dateOrdered->format('m/d/Y g:ia'),
-            'fullDate'      => $order->dateOrdered->format('l, F j, Y, g:ia'),
-            'timeStamp'     => $order->dateOrdered->getTimestamp(),
-            'status'        => $order->orderStatus->name,
-            'color'         => $order->orderStatus->color,
-            'base'          => Helpers::convertCurrency(($order->total - $order->adjustmentSubtotal), $currency),
-            'merchTotal'    => Helpers::convertCurrency(($order->total - $order->totalTax - $order->totalShippingCost - $order->totalDiscount), $currency),
-            'tax'           => Helpers::convertCurrency($order->totalTax, $currency),
-            'shipping'      => Helpers::convertCurrency($order->totalShippingCost, $currency),
-            'discount'      => Helpers::convertCurrency($order->totalDiscount, $currency),
-            'amountPaid'    => Helpers::convertCurrency($order->totalPaid, $currency),
+            'orderId' => $order->id,
+            'reference' => $order->friendlyOrderNumber ?? $order->reference,
+            'date' => $order->dateOrdered->format('m/d/Y g:ia'),
+            'fullDate' => $order->dateOrdered->format('l, F j, Y, g:ia'),
+            'timeStamp' => $order->dateOrdered->getTimestamp(),
+            'status' => $order->orderStatus->name,
+            'color' => $order->orderStatus->color,
+            'base' => Helpers::convertCurrency(($order->total - $order->adjustmentSubtotal), $currency),
+            'merchTotal' => Helpers::convertCurrency(($order->total - $order->totalTax - $order->totalShippingCost - $order->totalDiscount), $currency),
+            'tax' => Helpers::convertCurrency($order->totalTax, $currency),
+            'shipping' => Helpers::convertCurrency($order->totalShippingCost, $currency),
+            'discount' => Helpers::convertCurrency($order->totalDiscount, $currency),
+            'amountPaid' => Helpers::convertCurrency($order->totalPaid, $currency),
             'paymentStatus' => ucwords($order->paidStatus),
-            'paidColor'     => $order->paidStatus === 'paid' ? 'green' : 'red',
-            'email'         => $order->customer->email,
-            'billingName'   => ($order->billingAddress->firstName ?? ' ') . ' ' . ($order->billingAddress->lastName ?? ' '),
-            'shippingName'  => ($order->shippingAddress->firstName ?? ' ') . ' ' . ($order->shippingAddress->lastName ?? ' '),
-            'numItems'      => 0
+            'paidColor' => $order->paidStatus === 'paid' ? 'green' : 'red',
+            'email' => $order->customer->email,
+            'billingName' => ($order->billingAddress->firstName ?? ' ') . ' ' . ($order->billingAddress->lastName ?? ' '),
+            'shippingName' => ($order->shippingAddress->firstName ?? ' ') . ' ' . ($order->shippingAddress->lastName ?? ' '),
+            'numItems' => 0,
         ];
     }
 }

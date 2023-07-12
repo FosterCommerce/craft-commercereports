@@ -7,36 +7,38 @@
  * @copyright Copyright (c) 2021 Foster Commerce
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace fostercommerce\commercereports\helpers;
 
-use DateTime;
-use NumberFormatter;
-use Money\Money;
-use Money\Currency;
-use Money\Currencies\ISOCurrencies;
-use Money\Formatter\IntlMoneyFormatter;
-
 use Craft;
+use DateTime;
+use Money\Currencies\ISOCurrencies;
+use Money\Currency;
+use Money\Formatter\IntlMoneyFormatter;
+use Money\Money;
 
-class Helpers {
-    public static function getDateRangeData(): array {
+use NumberFormatter;
+
+class Helpers
+{
+    public static function getDateRangeData(): array
+    {
         $result = [];
 
         // Query params if they exist in the URL
         $startQuery = Craft::$app->request->getQueryParam('startDate') ?? null;
-        $endQuery   = Craft::$app->request->getQueryParam('endDate') ?? null;
+        $endQuery = Craft::$app->request->getQueryParam('endDate') ?? null;
 
         // URL decode the query params if they are present
         // TODO: This might override the selected range? Or vice versa. Not implemented yet.
         $result['startQuery'] = $startQuery ? urldecode($startQuery) : null;
-        $result['endQuery']   = $endQuery ? urldecode($endQuery) : null;
+        $result['endQuery'] = $endQuery ? urldecode($endQuery) : null;
 
         // All the formatted dates for the selected range (currently selected period)
         // If none is selected, we default to a week
-        $result['today']      = new DateTime(date('Y-m-d 23:59:59'));
-        $result['weekAgo']    = $result['today']->modify('-7 day')->format('Y-m-d 00:00:00');
+        $result['today'] = new DateTime(date('Y-m-d 23:59:59'));
+        $result['weekAgo'] = $result['today']->modify('-7 day')->format('Y-m-d 00:00:00');
         $result['rangeStart'] = Craft::$app->request->getBodyParam('range_start') ?? null;
 
         // Either the selected end date, or today
@@ -52,7 +54,7 @@ class Helpers {
 
         // Set up the new dates based on the full range and the previous period of the same number of days
         $start = DateTime::createFromFormat('Y-m-d H:i:s', $result['originalStart']);
-        $end   = DateTime::createFromFormat('Y-m-d H:i:s', $result['originalEnd']);
+        $end = DateTime::createFromFormat('Y-m-d H:i:s', $result['originalEnd']);
 
         // Number of days in the range
         $numDays = $end->diff($start)->format("%r%a");
@@ -71,12 +73,13 @@ class Helpers {
      *
      * @return string
      */
-    public static function convertCurrency(float $amount, string $currency) : string {
-        $amount          = number_format($amount, 2, '.', '') * 100;
-        $money           = new Money("$amount", new Currency($currency));
-        $currencies      = new ISOCurrencies();
+    public static function convertCurrency(float $amount, string $currency): string
+    {
+        $amount = number_format($amount, 2, '.', '') * 100;
+        $money = new Money("$amount", new Currency($currency));
+        $currencies = new ISOCurrencies();
         $numberFormatter = new NumberFormatter('en_US', NumberFormatter::CURRENCY);
-        $moneyFormatter  = new IntlMoneyFormatter($numberFormatter, $currencies);
+        $moneyFormatter = new IntlMoneyFormatter($numberFormatter, $currencies);
 
         return $moneyFormatter->format($money);
     }
@@ -88,7 +91,8 @@ class Helpers {
      *
      * @return string
      */
-    public static function zipToUsState($zipcode) {
+    public static function zipToUsState($zipcode)
+    {
         /* 000 to 999 */
         $zipByState = [
             '--', '--', '--', '--', '--', 'NY', 'PR', 'PR', 'VI', 'PR', 'MA', 'MA', 'MA',
@@ -167,7 +171,7 @@ class Helpers {
             'CA', 'CA', 'CA', 'CA', 'CA', 'CA', 'CA', 'CA', 'CA', 'CA', 'CA', 'CA', 'CA',
             'AP', 'AP', 'AP', 'AP', 'AP', 'HI', 'HI', 'GU', 'OR', 'OR', 'OR', 'OR', 'OR',
             'OR', 'OR', 'OR', 'OR', 'OR', 'WA', 'WA', 'WA', 'WA', 'WA', 'WA', 'WA', '--',
-            'WA', 'WA', 'WA', 'WA', 'WA', 'WA', 'WA', 'AK', 'AK', 'AK', 'AK', 'AK'
+            'WA', 'WA', 'WA', 'WA', 'WA', 'WA', 'WA', 'AK', 'AK', 'AK', 'AK', 'AK',
         ];
 
         $prefix = substr($zipcode, 0, 3);

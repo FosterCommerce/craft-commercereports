@@ -7,7 +7,7 @@
  * @copyright Copyright (c) 2021 Foster Commerce
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace fostercommerce\commercereports\controllers;
 
@@ -21,7 +21,8 @@ class StatsController extends Stats
      *
      * @return \yii\web\Response
      */
-    public function getStats(array $orders): \yii\web\Response {
+    public function getStats(array $orders): \yii\web\Response
+    {
         return $this->asJson(CommerceReports::$plugin->stats->getStats($orders));
     }
 }

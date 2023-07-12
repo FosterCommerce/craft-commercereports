@@ -6,11 +6,9 @@
  * @copyright Copyright (c) 2021 Foster Commerce
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace fostercommerce\commercereports\interfaces;
-
-use craft\base\ComponentInterface;
 
 /**
  * @author    Foster Commerce
