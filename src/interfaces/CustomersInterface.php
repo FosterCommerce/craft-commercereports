@@ -22,7 +22,7 @@ interface CustomersInterface
      *
      * @return \yii\web\Response
      */
-    public function     actionIndex(): \yii\web\Response;
+    public function actionIndex(): \yii\web\Response;
 
     /**
      * Return all customers for a given date range
