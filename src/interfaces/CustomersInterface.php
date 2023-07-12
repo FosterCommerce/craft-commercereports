@@ -15,14 +15,14 @@ namespace fostercommerce\commercereports\interfaces;
  * @package   Commerce Reports
  * @since     1.0.0
  */
-interface CustomersInterface
+interface CustomersInterface extends ComponentInterface
 {
     /**
      * Renders the customers Twig template
      *
      * @return \yii\web\Response
      */
-    public function actionIndex(): \yii\web\Response;
+    public function     actionIndex(): \yii\web\Response;
 
     /**
      * Return all customers for a given date range
