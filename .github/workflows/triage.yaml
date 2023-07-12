@@ -61,10 +61,8 @@ jobs:
         run: |
           if [[ $GITHUB_REF == 'refs/heads/main' ]]; then
             echo "ENVIRONMENT=production" >> $GITHUB_ENV
-            echo "EOF" >> $GITHUB_ENV
           else
             echo "ENVIRONMENT=staging" >> $GITHUB_ENV
-            echo "EOF" >> $GITHUB_ENV
           fi
 
       - name: Checkout
