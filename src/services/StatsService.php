@@ -307,10 +307,11 @@ class StatsService extends Component
         $topLocations = [];
 
         foreach ($orders as $order) {
-
             $address = $order->shippingAddress;
 
-            if (!$address) continue;
+            if (!$address) {
+                continue;
+            }
 
             $city = $address->locality ?? '';
             $cityLower = preg_replace('/\s/', '', strtolower($address->locality ?? ''));
@@ -324,7 +325,6 @@ class StatsService extends Component
                 'state' => $state,
                 'total' => $orderCount + 1,
             ];
-            
         }
 
         usort($topCities, function($a, $b) {
