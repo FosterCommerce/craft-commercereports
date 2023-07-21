@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 namespace fostercommerce\commercereports\services;
 
+use Craft;
+
 use craft\base\Component;
 
 use craft\commerce\elements\Order;
@@ -305,11 +307,15 @@ class StatsService extends Component
         $topLocations = [];
 
         foreach ($orders as $order) {
+
             $address = $order->shippingAddress;
-            $city = $address->city ?? '';
-            $cityLower = preg_replace('/\s/', '', strtolower($address->city ?? ''));
-            $state = $address->state->abbreviation ?? Helpers::zipToUsState($address->zipCode ?? '');
-            $country = $address->countryIso ?? '';
+
+            if (!$address) continue;
+
+            $city = $address->locality ?? '';
+            $cityLower = preg_replace('/\s/', '', strtolower($address->locality ?? ''));
+            $state = $address->administrativeArea->abbreviation ?? Helpers::zipToUsState($address->postalCode ?? '');
+            $country = $address->countryCode ?? '';
             $orderCount = $topCities[$country . $cityLower . $state]['total'] ?? 0;
 
             $topCities[$country . $cityLower . $state] = [
@@ -318,6 +324,7 @@ class StatsService extends Component
                 'state' => $state,
                 'total' => $orderCount + 1,
             ];
+            
         }
 
         usort($topCities, function($a, $b) {
@@ -333,6 +340,9 @@ class StatsService extends Component
                 'total' => $city['total'],
             ];
         }
+
+        Craft::warning("TOP LOCATIONS PARSED: ");
+        Craft::warning($topLocations);
 
         return $topLocations;
     }
