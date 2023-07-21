@@ -82,12 +82,11 @@ export default {
         </tr>
         <tr v-for="element in elements" :key="element.email">
           <td>
-            <a :href="'/admin/users/' + element.customer.id + '#commerce'">
+            <span v-if="element.customer">
+              <a :href="'/admin/users/' + element.customer.id + '#commerce'">
               {{ element.email }}
-            </a>
-            (<span v-if="element.customer">
-              <a :href="'/admin/users/' + element.customer.id">User Account</a>
-            </span><span v-else>Guest</span>)
+              </a>
+            </span><span v-else>Guest</span>
           </td>
           <td>{{ element.ordersCount }}</td>
           <td>{{ element.amountPaid }}</td>
