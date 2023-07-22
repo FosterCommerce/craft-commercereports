@@ -137,6 +137,27 @@ class StatsService extends Component
             $aoqSet[] = $val;
         }
 
+        // return [
+        //     'orders' => [
+        //         'totalOrders' => [
+        //             'total' => $numCurrentOrders,
+        //             'percentChange' => 1,
+        //             'revenue' => 0,
+        //             'series' => $totalOrdersSet
+        //         ],
+        //         'averageValue' => [
+        //             'total' => $numCurrentOrders,
+        //             'percentChange' => 0,
+        //             'series' => $aovSet
+        //         ],
+        //         'averageQuantity' => [
+        //             'total' => 0,
+        //             'percentChange' => 0,
+        //             'series' => $aoqSet
+        //         ]
+        //     ]
+        // ];
+
         return [
             'orders' => [
                 'totalOrders' => [
@@ -340,9 +361,6 @@ class StatsService extends Component
                 'total' => $city['total'],
             ];
         }
-
-        Craft::warning("TOP LOCATIONS PARSED: ");
-        Craft::warning($topLocations);
 
         return $topLocations;
     }

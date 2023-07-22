@@ -40,7 +40,9 @@ class CustomersService extends Component
      */
     private function fetchCustomers(): array
     {
-        $orders = CommerceReports::$plugin->orders->fetchOrders();
+
+        $orders = CommerceReports::$plugin->orders->fetchOrders(['withAddresses' => true]);
+
         $currentPeriod = $orders['currentPeriod'];
         $today = new DateTime(date('Y-m-d'));
         $start = DateTime::createFromFormat('Y-m-d H:i:s', $today->format('Y-m-d 00:00:00'));

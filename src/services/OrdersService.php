@@ -58,8 +58,11 @@ class OrdersService extends Component
      */
     public function fetchOrders(array $opts = []): array
     {
+
         $productId = $opts['productId'] ?? null;
         $withPrevious = $opts['withPrevious'] ?? true;
+        $withAddresses = $opts['withAddresses'] ?? false;
+        
         $orders = Order::find()->distinct()->orderBy('dateOrdered desc');
         $result = [];
 
@@ -80,7 +83,20 @@ class OrdersService extends Component
             $orders->where(['paidStatus' => strtolower($this->paymentType)]);
         }
 
-        $result = $orders->dateOrdered(['and', ">= {$this->dates['originalStart']}", "< {$this->dates['originalEnd']}"])->all();
+        $orders->dateOrdered(['and', ">= {$this->dates['originalStart']}", "< {$this->dates['originalEnd']}"]);
+
+        $orders->select([
+            'id', 
+            'dateOrdered',
+            'orderStatusId',
+            'email',
+            'number',
+            'reference',
+        ]);
+
+        if ($withAddresses) $orders->addSelect(['billingAddressId', 'shippingAddressId']);
+
+        $result = $orders->all();
 
         if ($withPrevious) {
             $result = [
