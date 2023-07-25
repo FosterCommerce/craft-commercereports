@@ -108,7 +108,9 @@ class OrderModel extends Model
             $order['billingAddress'] = json_decode($order['billingAddress'] ?? '', true);
             $order['customer'] = json_decode($order['customer'] ?? '', true);
             $order['dateOrdered'] = new \DateTime($order['dateOrdered']);
-            $order['adjustmentSubtotal'] = self::calculateAdjustmentSubtotal($order);    
+            $order['adjustmentSubtotal'] = self::calculateAdjustmentSubtotal($order);
+
+            foreach ($order['lineItems'] as $i => $lineItem) $order['lineItems'][$i]['snapshot'] = json_decode($lineItem['snapshot'], true);
 
             $parsed[] = $order;
 

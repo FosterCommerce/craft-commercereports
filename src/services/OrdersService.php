@@ -40,11 +40,6 @@ class OrdersService extends Component
     {
         $this->dates = Helpers::getDateRangeData();
 
-        // Filters that may be set
-        $this->keyword = Craft::$app->request->getBodyParam('keyword');
-        $this->orderType = Craft::$app->request->getBodyParam('orderType');
-        $this->paymentType = Craft::$app->request->getBodyParam('paymentType');
-
         parent::__construct($config);
     }
 
@@ -68,27 +63,7 @@ class OrdersService extends Component
         $today = \DateTime::createFromFormat('Y-m-d H:i:s', (new \DateTime(date('Y-m-d')))->format('Y-m-d 00:00:00'));
         $sixtyDays = $today->modify('-60 day')->format('Y-m-d 00:00:00');
         
-        // $orders = Order::find()->distinct()->orderBy('dateOrdered desc');
         $result = [];
-
-        // if ($productId) {
-        //     $product = Variant::find()->id($productId)->one();
-        //     $orders->hasPurchasables([$product]);
-        // }
-
-        // if ($this->keyword) {
-        //     $orders->search($this->keyword);
-        // }
-
-        // if ($this->orderType) {
-        //     $orders->orderStatus(strtolower($this->orderType));
-        // }
-
-        // if ($this->paymentType) {
-        //     $orders->where(['paidStatus' => strtolower($this->paymentType)]);
-        // }
-
-        // $orders->dateOrdered(['and', ">= {$this->dates['originalStart']}", "< {$this->dates['originalEnd']}"]);
 
         $baseOrdersQuery = (new Query())
             ->from('{{%elements}} elements')
@@ -150,6 +125,14 @@ class OrdersService extends Component
             ])
             ->where("[[commerce_orderadjustments.orderId]] = [[commerce_orders.id]]");
 
+        $purchasableQuery = (new Query())
+            ->from('{{%commerce_purchasables}} commerce_purchasables')
+            ->select(["JSON_OBJECT(
+                'id', [[commerce_purchasables.id]],
+                'sku', [[commerce_purchasables.sku]]
+            )"])
+            ->where("[[commerce_purchasables.id]] = [[commerce_lineitems.purchasableId]]");
+            
         $lineItemsQuery = (new Query())
             ->from('{{%commerce_lineitems}} commerce_lineitems')
             ->select([
@@ -159,7 +142,10 @@ class OrdersService extends Component
                         'orderId', [[commerce_lineitems.orderId]],
                         'purchasableId', [[commerce_lineitems.purchasableId]],
                         'price', [[commerce_lineitems.price]],
-                        'qty', [[commerce_lineitems.qty]]
+                        'salePrice', [[commerce_lineitems.salePrice]],
+                        'qty', [[commerce_lineitems.qty]],
+                        'purchasable', ($purchasableQuery->rawSql),
+                        'snapshot', [[commerce_lineitems.snapshot]]
                     )
                 ), ']')
                 "
@@ -239,8 +225,10 @@ class OrdersService extends Component
             ->select("COUNT(*)")
             ->where("[[commerce_orders.customerId]] = [[users.id]]")
             ->andWhere([
-                '>', "[[commerce_orders.dateOrdered]]", $this->dates['originalStart']
+                '<', "[[commerce_orders.dateOrdered]]", $this->dates['originalStart']
             ]);
+
+            // `commerce_orders`.`dateOrdered` < '2023-06-25 05:00:00'
 
         $customerQuery = (new Query())
             ->from('{{%users}} users')
@@ -248,6 +236,7 @@ class OrdersService extends Component
                 "
                 JSON_OBJECT(
                     'email', [[users.email]],
+                    'id', [[users.id]],
                     'orderCount', ($scopedCustomerOrdersQuery->rawSql),
                     'activeOrderCount', ($activeCustomerOrdersQuery->rawSql)
                 )

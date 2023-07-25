@@ -23,26 +23,33 @@ class ItemSoldModel extends Model
      *
      * @return array
      */
-    public static function fromOrders(array $orders): array
+    public static function fromArrayedOrders(array $orders): array
     {
         $currency = 'USD';
         $results = [];
 
         foreach ($orders as $order) {
-            foreach ($order->lineItems as $item) {
-                $variant = $item->purchasable;
+
+            foreach ($order['lineItems'] as $item) {
+
+                $variant = $item['purchasable'];
 
                 if ($variant) {
+
                     $sku = $item['snapshot']['sku'];
 
                     if (array_key_exists('event', $item['snapshot'])) {
+
                         $productId = $item['snapshot']['eventId'];
                         $productType = Craft::$app->plugins->getPlugin('events')
-                            ->eventTypes->getEventTypeById($item['snapshot']['event']['typeId']);
+                            ->eventTypes->getEventTypeById((int)$item['snapshot']['event']['typeId']);
+
                     } else {
+
                         $productId = $item['snapshot']['productId'];
                         $productType = Craft::$app->plugins->getPlugin('commerce')
-                            ->productTypes->getProductTypeById($item['snapshot']['product']['typeId']);
+                            ->productTypes->getProductTypeById((int)$item['snapshot']['product']['typeId']);
+
                     }
 
                     $results[$sku] = [
@@ -59,14 +66,18 @@ class ItemSoldModel extends Model
                         'sales' => $results[$sku]['sales'] ?? 0,
                     ];
 
-                    if ($results[$sku]['lastOrderId'] !== $order->id) {
+                    if ($results[$sku]['lastOrderId'] !== $order['id']) {
+
                         $results[$sku]['numOrders'] += 1;
+
                     }
 
-                    $results[$sku]['lastOrderId'] = $order->id;
-                    $results[$sku]['totalSold'] += $item->qty;
-                    $results[$sku]['sales'] += $item->salePrice * $item->qty;
+                    $results[$sku]['lastOrderId'] = $order['id'];
+                    $results[$sku]['totalSold'] += $item['qty'];
+                    $results[$sku]['sales'] += $item['salePrice'] * $item['qty'];
+
                 }
+
             }
         }
 

@@ -36,7 +36,7 @@ class ItemsSoldService extends Component
     private function fetchItemsSold(): array
     {
         $orders = CommerceReports::$plugin->orders->fetchOrders(['withPrevious' => false]);
-        $results = ItemSoldModel::fromOrders($orders);
+        $results = ItemSoldModel::fromArrayedOrders($orders);
 
         usort($results, function($a, $b) {
             return $b['totalSold'] <=> $a['totalSold'];
