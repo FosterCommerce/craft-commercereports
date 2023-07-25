@@ -101,9 +101,9 @@ class OrderModel extends Model
         $parsed = [];
         foreach ($orders as $order) {
 
-            $order['lineItems'] = json_decode($order['lineItems'], true);
-            $order['adjustments'] = json_decode($order['adjustments'], true);
-            $order['orderStatus'] = json_decode($order['orderStatus'], true);
+            $order['lineItems'] = json_decode($order['lineItems'] ?? '', true) ?? [];
+            $order['adjustments'] = json_decode($order['adjustments'] ?? '', true) ?? [];
+            $order['orderStatus'] = json_decode($order['orderStatus'] ?? '', true);
             $order['shippingAddress'] = json_decode($order['shippingAddress'] ?? '', true);
             $order['billingAddress'] = json_decode($order['billingAddress'] ?? '', true);
             $order['customer'] = json_decode($order['customer'] ?? '', true);
