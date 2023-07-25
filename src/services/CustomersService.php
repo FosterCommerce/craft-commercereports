@@ -16,6 +16,7 @@ use craft\commerce\elements\Order;
 
 use craft\elements\User;
 
+use Craft;
 use DateTime;
 use fostercommerce\commercereports\CommerceReports;
 use fostercommerce\commercereports\helpers\Helpers;
@@ -44,9 +45,7 @@ class CustomersService extends Component
         $orders = CommerceReports::$plugin->orders->fetchOrders(['withAddresses' => true]);
 
         $currentPeriod = $orders['currentPeriod'];
-        $today = new DateTime(date('Y-m-d'));
-        $start = DateTime::createFromFormat('Y-m-d H:i:s', $today->format('Y-m-d 00:00:00'));
-        $sixtyDays = $start->modify('-60 day')->format('Y-m-d 00:00:00');
+
         $processed = [];
         $result = [ 'customers' => [], 'stats' => [] ];
         $statsData = [
@@ -55,36 +54,41 @@ class CustomersService extends Component
         ];
 
         foreach ($currentPeriod as $order) {
-            $line_items = $order->lineItems;
-            $email = strtolower($order->email);
+
+            $lineItems = $order['lineItems'];
+            $email = strtolower($order['customer']['email']);
 
             if (!array_key_exists($email, $processed)) {
-                $customerIsActive = (int)Order::find()->email($email)->dateOrdered('>= ' . $sixtyDays)->count();
 
                 $processed[$email] = [
-                    'customerId' => $order->customerId,
+                    'customerId' => $order['customerId'],
                     'ordersCount' => 1,
                     'aov' => 0,
-                    'amountPaid' => $order->totalPaid,
+                    'amountPaid' => (float)$order['totalPaid'],
                     'email' => $email,
-                    'customer' => User::find()->email($email)->one(),
-                    'billingName' => ($order->billingAddress->firstName ?? ' ') . ' ' . ($order->billingAddress->lastName ?? ' '),
-                    'shippingName' => ($order->shippingAddress->firstName ?? ' ') . ' ' . ($order->shippingAddress->lastName ?? ' '),
-                    'currency' => $order->currency,
-                    'lastPurchase' => $order->dateOrdered->format('Y-m-d'),
-                    'active' => $customerIsActive,
+                    'customer' => $order['customer'],
+                    'billingName' => ($order['billingAddress']['firstName'] ?? ' ') . ' ' . ($order['billingAddress']['lastName'] ?? ' '),
+                    'shippingName' => ($order['shippingAddress']['firstName'] ?? ' ') . ' ' . ($order['shippingAddress']['lastName'] ?? ' '),
+                    'currency' => $order['currency'],
+                    'lastPurchase' => $order['dateOrdered']->format('Y-m-d'),
+                    'active' => $order['customer']['activeOrderCount'],
                 ];
-            } else {
-                $processed[$email]['ordersCount'] += 1;
-                $processed[$email]['amountPaid'] += $order->totalPaid;
 
-                if ($order->datePaid < $processed[$email]['lastPurchase']) {
-                    $processed[$email]['lastPurchase'] = $order->dateOrdered->format('Y-m-d');
+            } else {
+
+                $processed[$email]['ordersCount'] += 1;
+                $processed[$email]['amountPaid'] += (float)$order['totalPaid'];
+
+                if ($order['datePaid'] < $processed[$email]['lastPurchase']) {
+                    $processed[$email]['lastPurchase'] = $order['dateOrdered']->format('Y-m-d');
                 }
+
             }
+
         }
 
         foreach ($processed as $email => $data) {
+
             $result['customers'][] = [
                 'customerId' => $processed[$email]['customerId'],
                 'ordersCount' => $processed[$email]['ordersCount'],
@@ -98,11 +102,13 @@ class CustomersService extends Component
                 'shippingName' => $processed[$email]['shippingName'],
                 'status' => $processed[$email]['active'] ? 'Active' : 'Inactive',
             ];
+
         }
 
         $result['stats'] = CommerceReports::$plugin->stats->getStats($statsData);
 
         return $result;
+
     }
 
     /**

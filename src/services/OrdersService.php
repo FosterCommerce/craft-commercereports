@@ -20,6 +20,8 @@ use fostercommerce\commercereports\CommerceReports;
 use fostercommerce\commercereports\helpers\Helpers;
 use fostercommerce\commercereports\models\OrderModel;
 
+use craft\db\Query;
+
 class OrdersService extends Component
 {
     protected $dates;
@@ -62,50 +64,250 @@ class OrdersService extends Component
         $productId = $opts['productId'] ?? null;
         $withPrevious = $opts['withPrevious'] ?? true;
         $withAddresses = $opts['withAddresses'] ?? false;
+
+        $today = \DateTime::createFromFormat('Y-m-d H:i:s', (new \DateTime(date('Y-m-d')))->format('Y-m-d 00:00:00'));
+        $sixtyDays = $today->modify('-60 day')->format('Y-m-d 00:00:00');
         
-        $orders = Order::find()->distinct()->orderBy('dateOrdered desc');
+        // $orders = Order::find()->distinct()->orderBy('dateOrdered desc');
         $result = [];
 
-        if ($productId) {
-            $product = Variant::find()->id($productId)->one();
-            $orders->hasPurchasables([$product]);
-        }
+        // if ($productId) {
+        //     $product = Variant::find()->id($productId)->one();
+        //     $orders->hasPurchasables([$product]);
+        // }
 
-        if ($this->keyword) {
-            $orders->search($this->keyword);
-        }
+        // if ($this->keyword) {
+        //     $orders->search($this->keyword);
+        // }
 
-        if ($this->orderType) {
-            $orders->orderStatus(strtolower($this->orderType));
-        }
+        // if ($this->orderType) {
+        //     $orders->orderStatus(strtolower($this->orderType));
+        // }
 
-        if ($this->paymentType) {
-            $orders->where(['paidStatus' => strtolower($this->paymentType)]);
-        }
+        // if ($this->paymentType) {
+        //     $orders->where(['paidStatus' => strtolower($this->paymentType)]);
+        // }
 
-        $orders->dateOrdered(['and', ">= {$this->dates['originalStart']}", "< {$this->dates['originalEnd']}"]);
+        // $orders->dateOrdered(['and', ">= {$this->dates['originalStart']}", "< {$this->dates['originalEnd']}"]);
 
-        $orders->select([
-            'id', 
-            'dateOrdered',
-            'orderStatusId',
-            'email',
-            'number',
-            'reference',
-        ]);
+        $baseOrdersQuery = (new Query())
+            ->from('{{%elements}} elements')
+            ->select([
+                'elementsId' => 'elements.id',
+                'elementsSiteId' => 'elements_sites.id',
+                'contentId' => 'content.id'
+            ])
+            ->innerJoin(
+                '{{%commerce_orders}} commerce_orders', '[[elements.id]] = [[commerce_orders.id]]'
+            )
+            ->innerJoin(
+                '{{%content}} content', '[[elements.id]] = [[content.elementId]]'
+            )
+            ->innerJoin(
+                '{{%elements_sites}} elements_sites', '[[elements.id]] = [[elements_sites.elementId]]'
+            )
+            ->where([
+                '=', "[[elements.archived]]", FALSE
+            ])
+            ->andWhere([
+                'is', '[[elements.dateDeleted]]', NULL
+            ])
+            ->andWhere([
+                'is', '[[elements.draftId]]', NULL
+            ])
+            ->andWhere([
+                'is', '[[elements.revisionId]]', NULL
+            ])
+            ->orderBy('[[commerce_orders.dateOrdered]] DESC');
 
-        if ($withAddresses) $orders->addSelect(['billingAddressId', 'shippingAddressId']);
+        $currentOrdersQuery = (clone $baseOrdersQuery)
+            ->andWhere([
+                '>=', "[[commerce_orders.dateOrdered]]", $this->dates['originalStart']
+            ])
+            ->andWhere([
+                '<', "[[commerce_orders.dateOrdered]]", $this->dates['originalEnd']
+            ]);
 
-        $result = $orders->all();
+        $previousOrdersQuery = (clone $baseOrdersQuery)
+            ->andWhere([
+                '>=', "[[commerce_orders.dateOrdered]]", $this->dates['previousStart']
+            ])
+            ->andWhere([
+                '<', "[[commerce_orders.dateOrdered]]", $this->dates['originalStart']
+            ]);
+
+        $adjustmentsQuery = (new Query())
+            ->from('{{%commerce_orderadjustments}} commerce_orderadjustments')
+            ->select([
+                "
+                CONCAT('[', GROUP_CONCAT(
+                    JSON_OBJECT(
+                        'included', [[commerce_orderadjustments.included]],
+                        'amount', [[commerce_orderadjustments.amount]]
+                    )
+                ), ']')
+                "
+            ])
+            ->where("[[commerce_orderadjustments.orderId]] = [[commerce_orders.id]]");
+
+        $lineItemsQuery = (new Query())
+            ->from('{{%commerce_lineitems}} commerce_lineitems')
+            ->select([
+                "
+                CONCAT('[', GROUP_CONCAT(
+                    JSON_OBJECT(
+                        'orderId', [[commerce_lineitems.orderId]],
+                        'purchasableId', [[commerce_lineitems.purchasableId]],
+                        'price', [[commerce_lineitems.price]],
+                        'qty', [[commerce_lineitems.qty]]
+                    )
+                ), ']')
+                "
+            ])
+            ->where("[[commerce_lineitems.orderId]] = [[commerce_orders.id]]");
+
+        $orderStatusesQuery = (new Query())
+            ->from('{{%commerce_orderstatuses}} commerce_orderstatuses')
+            ->select([
+                "
+                JSON_OBJECT(
+                    'name', [[commerce_orderstatuses.name]],
+                    'color', [[commerce_orderstatuses.color]]
+                )
+                "
+            ])
+            ->where("[[commerce_orderstatuses.id]] = [[commerce_orders.orderStatusId]]");
+
+        $shippingAddressQuery = (new Query())
+            ->from('{{%addresses}} addresses')
+            ->select([
+                "
+                JSON_OBJECT(
+                    'countryCode', [[addresses.countryCode]],
+                    'administrativeArea', [[addresses.administrativeArea]],
+                    'locality', [[addresses.locality]],
+                    'dependentLocality', [[addresses.dependentLocality]],
+                    'postalCode', [[addresses.postalCode]],
+                    'sortingCode', [[addresses.sortingCode]],
+                    'addressLine1', [[addresses.addressLine1]],
+                    'addressLine2', [[addresses.addressLine2]],
+                    'latitude', [[addresses.latitude]],
+                    'longitude', [[addresses.longitude]],
+                    'firstName', [[addresses.firstName]],
+                    'lastName', [[addresses.lastName]],
+                    'fullName', [[addresses.fullName]]
+                )
+                "
+            ])
+            ->where("[[addresses.id]] = [[commerce_orders.shippingAddressId]]");
+
+        $billingAddressQuery = (new Query())
+            ->from('{{%addresses}} addresses')
+            ->select([
+                "
+                JSON_OBJECT(
+                    'countryCode', [[addresses.countryCode]],
+                    'administrativeArea', [[addresses.administrativeArea]],
+                    'locality', [[addresses.locality]],
+                    'dependentLocality', [[addresses.dependentLocality]],
+                    'postalCode', [[addresses.postalCode]],
+                    'sortingCode', [[addresses.sortingCode]],
+                    'addressLine1', [[addresses.addressLine1]],
+                    'addressLine2', [[addresses.addressLine2]],
+                    'latitude', [[addresses.latitude]],
+                    'longitude', [[addresses.longitude]],
+                    'firstName', [[addresses.firstName]],
+                    'lastName', [[addresses.lastName]],
+                    'fullName', [[addresses.fullName]]
+                )
+                "
+            ])
+            ->where("[[addresses.id]] = [[commerce_orders.billingAddressId]]");
+
+        $activeCustomerOrdersQuery = (new Query())
+            ->from('{{%commerce_orders}} commerce_orders')
+            ->distinct()
+            ->select("COUNT(*)")
+            ->where("[[commerce_orders.customerId]] = [[users.id]]")
+            ->andWhere([
+                '>=', "[[commerce_orders.dateOrdered]]", $sixtyDays
+            ]);
+
+        $scopedCustomerOrdersQuery = (new Query())
+            ->from('{{%commerce_orders}} commerce_orders')
+            ->distinct()
+            ->select("COUNT(*)")
+            ->where("[[commerce_orders.customerId]] = [[users.id]]")
+            ->andWhere([
+                '>', "[[commerce_orders.dateOrdered]]", $this->dates['originalStart']
+            ]);
+
+        $customerQuery = (new Query())
+            ->from('{{%users}} users')
+            ->select([
+                "
+                JSON_OBJECT(
+                    'email', [[users.email]],
+                    'orderCount', ($scopedCustomerOrdersQuery->rawSql),
+                    'activeOrderCount', ($activeCustomerOrdersQuery->rawSql)
+                )
+                "
+            ])
+            ->where("[[users.id]] = [[commerce_orders.customerId]]");
+
+        $query = (new Query())
+            ->from(['commerce_subquery' => $currentOrdersQuery])
+            ->distinct()
+            ->select([
+                'id' => 'commerce_orders.id',
+                'dateOrdered' => 'commerce_orders.dateOrdered',
+                'datePaid' => 'commerce_orders.datePaid',
+                'orderStatusId' => 'commerce_orders.orderStatusId',
+                'customerId' => 'commerce_orders.customerId',
+                'email' => 'commerce_orders.email',
+                'number' => 'commerce_orders.number',
+                'reference' => 'commerce_orders.reference',
+                'currency' => 'commerce_orders.currency',
+                'paidStatus' => 'commerce_orders.paidStatus',
+                'total' => 'commerce_orders.total',
+                'totalTax' => 'commerce_orders.totalTax',
+                'totalShippingCost' => 'commerce_orders.totalShippingCost',
+                'totalDiscount' => 'commerce_orders.totalDiscount',
+                'totalPaid' => 'commerce_orders.totalPaid',
+                'lineItems' => $lineItemsQuery,
+                'adjustments' => $adjustmentsQuery,
+                'orderStatus' => $orderStatusesQuery,
+                'shippingAddress' => $shippingAddressQuery,
+                'billingAddress' => $billingAddressQuery,
+                'customer' => $customerQuery
+            ])
+            ->innerJoin(
+                '{{%elements}} elements', '[[elements.id]] = [[commerce_subquery.elementsId]]'
+            )
+            ->innerJoin(
+                '{{%commerce_orders}} commerce_orders', '[[commerce_orders.id]] = [[commerce_subquery.elementsId]]'
+            )
+            ->innerJoin(
+                '{{%content}} content', '[[content.id]] = [[commerce_subquery.contentId]]'
+            )
+            ->orderBy('[[commerce_orders.dateOrdered]] DESC');
+
+        $result = OrderModel::normalizeArrayedOrders($query->all());
 
         if ($withPrevious) {
+
+            $query
+                ->from(['commerce_subquery' => $previousOrdersQuery]);
+ 
             $result = [
-                'previousPeriod' => $orders->dateOrdered(['and', ">= {$this->dates['previousStart']}", "< {$this->dates['originalStart']}"])->all(),
-                'currentPeriod' => $result,
+                'previousPeriod' => OrderModel::normalizeArrayedOrders($query->all()),
+                'currentPeriod' => $result
             ];
+
         }
 
         return $result;
+        
     }
 
     /**
@@ -123,7 +325,7 @@ class OrdersService extends Component
             'end' => $this->dates['originalEnd'],
         ];
         $result = [
-            'orders' => OrderModel::fromOrders($orders),
+            'orders' => OrderModel::fromArrayedOrders($orders),
             'stats' => CommerceReports::$plugin->stats->getStats($statsData),
         ];
 
