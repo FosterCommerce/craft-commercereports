@@ -53,7 +53,7 @@ class ProductService extends Component
             'end' => $this->dates['originalEnd'],
         ];
         
-        return OrderModel::fromOrders($orders);
+        return OrderModel::fromArrayedOrders($orders);
     }
 
     /**

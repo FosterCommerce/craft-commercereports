@@ -95,6 +95,17 @@ class OrdersService extends Component
             ])
             ->orderBy('[[commerce_orders.dateOrdered]] DESC');
 
+            if ($productId !== null) {
+                
+                $baseOrdersQuery
+                    ->innerJoin(
+                        '{{%commerce_lineitems}} commerce_lineitems', '[[commerce_lineitems.orderId]] = [[commerce_orders.id]]'  
+                    )->where(
+                        "[[commerce_lineitems.purchasableId]] = $productId"
+                    );
+
+            }
+
         $currentOrdersQuery = (clone $baseOrdersQuery)
             ->andWhere([
                 '>=', "[[commerce_orders.dateOrdered]]", $this->dates['originalStart']
