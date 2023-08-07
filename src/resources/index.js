@@ -40,6 +40,7 @@ const app = new Vue({
   },
   data() {
     return {
+      preset: null,
       dateRange: {
         start: moment().subtract(7, "days").format("YYYY-MM-DD 00:00:00"),
         end: moment().format("YYYY-MM-DD 23:59:59"),
@@ -90,6 +91,7 @@ const app = new Vue({
 
       this.dateRange.start = start;
       this.dateRange.end = end;
+      this.preset = dates.preset;
 
       this.refreshAllData();
     },
@@ -125,6 +127,7 @@ const app = new Vue({
       const data = {
         range_start: self.dateRange.start,
         range_end: self.dateRange.end,
+        preset: self.preset,
       };
       let url = "/get-ci-orders";
 

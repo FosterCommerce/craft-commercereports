@@ -26,6 +26,8 @@ class Helpers
     {
         $result = [];
 
+        $preset = Craft::$app->request->getBodyParam('preset') ?? null;
+
         // Query params if they exist in the URL
         $startQuery = Craft::$app->request->getQueryParam('startDate') ?? null;
         $endQuery = Craft::$app->request->getQueryParam('endDate') ?? null;
@@ -58,9 +60,21 @@ class Helpers
 
         // Number of days in the range
         $numDays = $end->diff($start)->format("%r%a");
+        $format = 'Y-m-d 00:00:00';
 
-        // TThe start date for the previous period
-        $result['previousStart'] = $start->modify($numDays . ' day')->format('Y-m-d 00:00:00');
+        switch($preset) {
+
+            case 'year':
+                $result['previousStart'] = (new \DateTime($result['originalStart']))->modify('-1 year')->format($format);
+                break;
+            
+            default:
+                $result['previousStart'] = $start->modify($numDays . ' day')->format($format);
+
+        }
+
+        Craft::warning("Times");
+        Craft::warning($result);
 
         return $result;
     }
