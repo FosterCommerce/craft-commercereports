@@ -73,9 +73,6 @@ class Helpers
 
         }
 
-        Craft::warning("Times");
-        Craft::warning($result);
-
         return $result;
     }
 
