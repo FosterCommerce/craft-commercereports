@@ -1,113 +1,64 @@
-# Commerce Reports plugin for Craft CMS 3.x
+# Commerce Reports
 
-Better stats for Craft Commerce.
+Commerce Reports is a plugin intended to provide better insights and statistics into your sales within Craft Commerce.
 
-## Local Project Install
+## Overview
 
-Copy source to a folder named `plugin` in a Craft project.
+There are three core pages that provide insights into sales: orders, customers and items sold. From the items sold page, you can navigate to a page that shows.
 
-Add a symbolic link to that path in `composer.json`:
+From each of the pages, you can filter the data in various ways.
 
-```
-"repositories": [
-    {
-        "type": "path",
-        "symlink": false,
-        "url": "./plugins/"
-    }
-]
-```
+### Orders
 
-Require with `fostercommerce/commerce-reports`.
+![Orders][docs/assets/orders.png]
 
-Install via command line with `./craft install/plugin commercereports` or from the Craft CMS control panel.
+From the orders page you get an overview of all orders made for a given date range (in comparison to the prior period), providing an overview of the average value and unique items in an order, along with the total number of orders.
 
-## Twig Templates
+### Customers
 
-Twig templates are found in `src/templates/vue`. These control each of the pages for the plugin in the CP.
+### Items Sold
 
-## Component Overview
+### Products
 
-Each control panel view is an instance of a fairly simple Vue app that uses the custom components in `src/resources/components`. The goal of these components is to facilitate a consistent design language, plugin-specific UX, and keep properties are deliberately flexible and simple so that backend connections can be neatly joined to the components with minimal friction.
 
-The most important components are the extensively-used Pane, the complex Chart which wraps and preconfigures Chart.js variations, and the DateRangePicker that determines the range of data that's needed for each control panel view.
 
-### Pane
+## Setup
 
-Every bordered white box visible in the Craft CMS control panel views is some form of Pane. Panes can have titles and trends with stuff in them. That's it. The simple tables seen in the control panel views are just tables with normal `<table>` element markup in them.
+### Requirements
 
-### Chart
+This plugin requires Craft 4, Craft Commerce 4 and at least PHP 8 to install.
 
-The Chart component simplifies the format needed for data on its way to Chart.js, and preconfigures a few different chart types for style and orientation within Panels that were designed for them.
+### Installation
 
-### DateRangePicker
+This plugin supports installation from the Craft Plugin Store and Composer.
 
-The DateRangePicker combines the popular `daterangepicker/daterangepicker.js` jQuery plugin (isolated in the DatePicker component) with custom UI for selecting and saving preset date ranges.
+#### Installing via Craft Plugin Store
 
-## Filters
+Go to the Plugin Store in your project’s Control Panel and search for “Commerce Reports”. Then press “Install” or "Try" (if in a testing environment).
 
-Each of the pages within the plugin has a set of filters that can be applied to the results.
+#### Installing via Composer
 
-### Order Status
+You can add the package to your project using Composer and the command line using the below as a reference.
 
-This filter lets you choose between any or all custom order statuses. Examples would be "New", "Shipped", and "Completed", but they can be anything depending on what custom order status you have in Commerce. Selecting an option from this filter clears all other filters.
+Open your terminal of choice and go to your Craft project:
 
-### Payment Status
+`cd /path/to/project`
 
-The Payment Status filter lets you choose between "Paid", "Partial", "Unpaid", or "All". Selecting an option from this filter clears all other filters.
+Tell Composer to require the plugin and then Craft to install it:
 
-### Search
+`composer require fostercommerce/variant-manager && php craft plugin/install variant-manager`
 
-The search box lets you search orders by the following criteria: Customer name, customer email, order number, order status, or payment status. Using the search will not clear any other filters you have applied.
 
-## Export to CSV
+## Help
 
-This feature allows you to export the results to a CSV spreadsheet. Any filters applied to the results will apply to the exported CSV document.
+### I have an idea for a new feature. Where do I share it?
 
-## Orders Page
+We're open to new ideas and encourage you to please submit your idea to [GitHub Issues](https://github.com/FosterCommerce/craft-commercereports/issues).
 
-Shows a high-level overview of orders within the selected date range.
+### I found a bug or have a concern. Where do I share it?
 
-### Top Paragraph
+Like ideas, please submit the bug/concern to [GitHub Issues](https://github.com/FosterCommerce/craft-commercereports/issues).
 
-The top paragraph shows stats for revenue and number of orders at a glance. It also compares this data to the previous period and shows the percentage change.
+We'd ask that you be as detailed as possible and always include the versions of Craft, Craft Commerce and our plugin.
 
-### Total Orders Chart
-
-The Total Orders chart shows the number of orders in the selected range, the percentage change vs. the previous period, and a graph showing the trend over time during the selected date period.
-
-### Average Value Chart
-
-The Average Value chart shows the average order value in the selected range, the percentage change vs. the previous period, and a graph showing the trend over time during the selected date period.
-
-### Average Order Quantity Chart
-
-The Average Order Quantity chart shows the average number of items across all orders in the selected range, the percentage change vs. the previous period, and a graph showing the trend over time during the selected date period.
-
-### Results table
-
-The results table shows all orders for the specified date range which match any criteria applied via the filters.
-
-## Items Sold Page
-
-Shows the products that have been sold during the specified date period, ordered from most sold to least.
-
-### Item Column
-
-The name of the product.
-
-### SKU Column
-
-The product SKU.
-
-### Product Type Column
-
-The product type.
-
-### Total Sold Column
-
-The total times that this product has been sold across all orders in the selected date range. Also shows the number of orders that this product was sold in; clicking this will show a list of all orders containing this product.
-
-### Total Sales Column
-
-The item price multiplied by the total sold for the given date range.
+If we don't respond in a reasonable amount of time (72 Hours), please send us an email at support@fostercommerce.com.
