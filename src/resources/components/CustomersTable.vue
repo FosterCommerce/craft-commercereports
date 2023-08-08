@@ -83,7 +83,7 @@ export default {
         <tr v-for="element in elements" :key="element.fullName">
           <td>
             <span v-if="element.customer">
-              <a :href="'/admin/users/' + element.customer.id + '#commerce'">
+              <a :href="'/admin/users/' + element.customer.id + '#commerce'" :title="element.email">
               {{ element.fullName }}
               </a>
             </span><span v-else>Guest</span>
