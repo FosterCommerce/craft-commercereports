@@ -12,6 +12,10 @@ export default {
       required: true,
       default: () => [],
     },
+    typeOptions: {
+      type: Array,
+      default: () => [],
+    },
   },
 }
 </script>
@@ -20,6 +24,7 @@ export default {
   <div class="px-3">
     <CombinedSearch
       element-type="ItemsSold"
+      :type-options="typeOptions"
       :elements="elements"
     />
   </div>

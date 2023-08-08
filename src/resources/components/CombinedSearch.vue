@@ -46,7 +46,17 @@ export default {
     allTypesLabel: {
       type: String,
       default: function() {
-        return `All ${this.elementType}`;
+
+        if (this.elementType === 'ItemsSold') {
+
+          return 'All Items Sold';
+
+        } else {
+
+          return `All ${this.elementType}`;
+
+        }
+
       },
     },
   },
@@ -162,6 +172,7 @@ export default {
     },
   },
   computed: {
+
     filteredElements() {
       const self = this;
       let filteredElements = this.elements;
@@ -181,7 +192,10 @@ export default {
         if (Object.keys(this.selectedTypeOption).length !== 0) {
           filteredElements = filteredElements.filter(function(element) {
             // filter by selected status
-            return element.type.title === self.selectedTypeOption.value;
+
+            let typeName = (element.type.title) ? element.type.title : element.type;
+
+            return typeName === self.selectedTypeOption.value;
           });
         }
 
