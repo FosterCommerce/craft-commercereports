@@ -247,6 +247,9 @@ class OrdersService extends Component
                 "
                 JSON_OBJECT(
                     'email', [[users.email]],
+                    'firstName', [[users.firstName]],
+                    'lastName', [[users.lastName]],
+                    'fullName', [[users.fullName]],
                     'id', [[users.id]],
                     'orderCount', ($scopedCustomerOrdersQuery->rawSql),
                     'activeOrderCount', ($activeCustomerOrdersQuery->rawSql)

@@ -95,6 +95,7 @@ class CustomersService extends Component
                 'aov' => Helpers::convertCurrency(($data['amountPaid'] / $data['ordersCount']), $data['currency']),
                 'amountPaid' => Helpers::convertCurrency($data['amountPaid'], $data['currency']),
                 'email' => $email,
+                'fullName' => $processed[$email]['customer']['fullName'],
                 'customer' => $processed[$email]['customer'],
                 'currency' => $processed[$email]['currency'],
                 'lastPurchase' => $processed[$email]['lastPurchase'],

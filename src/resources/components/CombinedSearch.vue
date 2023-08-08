@@ -237,11 +237,11 @@ export default {
         }
       } else if (this.elementType === 'Customers') {
         if (this.keyword.length > 2) {
-          // match email and name against keyword
+          // match  name against keyword
           filteredElements = filteredElements.filter(function(element) {
             const lowerKeyword = self.keyword.toLowerCase();
 
-            return element.email.toLowerCase().indexOf(lowerKeyword) > -1 ||
+            return element.fullName.toLowerCase().indexOf(lowerKeyword) > -1 ||
               element.billingName.toLowerCase().indexOf(lowerKeyword) > -1 ||
               element.shippingName.toLowerCase().indexOf(lowerKeyword) > -1;
           });

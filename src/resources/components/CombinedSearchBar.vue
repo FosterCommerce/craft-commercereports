@@ -147,11 +147,11 @@ export default {
         }
       } else if (this.elementType === 'Customers') {
         if (this.keyword.length ) {
-          // match email and name against keyword
+          // match name against keyword
           filteredElements = filteredElements.filter(function(element) {
             const lowerKeyword = self.keyword.toLowerCase();
 
-            return element.email.toLowerCase().indexOf(lowerKeyword) > -1 ||
+            return element.fullName.toLowerCase().indexOf(lowerKeyword) > -1 ||
               element.billingName.toLowerCase().indexOf(lowerKeyword) > -1 ||
               element.shippingName.toLowerCase().indexOf(lowerKeyword) > -1;
           });
@@ -185,7 +185,7 @@ export default {
       } else if (this.elementType === 'Customers') {
         for (let element of filteredElements) {
           results.push({
-            'Email': element.email,
+            'Name': element.fullName,
             'Billing Name': element.billingName,
             'Shipping Name': element.shippingName,
             '# Orders': element.ordersCount,
