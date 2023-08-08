@@ -10,7 +10,7 @@ From each of the pages, you can filter the data in various ways.
 
 ### Orders
 
-![Orders][docs/assets/orders.png]
+![Orders](docs/assets/orders.png)
 
 From the orders page you get an overview of all orders made for a given date range (in comparison to the prior period), providing an overview of the average value and unique items in an order, along with the total number of orders.
 
