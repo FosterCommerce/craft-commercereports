@@ -1,113 +1,82 @@
-# Commerce Reports plugin for Craft CMS 3.x
+# Commerce Reports
 
-Better stats for Craft Commerce.
+Commerce Reports is a plugin intended to provide better insights and statistics into your sales within Craft Commerce.
 
-## Local Project Install
+## Overview
 
-Copy source to a folder named `plugin` in a Craft project.
+There are three core pages that provide insights into sales: orders, customers and items sold. From the items sold page, you can navigate to a page that shows.
 
-Add a symbolic link to that path in `composer.json`:
+From each of the pages, you can filter the data in various ways.
 
-```
-"repositories": [
-    {
-        "type": "path",
-        "symlink": false,
-        "url": "./plugins/"
-    }
-]
-```
+### Orders
 
-Require with `fostercommerce/commerce-reports`.
+![Orders](docs/assets/orders.png)
 
-Install via command line with `./craft install/plugin commercereports` or from the Craft CMS control panel.
+The "Orders" page gives you an overview of all orders made for a given date range, providing an overview of the average value and unique items in an order, along with the total number of orders.
 
-## Twig Templates
+### Customers
 
-Twig templates are found in `src/templates/vue`. These control each of the pages for the plugin in the CP.
+![Customers](docs/assets/customers.png)
 
-## Component Overview
+The "Customers" page gives you an overview of the customers that have made orders for a given date range, including a list of the top locations orders are made from.
 
-Each control panel view is an instance of a fairly simple Vue app that uses the custom components in `src/resources/components`. The goal of these components is to facilitate a consistent design language, plugin-specific UX, and keep properties are deliberately flexible and simple so that backend connections can be neatly joined to the components with minimal friction.
+### Items Sold
 
-The most important components are the extensively-used Pane, the complex Chart which wraps and preconfigures Chart.js variations, and the DateRangePicker that determines the range of data that's needed for each control panel view.
+![Items Sold](docs/assets/items.png)
 
-### Pane
+The "Items Sold" page gives you an overview of the items sold in orders for a given date range. It supports filtering by a given product type in addition to custom Verbb Events.
 
-Every bordered white box visible in the Craft CMS control panel views is some form of Pane. Panes can have titles and trends with stuff in them. That's it. The simple tables seen in the control panel views are just tables with normal `<table>` element markup in them.
+### Products
 
-### Chart
+![Products](docs/assets/products.png)
 
-The Chart component simplifies the format needed for data on its way to Chart.js, and preconfigures a few different chart types for style and orientation within Panels that were designed for them.
+The "Products" page gives you an overview of the orders made for a given product.
 
-### DateRangePicker
+## Setup
 
-The DateRangePicker combines the popular `daterangepicker/daterangepicker.js` jQuery plugin (isolated in the DatePicker component) with custom UI for selecting and saving preset date ranges.
+### Requirements
 
-## Filters
+This plugin requires Craft 4, Craft Commerce 4 and at least PHP 8 to install.
 
-Each of the pages within the plugin has a set of filters that can be applied to the results.
+### Installation
 
-### Order Status
+This plugin supports installation from Composer.
 
-This filter lets you choose between any or all custom order statuses. Examples would be "New", "Shipped", and "Completed", but they can be anything depending on what custom order status you have in Commerce. Selecting an option from this filter clears all other filters.
+#### Installing via Craft Plugin Store
 
-### Payment Status
+This plugin is not currently available on the Craft plugin store yet.
 
-The Payment Status filter lets you choose between "Paid", "Partial", "Unpaid", or "All". Selecting an option from this filter clears all other filters.
+#### Installing via Composer
 
-### Search
+You can add the package to your project using Composer and the command line using the below as a reference.
 
-The search box lets you search orders by the following criteria: Customer name, customer email, order number, order status, or payment status. Using the search will not clear any other filters you have applied.
+Open your terminal of choice and go to your Craft project:
 
-## Export to CSV
+`cd /path/to/project`
 
-This feature allows you to export the results to a CSV spreadsheet. Any filters applied to the results will apply to the exported CSV document.
+Tell Composer to require the plugin and then Craft to install it:
 
-## Orders Page
+`composer require fostercommerce/variant-manager && php craft plugin/install variant-manager`
 
-Shows a high-level overview of orders within the selected date range.
+Note that if you would like to install a specific branch you can do the following (note the "dev-" prefix):
 
-### Top Paragraph
+`composer require fostercommerce/variant-manager "dev-{branch-name}"`
 
-The top paragraph shows stats for revenue and number of orders at a glance. It also compares this data to the previous period and shows the percentage change.
+If you would like to install a specific version you can do the following:
 
-### Total Orders Chart
+`composer require fostercommerce/variant-manager "1.0.1"`
 
-The Total Orders chart shows the number of orders in the selected range, the percentage change vs. the previous period, and a graph showing the trend over time during the selected date period.
 
-### Average Value Chart
+## Help
 
-The Average Value chart shows the average order value in the selected range, the percentage change vs. the previous period, and a graph showing the trend over time during the selected date period.
+### I have an idea for a new feature. Where do I share it?
 
-### Average Order Quantity Chart
+We're open to new ideas and encourage you to please submit your idea to [GitHub Issues](https://github.com/FosterCommerce/craft-commercereports/issues).
 
-The Average Order Quantity chart shows the average number of items across all orders in the selected range, the percentage change vs. the previous period, and a graph showing the trend over time during the selected date period.
+### I found a bug or have a concern. Where do I share it?
 
-### Results table
+Like ideas, please submit the bug/concern to [GitHub Issues](https://github.com/FosterCommerce/craft-commercereports/issues).
 
-The results table shows all orders for the specified date range which match any criteria applied via the filters.
+We'd ask that you be as detailed as possible and always include the versions of Craft, Craft Commerce and our plugin.
 
-## Items Sold Page
-
-Shows the products that have been sold during the specified date period, ordered from most sold to least.
-
-### Item Column
-
-The name of the product.
-
-### SKU Column
-
-The product SKU.
-
-### Product Type Column
-
-The product type.
-
-### Total Sold Column
-
-The total times that this product has been sold across all orders in the selected date range. Also shows the number of orders that this product was sold in; clicking this will show a list of all orders containing this product.
-
-### Total Sales Column
-
-The item price multiplied by the total sold for the given date range.
+If we don't respond in a reasonable amount of time (72 Hours), please send us an email at support@fostercommerce.com.

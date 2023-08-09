@@ -7,24 +7,22 @@
  * @copyright Copyright (c) 2021 Foster Commerce
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace fostercommerce\commercereports\controllers;
 
 use fostercommerce\commercereports\CommerceReports;
 use fostercommerce\commercereports\components\Customers;
 
-use craft\web\Response;
-use yii\web\Response as YiiResponse;
-
 class CustomersController extends Customers
 {
     /**
      * Renders the customers Twig template
      *
-     * @return yii\web\Response
+     * @return \yii\web\Response
      */
-    public function actionIndex(): YiiResponse {
+    public function actionIndex(): \yii\web\Response
+    {
         return $this->renderTemplate('commercereports/vue/index', [
             'navItem' => 'customers',
         ]);
@@ -33,9 +31,10 @@ class CustomersController extends Customers
     /**
      * Return all customers for a given date range
      *
-     * @return craft\web\Response
+     * @return \yii\web\Response
      */
-    public function actionGetCustomers(): Response {
+    public function actionGetCustomers(): \yii\web\Response
+    {
         return $this->asJson(CommerceReports::$plugin->customers->getCustomers());
     }
 }

@@ -33,10 +33,10 @@ export default {
         <tr>
           <th
             scope="col"
-            :class="sortBy === 'email' ? 'ordered ' + sortDirection : 'orderable'"
-            @click="sort('email')"
+            :class="sortBy === 'fullName' ? 'ordered ' + sortDirection : 'orderable'"
+            @click="sort('fullName')"
           >
-            Email
+            Name
           </th>
           <th
             scope="col"
@@ -80,14 +80,13 @@ export default {
             <div class="spinner loadingmore"></div>
           </td>
         </tr>
-        <tr v-for="element in elements" :key="element.email">
+        <tr v-for="element in elements" :key="element.fullName">
           <td>
-            <a :href="'/admin/commerce/customers/' + element.customerId">
-              {{ element.email }}
-            </a>
-            (<span v-if="element.customer">
-              <a :href="'/admin/users/' + element.customer.id">User Account</a>
-            </span><span v-else>Guest</span>)
+            <span v-if="element.customer">
+              <a :href="'/admin/users/' + element.customer.id + '#commerce'" :title="element.email">
+              {{ element.fullName }}
+              </a>
+            </span><span v-else>Guest</span>
           </td>
           <td>{{ element.ordersCount }}</td>
           <td>{{ element.amountPaid }}</td>

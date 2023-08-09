@@ -7,27 +7,25 @@
  * @copyright Copyright (c) 2021 Foster Commerce
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace fostercommerce\commercereports\services;
 
-use fostercommerce\commercereports\CommerceReports;
-use fostercommerce\commercereports\models\ItemSoldModel;
-
-use Craft;
 use craft\base\Component;
+use fostercommerce\commercereports\CommerceReports;
+
+use fostercommerce\commercereports\models\ItemSoldModel;
 
 class ItemsSoldService extends Component
 {
-    private $itemsSold = [];
-
     /**
      * Constructor. Fetches the items sold data when the class is instantiated.
      *
      * @return void
      */
-    public function __construct($id, $module, $config = []) {
-        parent::__construct($id, $module, $config);
+    public function __construct($config = [])
+    {
+        parent::__construct($config);
     }
 
     /**
@@ -35,9 +33,10 @@ class ItemsSoldService extends Component
      *
      * @return array
      */
-    private function fetchItemsSold(): array {
-        $orders  = CommerceReports::$plugin->orders->fetchOrders(['withPrevious' => false]);
-        $results = ItemSoldModel::fromOrders($orders);
+    private function fetchItemsSold(): array
+    {
+        $orders = CommerceReports::$plugin->orders->fetchOrders(['withPrevious' => false]);
+        $results = ItemSoldModel::fromArrayedOrders($orders);
 
         usort($results, function($a, $b) {
             return $b['totalSold'] <=> $a['totalSold'];
@@ -51,7 +50,8 @@ class ItemsSoldService extends Component
      *
      * @return array
      */
-    public function getItemsSold(): array {
+    public function getItemsSold(): array
+    {
         return $this->fetchItemsSold();
     }
 }

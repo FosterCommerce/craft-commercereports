@@ -7,14 +7,14 @@
  * @copyright Copyright (c) 2021 Foster Commerce
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace fostercommerce\commercereports\components;
 
-use fostercommerce\commercereports\interfaces\CustomersInterface;
-
 use Craft;
+
 use craft\web\Controller;
+use fostercommerce\commercereports\interfaces\CustomersInterface;
 
 abstract class Customers extends Controller implements CustomersInterface
 {
@@ -23,7 +23,8 @@ abstract class Customers extends Controller implements CustomersInterface
      *
      * @return string The display name of this class.
      */
-    public static function displayName(): string {
+    public static function displayName(): string
+    {
         return Craft::t('commerce-reports', 'Customers');
     }
 
@@ -32,7 +33,8 @@ abstract class Customers extends Controller implements CustomersInterface
      *
      * @return bool whether the component should be selectable in component Type selects.
      */
-    public static function isSelectable(): bool {
+    public static function isSelectable(): bool
+    {
         return false;
     }
 }

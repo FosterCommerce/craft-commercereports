@@ -2,7 +2,7 @@
   "name": "fostercommerce/commerce-reports",
   "description": "Sales and purchase insights for Craft Commerce.",
   "type": "craft-plugin",
-  "version": "1.0.0-beta.13",
+  "version": "1.0.1-beta.1",
   "keywords": [
     "craft",
     "cms",
@@ -22,8 +22,10 @@
     }
   ],
   "require": {
-    "craftcms/cms": "^3.0.0",
-    "moneyphp/money": "^3.2.1"
+    "craftcms/cms": "^4.0.0",
+    "craftcms/commerce": "^4.2.11",
+    "moneyphp/money": "^4.0.0",
+    "php": "^8.1"
   },
   "autoload": {
     "psr-4": {
@@ -37,5 +39,27 @@
     "hasCpSection": true,
     "changelogUrl": "https://raw.githubusercontent.com/workingconcept/commerce-reports/master/CHANGELOG.md",
     "class": "fostercommerce\\commercereports\\CommerceReports"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "require-dev": {
+    "craftcms/rector": "dev-main",
+    "craftcms/phpstan": "dev-main",
+    "phpstan/phpstan": "^1.10.25",
+    "craftcms/ecs": "dev-main"
+  },
+  "config": {
+    "allow-plugins": {
+      "yiisoft/yii2-composer": true,
+      "craftcms/plugin-installer": true
+    },
+    "platform": {
+      "php": "8.1"
+    }
+  },
+  "scripts": {
+    "phpstan": "phpstan --memory-limit=512M",
+    "check-cs": "ecs check --ansi",
+    "fix-cs": "ecs check --ansi --fix"
   }
 }

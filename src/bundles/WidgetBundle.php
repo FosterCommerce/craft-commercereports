@@ -15,7 +15,7 @@ class WidgetBundle extends AssetBundle
         $this->sourcePath = __DIR__ . '/../../dist/';
 
         $this->depends = [
-            CpAsset::class
+            CpAsset::class,
         ];
 
         $jsPattern = $isProduction ? "/\d+\\.bundle\\.min\\.js/" : "/\d+\\.bundle\\.js/";

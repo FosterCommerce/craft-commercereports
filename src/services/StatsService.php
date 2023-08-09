@@ -7,19 +7,20 @@
  * @copyright Copyright (c) 2021 Foster Commerce
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace fostercommerce\commercereports\services;
 
-use fostercommerce\commercereports\helpers\Helpers;
+use Craft;
+
+use craft\base\Component;
+
+use craft\commerce\elements\Order;
+use DateInterval;
+use DatePeriod;
 
 use DateTime;
-use DatePeriod;
-use DateInterval;
-
-use Craft;
-use craft\base\Component;
-use craft\commerce\elements\Order;
+use fostercommerce\commercereports\helpers\Helpers;
 
 class StatsService extends Component
 {
@@ -28,10 +29,11 @@ class StatsService extends Component
      *
      * @return array
      */
-    public function getStats(array $data): array {
+    public function getStats(array $data): array
+    {
         $result = [];
 
-        switch($data['type']) {
+        switch ($data['type']) {
             default:
             case 'orders': $result = self::calculateOrdersStats($data);
                 break;
@@ -51,25 +53,26 @@ class StatsService extends Component
      *
      * @return array
      */
-    private static function calculateOrdersStats(array $data): array {
-        $orders            = $data['data'];
-        $previousOrders    = $orders['previousPeriod'];
-        $currentOrders     = $orders['currentPeriod'];
+    private static function calculateOrdersStats(array $data): array
+    {
+        $orders = $data['data'];
+        $previousOrders = $orders['previousPeriod'];
+        $currentOrders = $orders['currentPeriod'];
         $numPreviousOrders = count($previousOrders);
-        $numCurrentOrders  = count($currentOrders);
-        $previousRevenue   = 0;
-        $currentRevenue    = 0;
-        $previousQuantity  = 0;
-        $currentQuantity   = 0;
-        $previousAoq       = 0;
-        $currentAoq        = 0;
-        $totalOrdersArr    = [];
-        $totalOrdersSet    = [];
-        $aovArr            = [];
-        $aovSet            = [];
-        $aoqArr            = [];
-        $aoqSet            = [];
-        $datePeriod        = new DatePeriod(
+        $numCurrentOrders = count($currentOrders);
+        $previousRevenue = 0;
+        $currentRevenue = 0;
+        $previousQuantity = 0;
+        $currentQuantity = 0;
+        $previousAoq = 0;
+        $currentAoq = 0;
+        $totalOrdersArr = [];
+        $totalOrdersSet = [];
+        $aovArr = [];
+        $aovSet = [];
+        $aoqArr = [];
+        $aoqSet = [];
+        $datePeriod = new DatePeriod(
             new DateTime($data['start']),
             new DateInterval('P1D'),
             new DateTime($data['end'])
@@ -80,34 +83,34 @@ class StatsService extends Component
             $day = $value->format('Y-m-d');
 
             $totalOrdersArr[$day] = 0;
-            $aovArr[$day]         = 0;
-            $aoqArr[$day]         = 0;
+            $aovArr[$day] = 0;
+            $aoqArr[$day] = 0;
         }
 
         // Calculate total revenue, average order quantity, and number of
         // customers for the previous period
         foreach ($previousOrders as $order) {
-            $lineItems = $order->lineItems;
-            $previousRevenue += $order->totalPaid;
+            $lineItems = $order['lineItems'];
+            $previousRevenue += $order['totalPaid'];
 
             foreach ($lineItems as $item) {
-                $previousQuantity += $item->qty;
+                $previousQuantity += $item['qty'];
             }
         }
 
         // Add orders to their dates in the total orders arr, and calculate
         // revenue, AOV, AOQ, and customers for current period.
         foreach ($currentOrders as $order) {
-            $lineItems   = $order->lineItems;
-            $dateOrdered = $order->dateOrdered->format('Y-m-d');
+            $lineItems = $order['lineItems'];
+            $dateOrdered = $order['dateOrdered']->format('Y-m-d');
 
             $totalOrdersArr[$dateOrdered] += 1;
-            $aovArr[$dateOrdered] += $order->totalPaid;
-            $currentRevenue += $order->totalPaid;
+            $aovArr[$dateOrdered] += $order['totalPaid'];
+            $currentRevenue += $order['totalPaid'];
 
             foreach ($lineItems as $item) {
-                $currentQuantity += $item->qty;
-                $aoqArr[$dateOrdered] += $item->qty;
+                $currentQuantity += $item['qty'];
+                $aoqArr[$dateOrdered] += $item['qty'];
             }
         }
 
@@ -141,20 +144,20 @@ class StatsService extends Component
                     // this is based on the new previous period data
                     'percentChange' => $numPreviousOrders ? round((($numCurrentOrders - $numPreviousOrders) / $numPreviousOrders) * 100, 2) : ($numCurrentOrders ? 'INF' : 0),
                     'revenue' => $previousRevenue ? round((($currentRevenue - $previousRevenue) / $previousRevenue) * 100, 2) : ($currentRevenue ? 'INF' : 0),
-                    'series' => $totalOrdersSet
+                    'series' => $totalOrdersSet,
                 ],
                 // averageOrderValue, averageOrderQuantity
                 'averageValue' => [
-                    'total' => $numCurrentOrders ? round($currentRevenue / $numCurrentOrders, 2) : ($numCurrentOrders ? 'INF' : 0),
+                    'total' => $numCurrentOrders ? round($currentRevenue / $numCurrentOrders, 2) : 0,
                     'percentChange' => $previousRevenue ? round((($currentRevenue - $previousRevenue) / $previousRevenue) * 100, 2) : ($currentRevenue ? 'INF' : 0),
-                    'series' => $aovSet
+                    'series' => $aovSet,
                 ],
                 'averageQuantity' => [
                     'total' => round($currentAoq, 2),
                     'percentChange' => $previousAoq ? round((($currentAoq - $previousAoq) / $previousAoq) * 100, 2) : ($currentAoq ? 'INF' : 0),
-                    'series' => $aoqSet
-                ]
-            ]
+                    'series' => $aoqSet,
+                ],
+            ],
         ];
     }
 
@@ -166,7 +169,8 @@ class StatsService extends Component
      *
      * @return array
      */
-    private static function calculateItemsSoldStats(array $data): array {
+    private static function calculateItemsSoldStats(array $data): array
+    {
         return [];
     }
 
@@ -177,27 +181,29 @@ class StatsService extends Component
      *
      * @return array
      */
-    private static function calculateCustomersStats(array $data): array {
-        $orders                     = $data['data'];
-        $previousOrders             = $orders['previousPeriod'];
-        $currentOrders              = $orders['currentPeriod'];
-        $dateRange                  = Helpers::getDateRangeData();
-        $startDate                  = $dateRange['originalStart'];
-        $previousStartDate          = $dateRange['previousStart'];
-        $previousCustomers          = 0;
-        $currentCustomers           = 0;
-        $currentNewCustomers        = 0;
-        $previousNewCustomers       = 0;
-        $returningCustomers         = 0;
+    private static function calculateCustomersStats(array $data): array
+    {
+
+        $orders = $data['data'];
+        $previousOrders = $orders['previousPeriod'];
+        $currentOrders = $orders['currentPeriod'];
+        $dateRange = Helpers::getDateRangeData();
+        $startDate = $dateRange['originalStart'];
+        $previousStartDate = $dateRange['previousStart'];
+        $previousCustomers = 0;
+        $currentCustomers = 0;
+        $currentNewCustomers = 0;
+        $previousNewCustomers = 0;
+        $returningCustomers = 0;
         $previousReturningCustomers = 0;
-        $previousCustomersArr       = [];
-        $currentCustomersArr        = [];
-        $customerDatesArr           = [];
-        $newCustomersArr            = [];
-        $returningCustomersArr      = [];
-        $totalCustomersSet          = [];
-        $newCustomersSet            = [];
-        $returningCustomersSet      = [];
+        $previousCustomersArr = [];
+        $currentCustomersArr = [];
+        $customerDatesArr = [];
+        $newCustomersArr = [];
+        $returningCustomersArr = [];
+        $totalCustomersSet = [];
+        $newCustomersSet = [];
+        $returningCustomersSet = [];
         $datePeriod = new DatePeriod(
             new DateTime($startDate),
             new DateInterval('P1D'),
@@ -208,17 +214,18 @@ class StatsService extends Component
         foreach ($datePeriod as $key => $value) {
             $day = $value->format('Y-m-d');
 
-            $customerDatesArr[$day]      = 0;
-            $newCustomersArr[$day]       = 0;
+            $customerDatesArr[$day] = 0;
+            $newCustomersArr[$day] = 0;
             $returningCustomersArr[$day] = 0;
         }
 
         // Calculate the new and returning customers in the previous period
         foreach ($previousOrders as $order) {
-            $customerEmail = strtolower($order->email);
 
-            if(!in_array($customerEmail, $previousCustomersArr)) {
-                $customerOrderCount     = (int)Order::find()->email($customerEmail)->dateOrdered('< ' . $previousStartDate)->count();
+            $customerEmail = strtolower($order['email']);
+
+            if (!in_array($customerEmail, $previousCustomersArr)) {
+                $customerOrderCount = (int)Order::find()->email($customerEmail)->dateOrdered('< ' . $previousStartDate)->count();
                 $previousCustomersArr[] = $customerEmail;
                 $previousCustomers += 1;
 
@@ -228,15 +235,18 @@ class StatsService extends Component
                     $previousReturningCustomers += 1;
                 }
             }
+
         }
 
         // Calculate the new and returning customers in the current period
         foreach ($currentOrders as $order) {
-            $customerEmail = strtolower($order->email);
-            $dateOrdered   = $order->dateOrdered->format('Y-m-d');
 
-            if(!in_array($customerEmail, $currentCustomersArr)) {
-                $customerOrderCount    = (int)Order::find()->email($customerEmail)->dateOrdered('< ' . $startDate)->count();
+            $customerEmail = strtolower($order['email']);
+            $dateOrdered = $order['dateOrdered']->format('Y-m-d');
+
+            if (!in_array($customerEmail, $currentCustomersArr)) {
+
+                $customerOrderCount = (int)Order::find()->email($customerEmail)->dateOrdered('< ' . $startDate)->count();
                 $currentCustomersArr[] = $customerEmail;
                 $currentCustomers += 1;
 
@@ -249,7 +259,9 @@ class StatsService extends Component
                     $returningCustomersArr[$dateOrdered] += 1;
                     $returningCustomers += 1;
                 }
+
             }
+
         }
 
         // build the total customers set
@@ -273,19 +285,19 @@ class StatsService extends Component
                 'totalCustomers' => [
                     'total' => $currentCustomers,
                     'percentChange' => $previousCustomers ? round((($currentCustomers - $previousCustomers) / $previousCustomers) * 100, 2) : ($currentCustomers ? 'INF' : 0),
-                    'series' => $totalCustomersSet
+                    'series' => $totalCustomersSet,
                 ],
                 'newCustomers' => [
                     'total' => $currentNewCustomers,
                     'percentChange' => $previousNewCustomers ? round((($currentNewCustomers - $previousNewCustomers) / $previousNewCustomers) * 100, 2) : ($currentNewCustomers ? 'INF' : 0),
-                    'series' => $newCustomersSet
+                    'series' => $newCustomersSet,
                 ],
                 'returningCustomers' => [
                     'total' => $returningCustomers,
                     'percentChange' => $previousReturningCustomers ? round((($returningCustomers - $previousReturningCustomers) / $previousReturningCustomers) * 100, 2) : ($returningCustomers ? 'INF' : 0),
-                    'series' => $returningCustomersSet
-                ]
-            ]
+                    'series' => $returningCustomersSet,
+                ],
+            ],
         ];
     }
 
@@ -296,24 +308,32 @@ class StatsService extends Component
      *
      * @return array
      */
-    private static function getTopLocations($orders): array {
-        $topCities    = [];
+    private static function getTopLocations($orders): array
+    {
+        $topCities = [];
         $topLocations = [];
 
         foreach ($orders as $order) {
-            $address     = $order->shippingAddress;
-            $city        = $address->city ?? '';
-            $cityLower   = preg_replace('/\s/', '', strtolower($address->city ?? ''));
-            $state       = $address->state->abbreviation ?? Helpers::zipToUsState($address->zipCode ?? '');
-            $country     = $address->countryIso ?? '';
-            $orderCount  = $topCities[$country . $cityLower . $state]['total'] ?? 0;
+
+            $address = $order['shippingAddress'];
+
+            if (!$address) {
+                continue;
+            }
+
+            $city = $address['locality'] ?? '';
+            $cityLower = preg_replace('/\s/', '', strtolower($address['locality'] ?? ''));
+            $state = $address['administrativeArea'] ?? Helpers::zipToUsState($address['postalCode'] ?? '');
+            $country = $address['countryCode'] ?? '';
+            $orderCount = $topCities[$country . $cityLower . $state]['total'] ?? 0;
 
             $topCities[$country . $cityLower . $state] = [
                 'country' => $country,
-                'city'    => $city,
-                'state'   => $state,
-                'total'   => $orderCount + 1
+                'city' => $city,
+                'state' => $state,
+                'total' => $orderCount + 1,
             ];
+
         }
 
         usort($topCities, function($a, $b) {
@@ -322,12 +342,14 @@ class StatsService extends Component
 
         $topCities = array_slice($topCities, 0, 7);
 
-        foreach($topCities as $city) {
+        foreach ($topCities as $city) {
+
             $topLocations[] = [
-                'country'     => $city['country'],
+                'country' => $city['country'],
                 'destination' => $city['city'] . ', ' . $city['state'],
-                'total'       => $city['total']
+                'total' => $city['total'],
             ];
+
         }
 
         return $topLocations;

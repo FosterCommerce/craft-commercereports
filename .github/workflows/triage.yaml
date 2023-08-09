@@ -1,0 +1,113 @@
+name: Determine workflows to run
+
+on:
+
+  workflow_dispatch:
+
+  push:
+
+    branches:
+      - main
+      - develop
+      - feature/craft4-migration
+
+jobs:
+
+  prepare:
+
+    name: Set initial data
+
+    runs-on: ubuntu-22.04
+
+    outputs:
+
+      branch: "${{ steps.branch.outputs.value }}"
+      modified_backend: "${{ steps.paths_modified.outputs.backend }}"
+      modified_frontend: "${{ steps.paths_modified.outputs.frontend }}"
+      modified_project: "${{ steps.paths_modified.outputs.project }}"
+
+    steps:
+
+      - name: Get branch from ref
+        id: branch
+
+        run: echo "::set-output name=value::$(echo $GITHUB_REF | cut -d'/' -f 3-)"
+
+      - name: Get branch from ref
+        id: base-branch
+
+        run: |
+          if [[ $GITHUB_REF == 'refs/heads/main' ]]; then
+            echo "::set-output name=value::develop"
+          else
+            echo "::set-output name=value::main"
+          fi
+
+      - name: Checkout
+
+        uses: actions/checkout@v2
+
+  test_plugin:
+
+    name: "[${{ needs.prepare.outputs.branch }}] Test the plugin"
+    needs: [prepare]
+
+    runs-on: ubuntu-22.04
+
+    steps:
+
+      - name: Set environment by branch
+
+        run: |
+          if [[ $GITHUB_REF == 'refs/heads/main' ]]; then
+            echo "ENVIRONMENT=production" >> $GITHUB_ENV
+          else
+            echo "ENVIRONMENT=staging" >> $GITHUB_ENV
+          fi
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v2-beta
+
+        with:
+          node-version: "20"
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+
+        with:
+          php-version: "8.1"
+          tools: composer:v2
+          extensions: intl-67.1, gd
+
+      - name: Get Composer Cache Directory
+
+        id: composer-cache
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Use Cache
+        uses: actions/cache@v2
+
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.*') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install Composer Dependencies
+
+        run: |
+          composer install --prefer-dist --classmap-authoritative
+
+      - name: Validate PHPStan
+
+        run: |
+          composer run-script phpstan
+          
+      - name: Validate ECS Linting
+        
+        run: |
+          composer run-script check-cs
