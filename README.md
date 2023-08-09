@@ -22,7 +22,7 @@ The "Customers" page gives you an overview of the customers that have made order
 
 ### Items Sold
 
-![Items Sold](docs/assets/items.png)
+![Items Sold](docs/assets/items-sold.png)
 
 The "Items Sold" page gives you an overview of the items sold in orders for a given date range. It supports filtering by a given product type in addition to custom Verbb Events.
 
