@@ -66,6 +66,11 @@ If you would like to install a specific version you can do the following:
 
 `composer require fostercommerce/variant-manager "1.0.1"`
 
+#### Installing the Beta via Composer
+
+To install the beta specifically using Composer, you would need to set the minimum stability for the package to beta which can be done like so:
+
+`composer require fostercommerce/variant-manager "^1.0.1@beta"`
 
 ## Help
 
