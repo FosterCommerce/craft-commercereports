@@ -22,7 +22,7 @@ The "Customers" page gives you an overview of the customers that have made order
 
 ### Items Sold
 
-![Items Sold](docs/assets/items.png)
+![Items Sold](docs/assets/items-sold.png)
 
 The "Items Sold" page gives you an overview of the items sold in orders for a given date range. It supports filtering by a given product type in addition to custom Verbb Events.
 
@@ -66,6 +66,11 @@ If you would like to install a specific version you can do the following:
 
 `composer require fostercommerce/variant-manager "1.0.1"`
 
+#### Installing the Beta via Composer
+
+To install the beta specifically using Composer, you would need to set the minimum stability for the package to beta which can be done like so:
+
+`composer require fostercommerce/variant-manager "^1.0.1@beta"`
 
 ## Help
 
