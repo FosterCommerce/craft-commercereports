@@ -1,3 +1,23 @@
+
+{% set productTypes = [] %}
+
+{% for productType in craft.commerce.productTypes.allProductTypes %}
+
+  {% set productTypes = productTypes|merge([{ label: productType.name, value: productType.name }]) %}
+
+{% endfor %}
+
+{% if craft.events %}
+
+  {% for eventType in craft.events.getEventTypes() %}
+
+    {% set productTypes = productTypes|merge([{ label: eventType.name, value: eventType.name }]) %}
+
+  {% endfor %}
+
+{% endif %}
+
 <items-sold
   :elements="itemsSold"
+  :type-options='{{ (productTypes|json_encode|raw) }}'
 ></items-sold>

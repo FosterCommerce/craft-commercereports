@@ -422,7 +422,7 @@ export default {
 }
 
 .commerce-reports-date-range-field {
-  width: 165px;
+  min-width: 165px;
   border: 0;
   display: inline-block;
   text-align: center;

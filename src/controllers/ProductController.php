@@ -7,41 +7,42 @@
  * @copyright Copyright (c) 2021 Foster Commerce
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace fostercommerce\commercereports\controllers;
 
-use fostercommerce\commercereports\CommerceReports;
-use fostercommerce\commercereports\components\Product;
-
 use Craft;
-use craft\web\Response;
-use yii\web\Response as YiiResponse;
+use fostercommerce\commercereports\CommerceReports;
+
+use fostercommerce\commercereports\components\Product;
 
 class ProductController extends Product
 {
-    public function __construct($id, $module, $config = []) {
+    public function __construct($id, $module, $config = [])
+    {
         parent::__construct($id, $module, $config);
     }
 
     /**
      * Renders the orders Twig template
      *
-     * @return yii\web\Response
+     * @return \yii\web\Response
      */
-    public function actionIndex(): YiiResponse {
+    public function actionIndex(): \yii\web\Response
+    {
         return $this->renderTemplate('commercereports/vue/index', [
             'navItem' => 'orders',
-            'id'      => Craft::$app->request->getQueryParam('id')
+            'id' => Craft::$app->request->getQueryParam('id'),
         ]);
     }
 
     /**
      * Return all orders for a given product inside of a date range
      *
-     * @return craft\web\Response
+     * @return \yii\web\Response
      */
-    public function actionGetProduct(): Response {
+    public function actionGetProduct(): \yii\web\Response
+    {
         return $this->asJson(CommerceReports::$plugin->product->getProduct());
     }
 }
