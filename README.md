@@ -40,11 +40,11 @@ This plugin requires Craft 4, Craft Commerce 4 and at least PHP 8 to install.
 
 ### Installation
 
-This plugin supports installation from the Craft Plugin Store and Composer.
+This plugin supports installation from Composer.
 
 #### Installing via Craft Plugin Store
 
-Go to the Plugin Store in your project’s Control Panel and search for “Commerce Reports”. Then press “Install” or "Try" (if in a testing environment).
+This plugin is not currently available on the Craft plugin store yet.
 
 #### Installing via Composer
 
@@ -57,6 +57,14 @@ Open your terminal of choice and go to your Craft project:
 Tell Composer to require the plugin and then Craft to install it:
 
 `composer require fostercommerce/variant-manager && php craft plugin/install variant-manager`
+
+Note that if you would like to install a specific branch you can do the following (note the "dev-" prefix):
+
+`composer require fostercommerce/variant-manager "dev-{branch-name}"`
+
+If you would like to install a specific version you can do the following:
+
+`composer require fostercommerce/variant-manager "1.0.1"`
 
 
 ## Help
