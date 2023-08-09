@@ -12,15 +12,25 @@ From each of the pages, you can filter the data in various ways.
 
 ![Orders](docs/assets/orders.png)
 
-From the orders page you get an overview of all orders made for a given date range (in comparison to the prior period), providing an overview of the average value and unique items in an order, along with the total number of orders.
+The "Orders" page gives you an overview of all orders made for a given date range, providing an overview of the average value and unique items in an order, along with the total number of orders.
 
 ### Customers
 
+![Customers](docs/assets/customers.png)
+
+The "Customers" page gives you an overview of the customers that have made orders for a given date range, including a list of the top locations orders are made from.
+
 ### Items Sold
+
+![Items Sold](docs/assets/items.png)
+
+The "Items Sold" page gives you an overview of the items sold in orders for a given date range. It supports filtering by a given product type in addition to custom Verbb Events.
 
 ### Products
 
+![Products](docs/assets/products.png)
 
+The "Products" page gives you an overview of the orders made for a given product.
 
 ## Setup
 
