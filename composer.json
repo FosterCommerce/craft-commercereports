@@ -45,7 +45,6 @@
   "require-dev": {
     "craftcms/rector": "dev-main",
     "craftcms/phpstan": "dev-main",
-    "phpstan/phpstan": "^1.10.25",
     "craftcms/ecs": "dev-main"
   },
   "config": {
